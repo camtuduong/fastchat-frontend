@@ -1,9 +1,31 @@
 import Button from "@/components/base/Button";
 import AuthBackgroundLayout from "@/components/layout/AuthBackgroundLayout";
+import { signInSchema, type SignInData } from "@/schemas/auth";
 import GoogleIcon from "@/assets/auth/google.svg";
-import InputField from "@/components/form/InputField";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { InputField } from "@/components/form/InputField";
 
 export default function SignInPage() {
+  const form = useForm<SignInData>({
+    resolver: zodResolver(signInSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    mode: "onBlur",
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = form;
+
+  const onSubmit = (data: SignInData) => {
+    console.log("Form Data:", data);
+  };
+
   return (
     <AuthBackgroundLayout>
       <div className="px-4">
@@ -34,46 +56,39 @@ export default function SignInPage() {
           <span className="text-(--gray-1)">-------------</span>
         </div>
 
-        <form className="space-y-6">
+        <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+          <InputField
+            type="email"
+            id="email"
+            placeholder="mail@abc.com"
+            {...register("email")}
+            label="Email"
+            error={errors.email?.message}
+          />
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-(--gray-3)"
-            >
-              Email
-            </label>
-            <InputField
-              type="email"
-              id="email"
-              placeholder="mail@abc.com"
-              className="mt-1 w-full rounded-md border border-(--border-input) px-3 py-2 focus:border-(--color-plum) focus:outline-none"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-(--gray-3)"
-            >
-              Password
-            </label>
             <InputField
               type="password"
               id="password"
               placeholder="**********"
-              className="mt-1 w-full rounded-md border border-(--border-input) px-3 py-2 focus:border-(--color-plum) focus:outline-none"
+              {...register("password")}
+              label="Password"
+              error={errors.password?.message}
             />
 
             <div className="flex items-center justify-between">
-              <InputField type="checkbox" id="remember" className="mt-0.5" />
-              <label
-                htmlFor="remember"
-                className="ml-1 text-[0.75rem] text-(--gray-2)"
-              >
-                Remember me
+              <label htmlFor="remember" className="flex items-center gap-2">
+                <InputField
+                  type="checkbox"
+                  id="remember"
+                  className="mt-0.5"
+                  {...register("rememberMe")}
+                />
+                <span className="text-[0.75rem] text-(--gray-2)">Remember</span>
               </label>
+
               <a
                 href="#"
-                className="ml-auto text-[0.75rem] text-(--color-plum) hover:underline"
+                className="text-[0.75rem] text-(--color-plum) hover:underline"
               >
                 Forgot password?
               </a>

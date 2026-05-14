@@ -1,27 +1,35 @@
 import { cn } from "@/libs/utils";
+import { forwardRef } from "react";
 
-type Props = {
-  className?: string;
-  type: string;
-  id?: string;
-  placeholder?: string;
+type Props = React.InputHTMLAttributes<HTMLInputElement> & {
+  label?: string;
+  error?: string;
 };
 
-export default function InputField({
-  className,
-  type,
-  id,
-  placeholder,
-}: Props) {
-  return (
-    <input
-      type={type}
-      id={id}
-      placeholder={placeholder}
-      className={cn(
-        "border-(--border-input) text-[0.875rem] accent-(--color-plum) placeholder:text-(--gray-5)",
-        className,
-      )}
-    />
-  );
-}
+export const InputField = forwardRef<HTMLInputElement, Props>(
+  ({ className, ...props }, ref) => {
+    return (
+      <div className="w-full">
+        {props.label && (
+          <label
+            htmlFor={props.id}
+            className="block text-sm font-medium text-(--gray-3)"
+          >
+            {props.label}
+          </label>
+        )}
+        <input
+          ref={ref}
+          {...props}
+          className={cn(
+            "mt-1 w-full rounded-md border border-(--border-input) px-3 py-2 focus:border-(--color-plum) focus:outline-none",
+            className,
+          )}
+        />
+        {props.error && (
+          <p className="mt-1 text-sm text-red-500">{props.error}</p>
+        )}
+      </div>
+    );
+  },
+);
