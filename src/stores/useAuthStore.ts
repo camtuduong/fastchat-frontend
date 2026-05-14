@@ -8,10 +8,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   isLoading: false,
 
-  signIn: async (email, password) => {
+  signIn: async (username, password) => {
     set({ isLoading: true });
     try {
-      await authService.signIn(email, password);
+      await authService.signIn(username, password);
     } catch (error) {
       toast.error("Failed to sign in. Please try again.");
     } finally {

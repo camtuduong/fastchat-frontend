@@ -5,12 +5,17 @@ import GoogleIcon from "@/assets/auth/google.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { InputField } from "@/components/form/InputField";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { useNavigate } from "react-router-dom";
 
 export default function SignInPage() {
+  const { signIn } = useAuthStore();
+  const navigate = useNavigate();
+
   const form = useForm<SignInData>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
     },
     mode: "onBlur",
@@ -22,8 +27,11 @@ export default function SignInPage() {
     formState: { errors },
   } = form;
 
-  const onSubmit = (data: SignInData) => {
-    console.log("Form Data:", data);
+  const onSubmit = async (data: SignInData) => {
+    const { username, password } = data;
+    await signIn(username, password);
+
+    navigate("/signin");
   };
 
   return (
@@ -58,12 +66,12 @@ export default function SignInPage() {
 
         <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
           <InputField
-            type="email"
-            id="email"
-            placeholder="mail@abc.com"
-            {...register("email")}
-            label="Email"
-            error={errors.email?.message}
+            type="text"
+            id="username"
+            placeholder="Username"
+            {...register("username")}
+            label="Username"
+            error={errors.username?.message}
           />
           <div>
             <InputField
