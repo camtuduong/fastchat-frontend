@@ -32,7 +32,6 @@ export default function SignInPage() {
     const { username, password } = data;
     try {
       await signIn(username, password);
-      toast.success("Signed in successfully!");
       navigate("/");
     } catch (error) {
       toast.error(

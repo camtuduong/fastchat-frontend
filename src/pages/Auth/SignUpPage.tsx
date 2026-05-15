@@ -35,7 +35,6 @@ export default function SignUpPage() {
     const { username, email, password, firstName, lastName } = data;
     try {
       await signUp(username, email, password, firstName, lastName);
-      toast.success("Signed up successfully!");
       navigate("/signin");
     } catch (error) {
       toast.error("Failed to sign up. Please try again.");
