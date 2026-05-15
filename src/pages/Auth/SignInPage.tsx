@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { InputField } from "@/components/form/InputField";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export default function SignInPage() {
   const { signIn } = useAuthStore();
@@ -29,9 +30,15 @@ export default function SignInPage() {
 
   const onSubmit = async (data: SignInData) => {
     const { username, password } = data;
-    await signIn(username, password);
-
-    navigate("/signin");
+    try {
+      await signIn(username, password);
+      toast.success("Signed in successfully!");
+      navigate("/");
+    } catch (error) {
+      toast.error(
+        "Failed to sign in. Please check your credentials and try again.",
+      );
+    }
   };
 
   return (

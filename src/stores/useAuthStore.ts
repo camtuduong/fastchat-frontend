@@ -1,9 +1,8 @@
 import { create } from "zustand";
-import { toast } from "sonner";
 import { authService } from "@/services/authService";
 import type { AuthState } from "@/types/store";
 
-export const useAuthStore = create<AuthState>((set, get) => ({
+export const useAuthStore = create<AuthState>((set) => ({
   accessToken: null,
   user: null,
   isLoading: false,
@@ -13,7 +12,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     try {
       await authService.signIn(username, password);
     } catch (error) {
-      toast.error("Failed to sign in. Please try again.");
+      throw error;
     } finally {
       set({ isLoading: false });
     }
@@ -24,7 +23,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     try {
       await authService.signUp(username, email, password, firstName, lastName);
     } catch (error) {
-      toast.error("Failed to sign up. Please try again.");
+      throw error;
     } finally {
       set({ isLoading: false });
     }

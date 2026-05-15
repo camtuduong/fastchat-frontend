@@ -6,6 +6,7 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export default function SignUpPage() {
   const { signUp } = useAuthStore();
@@ -32,9 +33,13 @@ export default function SignUpPage() {
 
   const onSubmit = async (data: SignUpData) => {
     const { username, email, password, firstName, lastName } = data;
-    await signUp(username, email, password, firstName, lastName);
-
-    navigate("/signin");
+    try {
+      await signUp(username, email, password, firstName, lastName);
+      toast.success("Signed up successfully!");
+      navigate("/signin");
+    } catch (error) {
+      toast.error("Failed to sign up. Please try again.");
+    }
   };
 
   return (
