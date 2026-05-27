@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { InputField } from "@/components/form/InputField";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export default function SignInPage() {
   const { signIn } = useAuthStore();
@@ -18,20 +19,24 @@ export default function SignInPage() {
       username: "",
       password: "",
     },
-    mode: "onBlur",
   });
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = form;
 
   const onSubmit = async (data: SignInData) => {
     const { username, password } = data;
-    await signIn(username, password);
-
-    navigate("/signin");
+    try {
+      await signIn(username, password);
+      navigate("/");
+    } catch (error) {
+      toast.error(
+        "Failed to sign in. Please check your credentials and try again.",
+      );
+    }
   };
 
   return (
@@ -102,12 +107,22 @@ export default function SignInPage() {
               </a>
             </div>
           </div>
-          <Button
-            type="submit"
-            className="w-full rounded-md bg-(--color-plum) px-4 py-2 text-white hover:bg-(--color-plum-dark)"
-          >
-            Login
-          </Button>
+          {isSubmitting ? (
+            <Button
+              type="submit"
+              className="w-full cursor-not-allowed rounded-md bg-(--color-plum) px-4 py-2 text-white opacity-50"
+              disabled
+            >
+              Logging in...
+            </Button>
+          ) : (
+            <Button
+              type="submit"
+              className="w-full rounded-md bg-(--color-plum) px-4 py-2 text-white hover:bg-(--color-plum-dark)"
+            >
+              Login
+            </Button>
+          )}
         </form>
 
         <p className="mt-6 text-center text-[0.75rem] text-(--gray-2)">

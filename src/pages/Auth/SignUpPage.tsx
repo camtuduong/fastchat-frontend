@@ -6,6 +6,7 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export default function SignUpPage() {
   const { signUp } = useAuthStore();
@@ -21,20 +22,22 @@ export default function SignUpPage() {
       password: "",
       confirmPassword: "",
     },
-    mode: "onBlur",
   });
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = form;
 
   const onSubmit = async (data: SignUpData) => {
     const { username, email, password, firstName, lastName } = data;
-    await signUp(username, email, password, firstName, lastName);
-
-    navigate("/signin");
+    try {
+      await signUp(username, email, password, firstName, lastName);
+      navigate("/signin");
+    } catch (error) {
+      toast.error("Failed to sign up. Please try again.");
+    }
   };
 
   return (
@@ -111,12 +114,22 @@ export default function SignUpPage() {
             error={errors.confirmPassword?.message}
           />
 
-          <Button
-            type="submit"
-            className="w-full rounded-md bg-(--color-plum) px-4 py-2 text-white hover:bg-(--color-plum-dark)"
-          >
-            Sign Up
-          </Button>
+          {isSubmitting ? (
+            <Button
+              type="submit"
+              className="w-full cursor-not-allowed rounded-md bg-(--color-plum) px-4 py-2 text-white opacity-50"
+              disabled
+            >
+              Signing Up...
+            </Button>
+          ) : (
+            <Button
+              type="submit"
+              className="w-full rounded-md bg-(--color-plum) px-4 py-2 text-white hover:bg-(--color-plum-dark)"
+            >
+              Sign Up
+            </Button>
+          )}
         </form>
 
         <p className="mt-2 mb-2 text-center text-[0.75rem] text-(--gray-2)">
