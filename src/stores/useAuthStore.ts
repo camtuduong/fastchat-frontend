@@ -3,7 +3,7 @@ import { authService } from "@/services/authService";
 import type { AuthState } from "@/types/store";
 import { toast } from "sonner";
 
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({
   accessToken: null,
   user: null,
   isLoading: false,
@@ -11,7 +11,14 @@ export const useAuthStore = create<AuthState>((set) => ({
   signIn: async (username, password) => {
     set({ isLoading: true });
     try {
-      await authService.signIn(username, password);
+      const response = await authService.signIn(username, password);
+      const accessToken = response?.accessToken;
+
+      if (!accessToken) {
+        throw new Error("Missing access token in sign in response");
+      }
+
+      set({ accessToken });
       toast.success("Signed in successfully!");
     } catch (error) {
       throw error;
@@ -32,7 +39,19 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
   },
 
-  signOut: () => {
-    set({ accessToken: null, user: null });
+  signOut: async () => {
+    set({ isLoading: true });
+    try {
+      const { accessToken } = get();
+      if (accessToken) {
+        await authService.signOut(accessToken);
+      }
+      set({ accessToken: null, user: null });
+      toast.success("Signed out successfully!");
+    } catch (error) {
+      throw error;
+    } finally {
+      set({ isLoading: false });
+    }
   },
 }));

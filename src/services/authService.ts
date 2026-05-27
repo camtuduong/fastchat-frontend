@@ -9,17 +9,13 @@ export const authService = {
     lastName: string,
   ) => {
     try {
-      const response = await api.post(
-        "/auth/signup",
-        {
-          username,
-          email,
-          password,
-          firstName: firstName,
-          lastName: lastName,
-        },
-        { withCredentials: true },
-      );
+      const response = await api.post("/auth/signup", {
+        username,
+        email,
+        password,
+        firstName: firstName,
+        lastName: lastName,
+      });
       return response.data;
     } catch (error) {
       throw error;
@@ -28,14 +24,23 @@ export const authService = {
 
   signIn: async (username: string, password: string) => {
     try {
-      const response = await api.post(
-        "/auth/signin",
-        {
-          username,
-          password,
+      const response = await api.post("/auth/signin", {
+        username,
+        password,
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  signOut: async (accessToken: string) => {
+    try {
+      const response = await api.post("/auth/signout", null, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
         },
-        { withCredentials: true },
-      );
+      });
       return response.data;
     } catch (error) {
       throw error;

@@ -22,13 +22,12 @@ export default function SignUpPage() {
       password: "",
       confirmPassword: "",
     },
-    mode: "onBlur",
   });
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = form;
 
   const onSubmit = async (data: SignUpData) => {
@@ -115,12 +114,22 @@ export default function SignUpPage() {
             error={errors.confirmPassword?.message}
           />
 
-          <Button
-            type="submit"
-            className="w-full rounded-md bg-(--color-plum) px-4 py-2 text-white hover:bg-(--color-plum-dark)"
-          >
-            Sign Up
-          </Button>
+          {isSubmitting ? (
+            <Button
+              type="submit"
+              className="w-full cursor-not-allowed rounded-md bg-(--color-plum) px-4 py-2 text-white opacity-50"
+              disabled
+            >
+              Signing Up...
+            </Button>
+          ) : (
+            <Button
+              type="submit"
+              className="w-full rounded-md bg-(--color-plum) px-4 py-2 text-white hover:bg-(--color-plum-dark)"
+            >
+              Sign Up
+            </Button>
+          )}
         </form>
 
         <p className="mt-2 mb-2 text-center text-[0.75rem] text-(--gray-2)">
