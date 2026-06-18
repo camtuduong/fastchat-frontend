@@ -81,3 +81,8 @@
   background: url("/assets/auth-bg.png") no-repeat center;
   background-size: cover;
 }
+
+::selection {
+  background: var(--color-plum);
+  color: #fff;
+}
