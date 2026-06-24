@@ -1,12 +1,11 @@
-import { RouterProvider } from "react-router-dom";
-import { router } from "@/routes";
+import { Outlet } from "@tanstack/react-router";
 import { Toaster } from "sonner";
 
-export default function App() {
+export function App() {
   return (
-    <>
-      <RouterProvider router={router} />
+    <div id="app">
+      <Outlet />
       <Toaster position="top-right" richColors />
-    </>
+    </div>
   );
 }

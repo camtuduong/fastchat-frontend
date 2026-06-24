@@ -1,10 +1,14 @@
+import { RouterProvider } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import App from "./App.tsx";
+import { router } from "./routes";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 createRoot(document.getElementById("root")!).render(
-	<StrictMode>
-		<App />
-	</StrictMode>,
+  <StrictMode>
+    <TooltipProvider>
+      <RouterProvider router={router} />
+    </TooltipProvider>
+  </StrictMode>,
 );

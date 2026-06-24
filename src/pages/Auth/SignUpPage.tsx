@@ -5,7 +5,7 @@ import { signUpSchema, type SignUpData } from "@/schemas/auth";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 
 export default function SignUpPage() {
@@ -34,7 +34,7 @@ export default function SignUpPage() {
     const { username, email, password, firstName, lastName } = data;
     try {
       await signUp(username, email, password, firstName, lastName);
-      navigate("/signin");
+      navigate({ to: "/signin" });
     } catch (error) {
       toast.error("Failed to sign up. Please try again.");
     }

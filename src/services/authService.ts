@@ -1,4 +1,4 @@
-import api from "@/libs/api";
+import api from "@/lib/api";
 
 export const authService = {
   signUp: async (

@@ -6,10 +6,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { InputField } from "@/components/form/InputField";
 import { useAuthStore } from "@/stores/useAuthStore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 
-export default function SignInPage() {
+export const SignInPage = () => {
   const { signIn } = useAuthStore();
   const navigate = useNavigate();
 
@@ -31,7 +31,7 @@ export default function SignInPage() {
     const { username, password } = data;
     try {
       await signIn(username, password);
-      navigate("/");
+      navigate({ to: "/" });
     } catch (error) {
       toast.error(
         "Failed to sign in. Please check your credentials and try again.",
@@ -134,4 +134,4 @@ export default function SignInPage() {
       </div>
     </AuthBackgroundLayout>
   );
-}
+};
