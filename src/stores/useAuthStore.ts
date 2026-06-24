@@ -46,7 +46,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       if (accessToken) {
         await authService.signOut(accessToken);
       }
-      set({ accessToken: null, user: null });
+      set({ accessToken: null });
       toast.success("Signed out successfully!");
     } catch (error) {
       throw error;

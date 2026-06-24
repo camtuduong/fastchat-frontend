@@ -8,7 +8,7 @@ import {
   createRouter,
   redirect,
 } from "@tanstack/react-router";
-import { redirectIfAuthenticated } from "@/utils/guards";
+import { redirectIfUnauthenticated } from "@/utils/guards";
 import { HomePage } from "@/pages/Home/HomePage";
 import { ChatPage } from "@/pages/Chat/ChatPage";
 import { SignInPage } from "@/pages/Auth/SignInPage";
@@ -20,7 +20,7 @@ const rootRoute = createRootRoute({
 const homeRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
-  beforeLoad: redirectIfAuthenticated,
+  beforeLoad: redirectIfUnauthenticated,
   component: HomePage,
 });
 
@@ -28,7 +28,6 @@ const homeRoute = createRoute({
 const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "login",
-  beforeLoad: redirectIfAuthenticated,
   component: SignInPage,
 });
 
@@ -58,7 +57,7 @@ const signUpRoute = createRoute({
 const profileRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "profile",
-  beforeLoad: redirectIfAuthenticated,
+  beforeLoad: redirectIfUnauthenticated,
   component: ProfilePage,
 });
 
@@ -66,7 +65,7 @@ const profileRoute = createRoute({
 const chatRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "chat",
-  beforeLoad: redirectIfAuthenticated,
+  beforeLoad: redirectIfUnauthenticated,
   component: ChatPage,
 });
 
