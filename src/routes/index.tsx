@@ -1,6 +1,6 @@
 import { App } from "@/App";
-import SignUpPage from "@/pages/Auth/SignUpPage";
-import { ProfilePage } from "@/pages/Profile/ProfilePage";
+import SignUpPage from "@/features/auth/pages/SignUpPage";
+import { ProfilePage } from "@/features/profile/pages/ProfilePage";
 import { useAuthStore } from "@/stores/useAuthStore";
 import {
   createRootRoute,
@@ -9,9 +9,9 @@ import {
   redirect,
 } from "@tanstack/react-router";
 import { redirectIfUnauthenticated } from "@/utils/guards";
-import { HomePage } from "@/pages/Home/HomePage";
-import { ChatPage } from "@/pages/Chat/ChatPage";
-import { SignInPage } from "@/pages/Auth/SignInPage";
+import { HomePage } from "@/features/home/pages/HomePage";
+import { ChatPage } from "@/features/chat/pages/ChatPage";
+import { SignInPage } from "@/features/auth/pages/SignInPage";
 
 const rootRoute = createRootRoute({
   component: App,

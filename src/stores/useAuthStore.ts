@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { authService } from "@/services/authService";
+import { authService } from "@/features/auth/authService";
 import type { AuthState } from "@/types/store";
 import { toast } from "sonner";
 
