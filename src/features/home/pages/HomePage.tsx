@@ -1,19 +1,23 @@
 import Button from "@/components/base/Button";
-import { useAuthStore } from "@/stores/useAuthStore";
+import { useGetMe } from "@/features/auth/hooks/queries/useGetMe";
+import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useNavigate } from "@tanstack/react-router";
 
 export const HomePage = () => {
-  const { signOut } = useAuthStore();
+  const { data } = useGetMe();
+  const { mutate: logout } = useLogout();
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     try {
-      await signOut();
+      logout();
       navigate({ to: "/login" });
     } catch (error) {
       console.error("Error logging out:", error);
     }
   };
+
+  console.log("User data:", data);
 
   return (
     <div>
@@ -27,6 +31,12 @@ export const HomePage = () => {
           onClick={() => navigate({ to: "/chat" })}
         >
           Go to Chat
+        </Button>
+        <Button
+          className="w-auto bg-purple-600 px-4 text-white transition hover:bg-purple-800 hover:duration-300"
+          onClick={() => navigate({ to: "/profile" })}
+        >
+          Go to Your Profile
         </Button>
         <Button
           className="w-auto bg-red-500 px-4 text-white transition hover:bg-red-600 hover:duration-300"

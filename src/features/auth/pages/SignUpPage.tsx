@@ -2,14 +2,14 @@ import Button from "@/components/base/Button";
 import { InputField } from "@/components/form/InputField";
 import AuthBackgroundLayout from "@/components/layout/AuthBackgroundLayout";
 import { signUpSchema, type SignUpData } from "@/features/auth/auth";
-import { useAuthStore } from "@/stores/useAuthStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
+import { useSignUp } from "@/features/auth/hooks/useSignup";
 
 export default function SignUpPage() {
-  const { signUp } = useAuthStore();
+  const { mutateAsync: signUp } = useSignUp();
   const navigate = useNavigate();
 
   const form = useForm<SignUpData>({
@@ -33,7 +33,7 @@ export default function SignUpPage() {
   const onSubmit = async (data: SignUpData) => {
     const { username, email, password, firstName, lastName } = data;
     try {
-      await signUp(username, email, password, firstName, lastName);
+      await signUp({ username, email, password, firstName, lastName });
       navigate({ to: "/signin" });
     } catch (error) {
       toast.error("Failed to sign up. Please try again.");

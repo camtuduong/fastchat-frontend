@@ -5,14 +5,14 @@ import GoogleIcon from "@/assets/auth/google.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { InputField } from "@/components/form/InputField";
-import { useAuthStore } from "@/stores/useAuthStore";
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
+import { useLogin } from "@/features/auth/hooks/useLogin";
 
 export const SignInPage = () => {
-  const { signIn } = useAuthStore();
-  const navigate = useNavigate();
+  const { mutateAsync: loginMutation, isPending } = useLogin();
 
+  const navigate = useNavigate();
   const form = useForm<SignInData>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -28,9 +28,11 @@ export const SignInPage = () => {
   } = form;
 
   const onSubmit = async (data: SignInData) => {
-    const { username, password } = data;
     try {
-      await signIn(username, password);
+      await loginMutation({
+        username: data.username,
+        password: data.password,
+      });
       navigate({ to: "/" });
     } catch (error) {
       toast.error(
@@ -107,7 +109,7 @@ export const SignInPage = () => {
               </a>
             </div>
           </div>
-          {isSubmitting ? (
+          {isSubmitting || isPending ? (
             <Button
               type="submit"
               className="w-full cursor-not-allowed rounded-md bg-(--color-plum) px-4 py-2 text-white opacity-50"
