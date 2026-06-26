@@ -12,6 +12,9 @@ import { redirectIfUnauthenticated } from "@/utils/guards";
 import { HomePage } from "@/features/home/pages/HomePage";
 import { ChatPage } from "@/features/chat/pages/ChatPage";
 import { SignInPage } from "@/features/auth/pages/SignInPage";
+import { getAllConversations } from "@/features/chat/api/getAllConversations";
+import { EmptyChatPage } from "@/features/chat/pages/EmptyChatPage";
+import { ConversationPage } from "@/features/chat/pages/ConversationPage";
 
 const rootRoute = createRootRoute({
   component: App,
@@ -69,6 +72,31 @@ const chatRoute = createRoute({
   component: ChatPage,
 });
 
+const chatIndexRoute = createRoute({
+  getParentRoute: () => chatRoute,
+  path: "/",
+  loader: async () => {
+    const data = await getAllConversations("");
+    const first = data.conversations?.[0];
+
+    if (first) {
+      throw redirect({
+        to: "/chat/$conversationId",
+        params: { conversationId: first._id },
+      });
+    }
+
+    return { conversations: [] };
+  },
+  component: EmptyChatPage,
+});
+
+export const chatConversationRoute = createRoute({
+  getParentRoute: () => chatRoute,
+  path: "$conversationId",
+  component: ConversationPage,
+});
+
 const routeTree = rootRoute.addChildren([
   homeRoute,
   loginRoute,
@@ -76,6 +104,8 @@ const routeTree = rootRoute.addChildren([
   signUpRoute,
   profileRoute,
   chatRoute,
+  chatIndexRoute,
+  chatConversationRoute,
 ]);
 
 export const router = createRouter({
