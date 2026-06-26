@@ -28,7 +28,7 @@ export function ChatPage() {
   return (
     <SidebarProvider>
       <AppSidebar conversationsData={conversationsData} />
-      <SidebarInset>
+      <SidebarInset className="flex-1 overflow-hidden">
         <Outlet />
       </SidebarInset>
     </SidebarProvider>

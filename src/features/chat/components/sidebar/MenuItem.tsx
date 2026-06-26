@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/avatar";
 import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import type { Conversation } from "@/features/chat/types/conversation";
-import { useConversationStore } from "@/stores/useConversationStore";
+import { useNavigate } from "@tanstack/react-router";
 
 type Props = {
   conversation: Conversation;
@@ -17,13 +17,12 @@ const Style = {
 };
 
 export const MenuItem = ({ conversation }: Props) => {
+  const navigate = useNavigate();
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
         className={Style.content}
-        onClick={() =>
-          useConversationStore.getState().setConversationId(conversation._id)
-        }
+        onClick={() => navigate({ to: `/chat/${conversation._id}` })}
         asChild
       >
         <div>
@@ -37,7 +36,9 @@ export const MenuItem = ({ conversation }: Props) => {
           </Avatar>
           {/* group name */}
           <div className="truncate">
-            <div className="truncate">{conversation?.group?.name}</div>
+            <div className="truncate">
+              {conversation?.group?.name || "Unnamed Group"}
+            </div>
             <div className="text-muted-foreground text-xs">Last message</div>
           </div>
         </div>
