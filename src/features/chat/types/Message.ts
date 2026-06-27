@@ -4,7 +4,7 @@ interface Message {
 }
 
 interface MessageItem {
-  id: string;
+  _id: string;
   sender: Sender;
   content: string;
   attachments: Attachment[] | [];

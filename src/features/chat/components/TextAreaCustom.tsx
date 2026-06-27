@@ -4,12 +4,23 @@ import { useState } from "react";
 
 type Props = {
   className?: string;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
 };
 
-export const CustomTextArea = ({ className }: Props) => {
+export const CustomTextArea = ({
+  className,
+  value,
+  onChange,
+  onKeyDown,
+}: Props) => {
   const [isExpanded, setIsExpanded] = useState(false);
   return (
     <Textarea
+      value={value}
+      onChange={onChange}
+      onKeyDown={onKeyDown}
       onInput={(e) => {
         const minHeight = 48; // min-h-12
         setIsExpanded(e.currentTarget.scrollHeight > minHeight + 4);

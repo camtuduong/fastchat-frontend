@@ -27,7 +27,7 @@ export const ConversationPage = () => {
 
       {/* Spacer for footer */}
       <div className="h-16" />
-      <ConversationFooter />
+      <ConversationFooter conversationId={conversationId} />
     </>
   );
 };
