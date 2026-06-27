@@ -1,12 +1,14 @@
-import { RouterProvider } from "react-router-dom";
-import { router } from "@/routes";
+import { useGetMe } from "@/features/auth/hooks/queries/useGetMe";
+import { Outlet } from "@tanstack/react-router";
 import { Toaster } from "sonner";
 
-export default function App() {
+export function App() {
+  useGetMe();
+
   return (
-    <>
-      <RouterProvider router={router} />
+    <div id="app">
+      <Outlet />
       <Toaster position="top-right" richColors />
-    </>
+    </div>
   );
 }
