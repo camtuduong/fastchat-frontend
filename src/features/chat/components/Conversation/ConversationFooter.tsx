@@ -12,7 +12,6 @@ export const ConversationFooter = ({ conversationId }: Props) => {
   const { mutate: sendMessageDirect, isPending } = useSendMessageDirect();
 
   const handleSendMessage = () => {
-    console.log("Sending message:", message);
     sendMessageDirect({
       conversationId: conversationId,
       content: message,

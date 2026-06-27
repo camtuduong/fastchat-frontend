@@ -3,6 +3,7 @@ import * as React from "react";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -13,7 +14,6 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { Link } from "@tanstack/react-router";
 import { TerminalIcon } from "lucide-react";
 import type { Conversation } from "@/features/chat/types/conversation";
-
 // const data = {
 //   user: {
 //     name: "shadcn",
@@ -177,9 +177,21 @@ export function AppSidebar({ conversationsData, ...props }: Props) {
       </SidebarContent>
 
       {/* Footer */}
-      {/* <SidebarFooter>
-        <NavUser user={data.user} />
-      </SidebarFooter> */}
+      <SidebarFooter>
+        {/* <NavUser user={data.user} /> */}
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              size="lg"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground items-center justify-start"
+            >
+              <Link to="/" className="">
+                <span className="text-xl">Back to Home</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }

@@ -1,10 +1,8 @@
 import Button from "@/components/base/Button";
-import { useGetMe } from "@/features/auth/hooks/queries/useGetMe";
 import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useNavigate } from "@tanstack/react-router";
 
 export const HomePage = () => {
-  const { data } = useGetMe();
   const { mutate: logout } = useLogout();
   const navigate = useNavigate();
 
@@ -16,8 +14,6 @@ export const HomePage = () => {
       console.error("Error logging out:", error);
     }
   };
-
-  console.log("User data:", data);
 
   return (
     <div>

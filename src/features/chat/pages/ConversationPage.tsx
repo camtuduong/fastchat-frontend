@@ -3,15 +3,24 @@ import { ConversationBody } from "@/features/chat/components/Conversation/Conver
 import { ConversationFooter } from "@/features/chat/components/Conversation/ConversationFooter";
 import { ConversationHeader } from "@/features/chat/components/Conversation/ConversationHeader";
 import { useGetAllMessages } from "@/features/chat/hooks/queries/useGetAllMessages";
+import { useGetConversationById } from "@/features/chat/hooks/queries/useGetConversationById";
 import { chatConversationRoute } from "@/routes";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 export const ConversationPage = () => {
   const conversationId = chatConversationRoute.useParams().conversationId;
-
-  if (!conversationId) {
+  const myUsername = useAuthStore.getState().user;
+  if (!conversationId || !myUsername) {
     return null;
   }
-  const { data: conversation, isLoading } = useGetAllMessages(conversationId);
+
+  const { data: conversationData } = useGetConversationById(conversationId);
+  const { data: conversationMessages, isLoading } =
+    useGetAllMessages(conversationId);
+
+  const members = conversationData?.participants
+    .map((participant) => participant)
+    .filter((participant) => participant.username !== myUsername);
 
   if (isLoading) {
     return (
@@ -22,8 +31,11 @@ export const ConversationPage = () => {
   }
   return (
     <>
-      <ConversationHeader />
-      <ConversationBody conversation={conversation} />
+      <ConversationHeader members={members} />
+      <ConversationBody
+        conversationMessages={conversationMessages}
+        myUsername={myUsername}
+      />
 
       {/* Spacer for footer */}
       <div className="h-16" />

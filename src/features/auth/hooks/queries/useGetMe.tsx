@@ -4,9 +4,12 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 
 export const useGetMe = () => {
+  const accessToken = useAuthStore((state) => state.accessToken);
+
   const { data, error, isLoading } = useQuery({
     queryKey: ["me"],
     queryFn: getMe,
+    enabled: !!accessToken,
   });
 
   useEffect(() => {

@@ -1,24 +1,24 @@
-import { useGetMe } from "@/features/auth/hooks/queries/useGetMe";
 import { MessageBubble } from "@/features/chat/components/Conversation/MessageBubble";
 import type { Message } from "@/features/chat/types/Message";
+import { bubbleChat } from "@/features/chat/utils/bubbleChat";
 
 type Props = {
-  conversation: Message;
+  conversationMessages: Message;
+  myUsername: string;
 };
 
-export const ConversationBody = ({ conversation }: Props) => {
-  const { data: me } = useGetMe();
+export const ConversationBody = ({
+  conversationMessages,
+  myUsername,
+}: Props) => {
+  const layout = bubbleChat(conversationMessages.messages);
 
-  console.log("conversation", conversation);
   return (
-    <div className="flex flex-1 flex-col overflow-auto rounded-b-xl p-8 pt-2">
-      {conversation.messages.reverse()?.map((message) => {
-        const isMyMessage = me?.user?._id === message.sender.userId;
+    <div className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto rounded-b-xl p-8 pt-4">
+      {layout.reverse()?.map((message) => {
+        const isMyMessage = myUsername === message.sender.username;
         return (
-          <div
-            key={message._id}
-            className={`flex gap-4 ${isMyMessage ? "justify-end" : "justify-start"} p-px`}
-          >
+          <div key={message._id} className={`flex w-full gap-4 p-px`}>
             <MessageBubble message={message} isMyMessage={isMyMessage} />
           </div>
         );

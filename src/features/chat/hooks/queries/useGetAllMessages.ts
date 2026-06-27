@@ -1,4 +1,7 @@
-import { getAllMessages } from "@/features/chat/api/getAllMessages";
+import {
+  getAllMessages,
+  type GetAllMessagesResponse,
+} from "@/features/chat/api/getAllMessages";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetAllMessages = (conversationId: string) => {
@@ -7,5 +10,5 @@ export const useGetAllMessages = (conversationId: string) => {
     queryFn: () => getAllMessages(conversationId),
     enabled: !!conversationId,
   });
-  return { data: data || {}, error, isLoading };
+  return { data: data || ({} as GetAllMessagesResponse), error, isLoading };
 };
