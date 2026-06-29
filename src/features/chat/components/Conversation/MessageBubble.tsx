@@ -29,13 +29,13 @@ export const MessageBubble = ({ message, isMyMessage }: Props) => {
       <div
         className={cn(
           "max-w-[70%] min-w-0 p-4",
-          "break-words whitespace-pre-wrap",
+          "wrap-break-word whitespace-pre-wrap",
           "flex flex-col gap-1",
           bubbleClass(message.position, isMyMessage),
           isMyMessage ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-700",
         )}
       >
-        <div className="[overflow-wrap:anywhere]">{message.content}</div>
+        <div className="wrap-anywhere">{message.content}</div>
       </div>
     </div>
   );
