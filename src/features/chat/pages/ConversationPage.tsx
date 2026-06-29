@@ -9,14 +9,15 @@ import { useAuthStore } from "@/stores/useAuthStore";
 
 export const ConversationPage = () => {
   const conversationId = chatConversationRoute.useParams().conversationId;
-  const myUsername = useAuthStore.getState().user;
+  const myUsername = useAuthStore((state) => state.user);
+
+  const { data: conversationData } = useGetConversationById(conversationId ?? "");
+  const { data: conversationMessages, isLoading } =
+    useGetAllMessages(conversationId ?? "");
+
   if (!conversationId || !myUsername) {
     return null;
   }
-
-  const { data: conversationData } = useGetConversationById(conversationId);
-  const { data: conversationMessages, isLoading } =
-    useGetAllMessages(conversationId);
 
   const members = conversationData?.participants
     .map((participant) => participant)

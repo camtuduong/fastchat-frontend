@@ -18,6 +18,7 @@ const Style = {
 
 export const MenuItem = ({ conversation }: Props) => {
   const navigate = useNavigate();
+
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
