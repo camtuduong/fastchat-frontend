@@ -1,4 +1,5 @@
 import { useGetMe } from "@/features/auth/hooks/queries/useGetMe";
+import { ThemeProvider } from "@/providers/theme-provider";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useSocketStore } from "@/stores/useSocketStore";
 import { Outlet } from "@tanstack/react-router";
@@ -21,9 +22,11 @@ export function App() {
   }, [accessToken]);
 
   return (
-    <div id="app">
-      <Outlet />
-      <Toaster position="top-right" richColors />
-    </div>
+    <ThemeProvider defaultTheme="system" storageKey="theme">
+      <div id="app">
+        <Outlet />
+        <Toaster position="top-right" richColors />
+      </div>
+    </ThemeProvider>
   );
 }

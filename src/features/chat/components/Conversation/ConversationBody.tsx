@@ -11,7 +11,6 @@ export const ConversationBody = ({
   conversationMessages,
   myUsername,
 }: Props) => {
-  console.log("Conversation messages:", conversationMessages);
   const layout = bubbleChat(conversationMessages.messages);
 
   return (

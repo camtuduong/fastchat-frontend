@@ -4,7 +4,7 @@ interface Conversation {
   __v: number;
   lastMessage: Message;
   seenBy: string[];
-  type: "direct" | "group";
+  type: ConversationType;
   unreadCount: {
     [userId: string]: number;
   };
@@ -33,4 +33,6 @@ interface Message {
   createdAt: Date;
 }
 
-export type { Conversation, Participant, Message };
+type ConversationType = "direct" | "group";
+
+export type { Conversation, Participant, Message, Group, ConversationType };

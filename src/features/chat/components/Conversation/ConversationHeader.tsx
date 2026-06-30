@@ -15,7 +15,7 @@ type Props = {
 
 export const ConversationHeader = ({ members }: Props) => {
   return (
-    <header className="flex h-16 shrink-0 items-center gap-2 bg-amber-200">
+    <header className="flex h-16 shrink-0 items-center gap-2">
       <div className="flex items-center gap-2 px-4">
         <SidebarTrigger className="-ml-1" />
         <Separator

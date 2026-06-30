@@ -78,8 +78,6 @@ export const useSocketStore = create<SocketState>((set, get) => ({
           };
         },
       );
-
-      console.log("New message received:", message);
     });
   },
   disconnectSocket: () => {

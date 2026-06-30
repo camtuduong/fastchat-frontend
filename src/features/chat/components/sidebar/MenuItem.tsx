@@ -5,7 +5,9 @@ import {
   AvatarImage,
 } from "@/components/ui/avatar";
 import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
+import { conversationTypeToLabel } from "@/features/chat/constant";
 import type { Conversation } from "@/features/chat/types/conversation";
+import { useSocketStore } from "@/stores/useSocketStore";
 import { useNavigate } from "@tanstack/react-router";
 
 type Props = {
@@ -17,7 +19,22 @@ const Style = {
 };
 
 export const MenuItem = ({ conversation }: Props) => {
+  const onlineUsers = useSocketStore((state) => state.onlineUsers);
+
+  console.log("onlineUsers", onlineUsers);
+
+  console.log("conversation", conversation);
   const navigate = useNavigate();
+  const isDirectConversation =
+    conversation.type === conversationTypeToLabel.direct;
+
+  const participantsName = conversation.participants
+    .map((participant) => participant.username)
+    .join(", ");
+
+  const isOnline = conversation.participants.some((participant) =>
+    onlineUsers.includes(participant.userId),
+  );
 
   return (
     <SidebarMenuItem>
@@ -26,23 +43,43 @@ export const MenuItem = ({ conversation }: Props) => {
         onClick={() => navigate({ to: `/chat/${conversation._id}` })}
         asChild
       >
-        <div>
-          <Avatar>
-            <AvatarImage
-              src="https://github.com/evilrabbit.png"
-              alt="@evilrabbit"
-            />
-            <AvatarFallback>ER</AvatarFallback>
-            <AvatarBadge className="bg-green-600 dark:bg-green-800" />
-          </Avatar>
-          {/* group name */}
-          <div className="truncate">
+        {isDirectConversation ? (
+          <div>
+            <Avatar>
+              <AvatarFallback>
+                {conversation?.participants[1]?.username[0].toUpperCase()}
+              </AvatarFallback>
+              {isOnline && (
+                <AvatarBadge className="bg-green-600 dark:bg-green-800" />
+              )}
+            </Avatar>
             <div className="truncate">
-              {conversation?.group?.name || "Unnamed Group"}
+              <div className="truncate">
+                {conversation?.participants[1]?.username}
+              </div>
+              <div className="text-muted-foreground text-xs">Last message</div>
             </div>
-            <div className="text-muted-foreground text-xs">Last message</div>
           </div>
-        </div>
+        ) : (
+          <div>
+            <Avatar>
+              <AvatarImage
+                src={conversation?.group?.avatarUrl || ""}
+                alt={conversation?.group?.name || "User"}
+              />
+              <AvatarFallback>GR</AvatarFallback>
+              {isOnline && (
+                <AvatarBadge className="bg-green-600 dark:bg-green-800" />
+              )}
+            </Avatar>
+            <div className="truncate">
+              <div className="truncate">
+                {conversation?.group?.name || participantsName}
+              </div>
+              <div className="text-muted-foreground text-xs">Last message</div>
+            </div>
+          </div>
+        )}
       </SidebarMenuButton>
     </SidebarMenuItem>
   );

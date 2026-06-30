@@ -11,9 +11,12 @@ export const ConversationPage = () => {
   const conversationId = chatConversationRoute.useParams().conversationId;
   const myUsername = useAuthStore((state) => state.user);
 
-  const { data: conversationData } = useGetConversationById(conversationId ?? "");
-  const { data: conversationMessages, isLoading } =
-    useGetAllMessages(conversationId ?? "");
+  const { data: conversationData } = useGetConversationById(
+    conversationId ?? "",
+  );
+  const { data: conversationMessages, isLoading } = useGetAllMessages(
+    conversationId ?? "",
+  );
 
   if (!conversationId || !myUsername) {
     return null;
@@ -39,7 +42,7 @@ export const ConversationPage = () => {
       />
 
       {/* Spacer for footer */}
-      <div className="h-16" />
+      <div className="h-20" />
       <ConversationFooter conversationId={conversationId} />
     </>
   );
