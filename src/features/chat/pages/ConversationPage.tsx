@@ -33,6 +33,7 @@ export const ConversationPage = () => {
       </div>
     );
   }
+
   return (
     <>
       <ConversationHeader members={members} />
@@ -43,7 +44,10 @@ export const ConversationPage = () => {
 
       {/* Spacer for footer */}
       <div className="h-20" />
-      <ConversationFooter conversationId={conversationId} />
+      <ConversationFooter
+        conversationId={conversationId}
+        conversationType={conversationData?.type}
+      />
     </>
   );
 };

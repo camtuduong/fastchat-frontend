@@ -5,25 +5,22 @@ import {
   AvatarImage,
 } from "@/components/ui/avatar";
 import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
+import { useGetMe } from "@/features/auth/hooks/queries/useGetMe";
 import { conversationTypeToLabel } from "@/features/chat/constant";
 import type { Conversation } from "@/features/chat/types/conversation";
-import { useSocketStore } from "@/stores/useSocketStore";
 import { useNavigate } from "@tanstack/react-router";
 
 type Props = {
   conversation: Conversation;
+  isOnline: boolean;
 };
 
 const Style = {
   content: "flex items-start gap-x-2 min-h-[50px] cursor-pointer",
 };
 
-export const MenuItem = ({ conversation }: Props) => {
-  const onlineUsers = useSocketStore((state) => state.onlineUsers);
-
-  console.log("onlineUsers", onlineUsers);
-
-  console.log("conversation", conversation);
+export const MenuItem = ({ conversation, isOnline }: Props) => {
+  const { data: me } = useGetMe();
   const navigate = useNavigate();
   const isDirectConversation =
     conversation.type === conversationTypeToLabel.direct;
@@ -32,9 +29,11 @@ export const MenuItem = ({ conversation }: Props) => {
     .map((participant) => participant.username)
     .join(", ");
 
-  const isOnline = conversation.participants.some((participant) =>
-    onlineUsers.includes(participant.userId),
+  const friends = conversation.participants.find(
+    (participant) => participant.username !== me?.username,
   );
+
+  const unreadCount = conversation.unreadCount[me?.userId] || 0;
 
   return (
     <SidebarMenuItem>
@@ -46,18 +45,24 @@ export const MenuItem = ({ conversation }: Props) => {
         {isDirectConversation ? (
           <div>
             <Avatar>
+              <AvatarBadge
+                className={`${isOnline ? "bg-green-600 dark:bg-green-800" : "bg-gray-200 dark:bg-gray-600"}`}
+              />
               <AvatarFallback>
                 {conversation?.participants[1]?.username[0].toUpperCase()}
               </AvatarFallback>
-              {isOnline && (
-                <AvatarBadge className="bg-green-600 dark:bg-green-800" />
-              )}
+
+              <AvatarBadge
+                className={`${isOnline ? "bg-green-600 dark:bg-green-800" : "bg-gray-200 dark:bg-gray-600"}`}
+              />
             </Avatar>
             <div className="truncate">
-              <div className="truncate">
-                {conversation?.participants[1]?.username}
+              <div className="truncate">{friends?.username}</div>
+              <div className="text-muted-foreground text-xs">
+                {unreadCount > 0
+                  ? `(${unreadCount} new message${unreadCount > 1 ? "s" : ""})`
+                  : `${conversation?.lastMessage?.content ?? ""}`}
               </div>
-              <div className="text-muted-foreground text-xs">Last message</div>
             </div>
           </div>
         ) : (
@@ -65,18 +70,22 @@ export const MenuItem = ({ conversation }: Props) => {
             <Avatar>
               <AvatarImage
                 src={conversation?.group?.avatarUrl || ""}
-                alt={conversation?.group?.name || "User"}
+                alt={conversation?.group?.name || "Group Avatar"}
               />
               <AvatarFallback>GR</AvatarFallback>
-              {isOnline && (
-                <AvatarBadge className="bg-green-600 dark:bg-green-800" />
-              )}
+              <AvatarBadge
+                className={`${isOnline ? "bg-green-600 dark:bg-green-800" : "bg-gray-200 dark:bg-gray-600"}`}
+              />
             </Avatar>
             <div className="truncate">
               <div className="truncate">
                 {conversation?.group?.name || participantsName}
               </div>
-              <div className="text-muted-foreground text-xs">Last message</div>
+              <div className="text-muted-foreground text-xs">
+                {unreadCount > 0
+                  ? `(${unreadCount} new message${unreadCount > 1 ? "s" : ""})`
+                  : `${conversation?.lastMessage?.content ?? "No messages yet"}`}
+              </div>
             </div>
           </div>
         )}

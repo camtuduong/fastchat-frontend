@@ -8,11 +8,17 @@ import { InputField } from "@/components/form/InputField";
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { useLogin } from "@/features/auth/hooks/useLogin";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 export const SignInPage = () => {
   const { mutateAsync: loginMutation, isPending } = useLogin();
+  const accessToken = useAuthStore((state) => state.accessToken);
 
   const navigate = useNavigate();
+  if (accessToken) {
+    navigate({ to: "/" });
+  }
+
   const form = useForm<SignInData>({
     resolver: zodResolver(signInSchema),
     defaultValues: {

@@ -2,15 +2,21 @@ import { useRef, useState } from "react";
 import Button from "@/components/base/Button";
 import { CustomTextArea } from "@/features/chat/components/TextAreaCustom";
 import { useSendMessageDirect } from "@/features/chat/hooks/useSendMessageDirect";
+import { useSendMessageGroup } from "@/features/chat/hooks/useSendMessageGroup";
 
 type Props = {
   conversationId: string;
+  conversationType?: "direct" | "group";
 };
 
-export const ConversationFooter = ({ conversationId }: Props) => {
+export const ConversationFooter = ({
+  conversationId,
+  conversationType,
+}: Props) => {
   const [message, setMessage] = useState("");
   const isSendingRef = useRef(false);
   const { mutate: sendMessageDirect, isPending } = useSendMessageDirect();
+  const { mutate: sendMessageGroup } = useSendMessageGroup(); // Placeholder for group message sending
 
   const handleSendMessage = () => {
     const content = message.trim();
@@ -20,28 +26,36 @@ export const ConversationFooter = ({ conversationId }: Props) => {
     }
 
     isSendingRef.current = true;
-    sendMessageDirect(
-      {
-        conversationId: conversationId,
-        content,
-        attachments: [],
-      },
-      {
-        onSettled: () => {
-          isSendingRef.current = false;
+    if (conversationType === "direct") {
+      sendMessageDirect(
+        {
+          conversationId: conversationId,
+          content,
+          attachments: [],
         },
-      },
-    );
+        {
+          onSettled: () => {
+            isSendingRef.current = false;
+          },
+        },
+      );
+    } else if (conversationType === "group") {
+      sendMessageGroup(
+        {
+          conversationId: conversationId,
+          content,
+          attachments: [],
+        },
+        {
+          onSettled: () => {
+            isSendingRef.current = false;
+          },
+        },
+      );
+    }
     setMessage(""); // Clear the input after sending
   };
 
-  // Old flow:
-  // Enter -> onKeyDown -> handleSendMessage()
-  // Submit -> onSubmit -> handleSendMessage()
-  //
-  // New flow:
-  // Enter -> onKeyDown -> requestSubmit() -> onSubmit -> handleSendMessage()
-  // Click Send -> onSubmit -> handleSendMessage()
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.nativeEvent.isComposing) {
       return;

@@ -8,7 +8,7 @@ import { Toaster } from "sonner";
 
 export function App() {
   useGetMe();
-  const { accessToken } = useAuthStore();
+  const accessToken = useAuthStore((state) => state.accessToken);
   const { connectSocket, disconnectSocket } = useSocketStore();
 
   useEffect(() => {

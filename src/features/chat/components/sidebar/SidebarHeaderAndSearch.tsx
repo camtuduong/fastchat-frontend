@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SidebarHeader } from "@/components/ui/sidebar";
+import { CreateGroupDialog } from "@/features/chat/components/CreateGroupDialog";
 import { Ellipsis, Search, SquarePen } from "lucide-react";
 
 const sortValue = [
@@ -17,9 +18,13 @@ export const SidebarHeaderAndSearch = () => {
           <Button className="p-1" variant="icon" size="icon">
             <Ellipsis />
           </Button>
-          <Button className="p-1" variant="icon" size="icon">
-            <SquarePen />
-          </Button>
+          <CreateGroupDialog
+            buttonTrigger={
+              <Button className="p-1" variant="icon" size="icon">
+                <SquarePen />
+              </Button>
+            }
+          />
         </div>
       </div>
       <div className="relative">
