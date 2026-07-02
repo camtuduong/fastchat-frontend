@@ -6,6 +6,11 @@ import { useGetAllMessages } from "@/features/chat/hooks/queries/useGetAllMessag
 import { useGetConversationById } from "@/features/chat/hooks/queries/useGetConversationById";
 import { chatConversationRoute } from "@/routes";
 import { useAuthStore } from "@/stores/useAuthStore";
+import {
+  CustomSidebarProvider,
+  CustomSidebarInset,
+} from "@/components/ui/custom-sidebar";
+import { AppCustomSidebar } from "@/features/chat/components/SidebarRight/AppCustomSidebar";
 
 export const ConversationPage = () => {
   const conversationId = chatConversationRoute.useParams().conversationId;
@@ -35,19 +40,22 @@ export const ConversationPage = () => {
   }
 
   return (
-    <>
-      <ConversationHeader members={members} />
-      <ConversationBody
-        conversationMessages={conversationMessages}
-        myUsername={myUsername}
-      />
+    <CustomSidebarProvider>
+      <AppCustomSidebar />
+      <CustomSidebarInset className="min-h-0 flex-1 overflow-hidden">
+        <ConversationHeader members={members} />
+        <ConversationBody
+          conversationMessages={conversationMessages}
+          myUsername={myUsername}
+        />
 
-      {/* Spacer for footer */}
-      <div className="h-20" />
-      <ConversationInputChat
-        conversationId={conversationId}
-        conversationType={conversationData?.type}
-      />
-    </>
+        {/* Spacer for footer */}
+        <div className="h-20" />
+        <ConversationInputChat
+          conversationId={conversationId}
+          conversationType={conversationData?.type}
+        />
+      </CustomSidebarInset>
+    </CustomSidebarProvider>
   );
 };

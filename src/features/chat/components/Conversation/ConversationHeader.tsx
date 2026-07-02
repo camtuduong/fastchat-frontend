@@ -1,11 +1,10 @@
 import { Avatar, AvatarBadge, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { CustomSidebarTrigger } from "@/components/ui/custom-sidebar";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import type { Participant } from "@/features/chat/types/conversation";
 import { useSocketStore } from "@/stores/useSocketStore";
 import { Link } from "@tanstack/react-router";
-import { PanelRight } from "lucide-react";
 
 type Props = {
   members: Participant[] | undefined;
@@ -44,9 +43,7 @@ export const ConversationHeader = ({ members }: Props) => {
       </div>
       {/* Action buttons */}
       <div className="flex gap-2 px-4">
-        <Button>
-          <PanelRight />
-        </Button>
+        <CustomSidebarTrigger className="-ml-1" />
       </div>
     </header>
   );
