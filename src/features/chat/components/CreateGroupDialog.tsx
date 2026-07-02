@@ -52,10 +52,10 @@ export const CreateGroupDialog = ({ buttonTrigger }: Props) => {
         type: "group",
         participants: userIdsSelected,
       });
-      handleOpenChange(false);
     } catch (error) {
       console.error("Failed to create group:", error);
     }
+    handleOpenChange(false);
   };
 
   return (

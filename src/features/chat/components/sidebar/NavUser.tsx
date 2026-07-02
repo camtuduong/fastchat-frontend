@@ -14,6 +14,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { useNavigate } from "@tanstack/react-router";
 import {
   ChevronsUpDownIcon,
   BadgeCheckIcon,
@@ -27,6 +28,7 @@ type Props = {
 };
 
 export const NavUser = ({ username, displayName }: Props) => {
+  const navigate = useNavigate();
   const { isMobile } = useSidebar();
 
   return (
@@ -69,7 +71,7 @@ export const NavUser = ({ username, displayName }: Props) => {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate({ to: `/profile` })}>
                 <BadgeCheckIcon />
                 Account
               </DropdownMenuItem>
