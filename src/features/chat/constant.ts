@@ -7,7 +7,7 @@ import type {
 export const bubbleClass = (position: BubblePosition, isMyMessage: boolean) => {
   switch (position) {
     case "single":
-      return "my-2 rounded-2xl";
+      return "rounded-2xl";
 
     case "first":
       return `${isMyMessage ? "rounded-l-2xl rounded-br-2xl" : "rounded-b-2xl rounded-r-2xl"}`;

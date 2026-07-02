@@ -49,7 +49,7 @@ export const MenuItem = ({ conversation, isOnline }: Props) => {
                 className={`${isOnline ? "bg-green-600 dark:bg-green-800" : "bg-gray-200 dark:bg-gray-600"}`}
               />
               <AvatarFallback>
-                {conversation?.participants[1]?.username[0].toUpperCase()}
+                {friends?.username[0].toUpperCase()}
               </AvatarFallback>
 
               <AvatarBadge

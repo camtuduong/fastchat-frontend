@@ -1,6 +1,6 @@
 import { Spinner } from "@/components/ui/spinner";
 import { ConversationBody } from "@/features/chat/components/Conversation/ConversationBody";
-import { ConversationFooter } from "@/features/chat/components/Conversation/ConversationFooter";
+import { ConversationInputChat } from "@/features/chat/components/Conversation/ConversationInputChat";
 import { ConversationHeader } from "@/features/chat/components/Conversation/ConversationHeader";
 import { useGetAllMessages } from "@/features/chat/hooks/queries/useGetAllMessages";
 import { useGetConversationById } from "@/features/chat/hooks/queries/useGetConversationById";
@@ -44,7 +44,7 @@ export const ConversationPage = () => {
 
       {/* Spacer for footer */}
       <div className="h-20" />
-      <ConversationFooter
+      <ConversationInputChat
         conversationId={conversationId}
         conversationType={conversationData?.type}
       />

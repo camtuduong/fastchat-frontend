@@ -11,7 +11,7 @@ export const MessageBubble = ({ message, isMyMessage }: Props) => {
   return (
     <div
       className={cn(
-        "flex w-full items-end gap-4 p-px",
+        "flex w-full items-end gap-4",
         isMyMessage ? "justify-end" : "justify-start",
       )}
     >
@@ -28,14 +28,14 @@ export const MessageBubble = ({ message, isMyMessage }: Props) => {
 
       <div
         className={cn(
-          "max-w-[70%] min-w-0 p-4",
+          "max-w-[70%] min-w-0 p-2",
           "wrap-break-word whitespace-pre-wrap",
-          "flex flex-col gap-1",
+          "flex flex-col gap-10",
           bubbleClass(message.position, isMyMessage),
           isMyMessage ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-700",
         )}
       >
-        <div className="wrap-anywhere">{message.content}</div>
+        <div className="text-sm wrap-anywhere">{message.content}</div>
       </div>
     </div>
   );

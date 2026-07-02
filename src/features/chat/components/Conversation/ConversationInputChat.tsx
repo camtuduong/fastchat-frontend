@@ -9,7 +9,7 @@ type Props = {
   conversationType?: "direct" | "group";
 };
 
-export const ConversationFooter = ({
+export const ConversationInputChat = ({
   conversationId,
   conversationType,
 }: Props) => {
