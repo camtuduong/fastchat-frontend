@@ -19,5 +19,5 @@ export const useGetMe = () => {
         .setUser(data.user.username, data.user.displayName || null);
     }
   }, [data]);
-  return { data, error, isLoading };
+  return { data: data?.user, error, isLoading };
 };

@@ -5,6 +5,7 @@ import type { SocketState } from "@/types/store";
 import { queryClient } from "@/lib/queryClient";
 import type { GetAllMessagesResponse } from "@/features/chat/api/getAllMessages";
 import type { Conversation } from "@/features/chat/types/conversation";
+import type { InfiniteData } from "@tanstack/react-query";
 
 const baseUrl = import.meta.env.VITE_SOCKET_URL;
 
@@ -47,21 +48,25 @@ export const useSocketStore = create<SocketState>((set, get) => ({
       const conversationId = conversation._id.toString();
 
       // Append new message vào cache của conversation đang mở
-      queryClient.setQueryData(
-        ["messages", conversationId],
-        (oldData: GetAllMessagesResponse | undefined) => {
-          if (!oldData) return oldData;
-          return {
-            ...oldData,
-            messages: [message, ...oldData.messages],
-          };
-        },
-      );
+      queryClient.setQueryData<
+        InfiniteData<GetAllMessagesResponse, string | null>
+      >(["messages", conversationId], (oldData) => {
+        if (!oldData) return oldData;
+
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page, index) =>
+            index === 0
+              ? { ...page, messages: [message, ...page.messages] }
+              : page,
+          ),
+        };
+      });
 
       // Cập nhật lastMessage + unreadCount trong danh sách conversations
-      queryClient.setQueriesData(
+      queryClient.setQueriesData<{ conversations: Conversation[] }>(
         { queryKey: ["getAllConversations"] },
-        (oldData: { conversations: Conversation[] } | undefined) => {
+        (oldData) => {
           if (!oldData) return oldData;
           return {
             ...oldData,

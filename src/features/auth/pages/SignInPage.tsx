@@ -15,8 +15,8 @@ export const SignInPage = () => {
   const accessToken = useAuthStore((state) => state.accessToken);
 
   const navigate = useNavigate();
-  if (accessToken) {
-    navigate({ to: "/" });
+  if (!accessToken) {
+    navigate({ to: "/login" });
   }
 
   const form = useForm<SignInData>({
@@ -39,7 +39,7 @@ export const SignInPage = () => {
         username: data.username,
         password: data.password,
       });
-      navigate({ to: "/" });
+      navigate({ to: "/chat" });
     } catch (error) {
       toast.error(
         "Failed to sign in. Please check your credentials and try again.",

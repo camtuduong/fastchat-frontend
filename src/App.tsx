@@ -23,7 +23,7 @@ export function App() {
 
   return (
     <ThemeProvider defaultTheme="system" storageKey="theme">
-      <div id="app">
+      <div id="app" className="flex min-h-full flex-col">
         <Outlet />
         <Toaster position="top-right" richColors />
       </div>

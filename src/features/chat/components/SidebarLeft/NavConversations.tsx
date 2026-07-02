@@ -1,4 +1,4 @@
-import { MenuItem } from "@/features/chat/components/sidebar/MenuItem";
+import { MenuItem } from "@/features/chat/components/SidebarLeft/MenuItem";
 import { conversationTypeToLabel } from "@/features/chat/constant";
 import { SidebarChildLayout } from "@/features/chat/layouts/SidebarChildLayout";
 import type { Conversation } from "@/features/chat/types/conversation";

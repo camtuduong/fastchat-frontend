@@ -3,12 +3,12 @@ import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useNavigate } from "@tanstack/react-router";
 
 export const HomePage = () => {
-  const { mutate: logout } = useLogout();
+  const { mutateAsync: logout } = useLogout();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     try {
-      logout();
+      await logout();
       navigate({ to: "/login" });
     } catch (error) {
       console.error("Error logging out:", error);
