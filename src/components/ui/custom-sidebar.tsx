@@ -20,9 +20,9 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { PanelRight } from "lucide-react";
+import { Info } from "lucide-react";
 
-const SIDEBAR_COOKIE_NAME = "sidebar_state";
+const SIDEBAR_COOKIE_NAME = "sidebar_state_info";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
 const SIDEBAR_WIDTH = "20rem";
 const SIDEBAR_WIDTH_MOBILE = "18rem";
@@ -55,7 +55,7 @@ function useCustomSidebar() {
 }
 
 function CustomSidebarProvider({
-  defaultOpen = true,
+  defaultOpen = false,
   open: openProp,
   onOpenChange: setOpenProp,
   className,
@@ -243,7 +243,7 @@ function CustomSidebar({
         <div
           data-sidebar="sidebar"
           data-slot="sidebar-inner"
-          className="bg-sidebar group-data-[variant=floating]:ring-sidebar-border flex size-full flex-col group-data-[variant=floating]:rounded-r-lg group-data-[variant=floating]:shadow-sm group-data-[variant=floating]:ring-1"
+          className="bg-sidebar group-data-[variant=floating]:ring-sidebar-border flex size-full flex-col group-data-[variant=floating]:rounded-r-lg group-data-[variant=floating]:shadow-sm"
         >
           {children}
         </div>
@@ -272,8 +272,8 @@ function CustomSidebarTrigger({
       }}
       {...props}
     >
-      <PanelRight />
-      <span className="sr-only">Toggle Sidebar</span>
+      <Info />
+      <span className="sr-only">Toggle Right Sidebar</span>
     </Button>
   );
 }
@@ -314,7 +314,7 @@ function CustomSidebarInset({
     <main
       data-slot="sidebar-inset"
       className={cn(
-        "bg-background relative flex min-h-0 w-full flex-1 flex-col md:peer-data-[variant=inset]:mx-2 md:peer-data-[variant=inset]:my-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-sm md:peer-data-[variant=inset]:ml-0 md:peer-data-[side=right]:peer-data-[variant=inset]:mr-0 md:peer-data-[side=left]:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2 md:peer-data-[side=right]:peer-data-[variant=inset]:peer-data-[state=collapsed]:mr-2",
+        "bg-background relative flex min-h-0 w-full flex-1 flex-col md:peer-data-[variant=inset]:mx-2 md:peer-data-[variant=inset]:my-0 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-sm md:peer-data-[side=right]:peer-data-[variant=inset]:mr-0 md:peer-data-[side=left]:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2 md:peer-data-[side=right]:peer-data-[variant=inset]:peer-data-[state=collapsed]:mr-2",
         className,
       )}
       {...props}
