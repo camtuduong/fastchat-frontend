@@ -1,4 +1,4 @@
-import { AppSidebar } from "@/features/chat/components/AppSidebar";
+import { AppSidebar } from "@/features/chat/components/SidebarLeft/AppSidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { useGetAllConversations } from "@/features/chat/hooks/queries/useGetAllConversations";
 import { useConversationStore } from "@/stores/useConversationStore";
@@ -19,7 +19,7 @@ export function ChatPage() {
   return (
     <SidebarProvider>
       <AppSidebar conversationsData={conversationsData} />
-      <SidebarInset className="flex-1 overflow-hidden">
+      <SidebarInset className="min-h-0 flex-1 overflow-hidden">
         <Outlet />
       </SidebarInset>
     </SidebarProvider>
