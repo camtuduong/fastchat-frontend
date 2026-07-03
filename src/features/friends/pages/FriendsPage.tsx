@@ -3,7 +3,7 @@ import { SidebarInset } from "@/components/ui/sidebar";
 import { useGetAllConversations } from "@/features/chat/hooks/queries/useGetAllConversations";
 import { Outlet } from "@tanstack/react-router";
 
-export function ChatPage() {
+export function FriendsPage() {
   const { data: conversationsData } = useGetAllConversations({ cursor: "" });
 
   return (

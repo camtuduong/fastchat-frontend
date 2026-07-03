@@ -2,37 +2,37 @@ interface Conversation {
   _id: string;
   participants: Participant[];
   __v: number;
-  lastMessage: Message;
+  lastMessage: LastMessage;
   seenBy: string[];
   type: ConversationType;
   unreadCount: {
     [userId: string]: number;
   };
   group: Group;
-  lastMessageAt: Date;
-  createdAt: Date;
-  updatedAt: Date;
+  lastMessageAt: string;
+  createdAt: string;
+  updatedAt: string;
 }
 interface Participant {
   userId: string;
   username: string;
-  joinedAt: Date;
+  joinedAt: string;
 }
 
 interface Group {
   name: string;
   avatarUrl: string;
-  createdAt: Date;
+  createdAt: string;
   createdBy: string;
 }
 
-interface Message {
+interface LastMessage {
   _id: string;
   senderId: string;
   content: string;
-  createdAt: Date;
+  createdAt: string;
 }
 
 type ConversationType = "direct" | "group";
 
-export type { Conversation, Participant, Message, Group, ConversationType };
+export type { Conversation, Participant, LastMessage, Group, ConversationType };

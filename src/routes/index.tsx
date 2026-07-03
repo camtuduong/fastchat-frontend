@@ -1,11 +1,13 @@
 import { App } from "@/App";
 import SignUpPage from "@/features/auth/pages/SignUpPage";
+import { FriendsPage } from "@/features/friends/pages/FriendsPage";
 import { ProfilePage } from "@/features/profile/pages/ProfilePage";
 import { useAuthStore } from "@/stores/useAuthStore";
 import {
   createRootRoute,
   createRoute,
   createRouter,
+  Outlet,
   redirect,
 } from "@tanstack/react-router";
 import { redirectIfUnauthenticated } from "@/utils/guards";
@@ -13,13 +15,21 @@ import { HomePage } from "@/features/home/pages/HomePage";
 import { ChatPage } from "@/features/chat/pages/ChatPage";
 import { SignInPage } from "@/features/auth/pages/SignInPage";
 import { EmptyChatPage } from "@/features/chat/pages/EmptyChatPage";
+import { EmptyFriendPage } from "@/features/friends/pages/EmptyFriend";
 import { ConversationPage } from "@/features/chat/pages/ConversationPage";
 
-const rootRoute = createRootRoute({
+export const rootRoute = createRootRoute({
   component: App,
 });
 
-const homeRoute = createRoute({
+const appLayoutRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  id: "app-layout",
+  beforeLoad: redirectIfUnauthenticated,
+  component: () => <Outlet />,
+});
+
+export const homeRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
   beforeLoad: redirectIfUnauthenticated,
@@ -69,9 +79,23 @@ const profileRoute = createRoute({
   component: ProfilePage,
 });
 
+//friends
+const friendsRoute = createRoute({
+  getParentRoute: () => appLayoutRoute,
+  path: "friends",
+  beforeLoad: redirectIfUnauthenticated,
+  component: FriendsPage,
+});
+
+const friendIndexRoute = createRoute({
+  getParentRoute: () => friendsRoute,
+  path: "/",
+  component: EmptyFriendPage,
+});
+
 //chat
 const chatRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => appLayoutRoute,
   path: "chat",
   beforeLoad: redirectIfUnauthenticated,
   component: ChatPage,
@@ -80,19 +104,6 @@ const chatRoute = createRoute({
 const chatIndexRoute = createRoute({
   getParentRoute: () => chatRoute,
   path: "/",
-  // loader: async () => {
-  //   const data = await getAllConversations("");
-  //   const first = data.conversations?.[0];
-
-  //   if (first) {
-  //     throw redirect({
-  //       to: "/chat/$conversationId",
-  //       params: { conversationId: first._id },
-  //     });
-  //   }
-
-  //   return { conversations: [] };
-  // },
   component: EmptyChatPage,
 });
 
@@ -108,9 +119,10 @@ const routeTree = rootRoute.addChildren([
   signInRedirectRoute,
   signUpRoute,
   profileRoute,
-  chatRoute,
-  chatIndexRoute,
-  chatConversationRoute,
+  appLayoutRoute.addChildren([
+    chatRoute.addChildren([chatIndexRoute, chatConversationRoute]),
+    friendsRoute.addChildren([friendIndexRoute]),
+  ]),
 ]);
 
 export const router = createRouter({

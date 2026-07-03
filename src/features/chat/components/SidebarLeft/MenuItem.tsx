@@ -6,7 +6,8 @@ import {
 } from "@/components/ui/avatar";
 import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { useGetMe } from "@/features/auth/hooks/queries/useGetMe";
-import { conversationTypeToLabel } from "@/features/chat/constant";
+import { LastMessageItem } from "@/features/chat/components/SidebarLeft/LastMessageItem";
+import { conversationTypeToLabel, timeAgo } from "@/features/chat/constant";
 import type { Conversation } from "@/features/chat/types/conversation";
 import { useNavigate } from "@tanstack/react-router";
 
@@ -35,6 +36,9 @@ export const MenuItem = ({ conversation, isOnline }: Props) => {
 
   const unreadCount = conversation.unreadCount[me?.userId] || 0;
 
+  const isLastMessageFromMe = conversation.lastMessage?.senderId === me?._id;
+  const lastMessageTimeAgo = timeAgo(conversation?.lastMessageAt || "");
+
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
@@ -43,8 +47,8 @@ export const MenuItem = ({ conversation, isOnline }: Props) => {
         asChild
       >
         {isDirectConversation ? (
-          <div>
-            <Avatar>
+          <div className="flex items-center gap-x-2">
+            <Avatar className="shrink-0">
               <AvatarBadge
                 className={`${isOnline ? "bg-green-600 dark:bg-green-800" : "bg-gray-200 dark:bg-gray-600"}`}
               />
@@ -56,18 +60,23 @@ export const MenuItem = ({ conversation, isOnline }: Props) => {
                 className={`${isOnline ? "bg-green-600 dark:bg-green-800" : "bg-gray-200 dark:bg-gray-600"}`}
               />
             </Avatar>
-            <div className="truncate">
-              <div className="truncate">{friends?.username}</div>
-              <div className="text-muted-foreground text-xs">
-                {unreadCount > 0
-                  ? `(${unreadCount} new message${unreadCount > 1 ? "s" : ""})`
-                  : `${conversation?.lastMessage?.content ?? ""}`}
+            <div className="flex-1 truncate">
+              <div className="flex items-center justify-between">
+                <div className="truncate">{friends?.username}</div>
+                <span className="text-muted-foreground text-xs">
+                  {lastMessageTimeAgo}
+                </span>
               </div>
+              <LastMessageItem
+                unreadCount={unreadCount}
+                LastMessage={conversation?.lastMessage}
+                isLastMessageFromMe={isLastMessageFromMe}
+              />
             </div>
           </div>
         ) : (
-          <div>
-            <Avatar>
+          <div className="flex items-center gap-x-2">
+            <Avatar className="shrink-0">
               <AvatarImage
                 src={conversation?.group?.avatarUrl || ""}
                 alt={conversation?.group?.name || "Group Avatar"}
@@ -77,15 +86,20 @@ export const MenuItem = ({ conversation, isOnline }: Props) => {
                 className={`${isOnline ? "bg-green-600 dark:bg-green-800" : "bg-gray-200 dark:bg-gray-600"}`}
               />
             </Avatar>
-            <div className="truncate">
-              <div className="truncate">
-                {conversation?.group?.name || participantsName}
+            <div className="flex-1 truncate">
+              <div className="flex items-center justify-between">
+                <div className="truncate">
+                  {conversation?.group?.name || participantsName}
+                </div>
+                <span className="text-muted-foreground text-xs">
+                  {lastMessageTimeAgo}
+                </span>
               </div>
-              <div className="text-muted-foreground text-xs">
-                {unreadCount > 0
-                  ? `(${unreadCount} new message${unreadCount > 1 ? "s" : ""})`
-                  : `${conversation?.lastMessage?.content ?? "No messages yet"}`}
-              </div>
+              <LastMessageItem
+                unreadCount={unreadCount}
+                LastMessage={conversation?.lastMessage}
+                isLastMessageFromMe={isLastMessageFromMe}
+              />
             </div>
           </div>
         )}

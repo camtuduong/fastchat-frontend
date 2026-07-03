@@ -30,3 +30,17 @@ export const getMembers = (conversationData: Conversation, userId: string) => {
     .map((participant) => participant)
     .filter((participant) => participant.userId !== userId);
 };
+
+export const timeAgo = (date: string) => {
+  const diffMs = Date.now() - new Date(date).getTime();
+  const minutes = Math.floor(diffMs / 60000);
+  const hours = Math.floor(diffMs / 3600000);
+  const days = Math.floor(diffMs / 86400000);
+
+  if (diffMs < 60000) return "Vừa xong";
+  if (minutes < 60) return `${minutes} phút trước`;
+  if (hours < 24) return `${hours} giờ trước`;
+  if (days < 7) return `${days} ngày trước`;
+
+  return new Date(date).toLocaleDateString("vi-VN");
+};
