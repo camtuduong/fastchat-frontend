@@ -31,6 +31,12 @@ const homeRoute = createRoute({
 const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "login",
+  beforeLoad: () => {
+    const { accessToken } = useAuthStore.getState();
+    if (accessToken) {
+      throw redirect({ to: "/" });
+    }
+  },
   component: SignInPage,
 });
 
