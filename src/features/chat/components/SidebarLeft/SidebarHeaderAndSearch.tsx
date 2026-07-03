@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SidebarHeader } from "@/components/ui/sidebar";
 import { CreateGroupDialog } from "@/features/chat/components/CreateGroupDialog";
-import { Ellipsis, Search, SquarePen } from "lucide-react";
+import { Search, SquarePen } from "lucide-react";
 
 const sortValue = [
   { value: "all", label: "All" },
@@ -15,9 +15,9 @@ export const SidebarHeaderAndSearch = () => {
       <div className="mb-4 flex items-center justify-between gap-2">
         <div className="text-lg font-semibold">Chats with Friends</div>
         <div className="flex gap-1">
-          <Button className="p-1" variant="icon" size="icon">
+          {/* <Button className="p-1" variant="icon" size="icon">
             <Ellipsis />
-          </Button>
+          </Button> */}
           <CreateGroupDialog
             buttonTrigger={
               <Button className="p-1" variant="icon" size="icon">

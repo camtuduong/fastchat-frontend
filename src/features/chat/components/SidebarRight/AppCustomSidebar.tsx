@@ -7,7 +7,7 @@ import {
   CustomSidebarContent,
 } from "@/components/ui/custom-sidebar";
 
-import { LeftSidebarHeader } from "@/features/chat/components/SidebarRight/LeftSidebarHeader";
+import { RightSidebarHeader } from "@/features/chat/components/SidebarRight/RightSidebarHeader";
 
 const data = {
   user: {
@@ -22,15 +22,7 @@ const data = {
       isActive: true,
       items: [
         {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
+          title: "View pinned messages",
           url: "#",
         },
       ],
@@ -40,15 +32,15 @@ const data = {
       url: "#",
       items: [
         {
-          title: "Genesis",
+          title: "Change theme",
           url: "#",
         },
         {
-          title: "Explorer",
+          title: "Change emoji",
           url: "#",
         },
         {
-          title: "Quantum",
+          title: "Edit nicknames",
           url: "#",
         },
       ],
@@ -81,19 +73,15 @@ const data = {
 
       items: [
         {
-          title: "General",
+          title: "Media",
           url: "#",
         },
         {
-          title: "Team",
+          title: "Files",
           url: "#",
         },
         {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
+          title: "Links",
           url: "#",
         },
       ],
@@ -101,22 +89,17 @@ const data = {
     {
       title: "Private & support",
       url: "#",
-
       items: [
         {
-          title: "General",
+          title: "Chat notifications",
           url: "#",
         },
         {
-          title: "Team",
+          title: "Report",
           url: "#",
         },
         {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
+          title: "Leave group",
           url: "#",
         },
       ],
@@ -130,7 +113,7 @@ export function AppCustomSidebar({
   return (
     <CustomSidebar variant="floating" {...props}>
       {/* Header */}
-      <LeftSidebarHeader />
+      <RightSidebarHeader />
       {/* Content */}
       <CustomSidebarContent>
         <NavMain items={data.navMain} />

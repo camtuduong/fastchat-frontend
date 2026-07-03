@@ -1,9 +1,15 @@
-import { Avatar, AvatarBadge, AvatarFallback } from "@/components/ui/avatar";
+import {
+  Avatar,
+  AvatarBadge,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar";
 import { CustomSidebarTrigger } from "@/components/ui/custom-sidebar";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import type { Participant } from "@/features/chat/types/conversation";
 import { useSocketStore } from "@/stores/useSocketStore";
+import { useGetUserById } from "@/features/chat/hooks/queries/useGetUserById";
 import { Link } from "@tanstack/react-router";
 
 type Props = {
@@ -15,6 +21,8 @@ export const ConversationHeader = ({ members }: Props) => {
   const isOnline = members?.some((member) =>
     onlineUsers.includes(member.username),
   );
+  const { data: userById } = useGetUserById(members?.[0]?.userId || "");
+
   return (
     <header className="flex h-16 w-full shrink-0 items-center justify-between gap-2 border-b">
       <div className="flex gap-2 px-4">
@@ -27,6 +35,11 @@ export const ConversationHeader = ({ members }: Props) => {
         </div>
         <div className="flex items-center gap-2">
           <Avatar>
+            <AvatarImage
+              src={userById?.avatarUrl}
+              alt="@shadcn"
+              className="grayscale"
+            />
             <AvatarFallback>
               {members
                 ?.map((member) => member.username[0].toUpperCase())

@@ -29,10 +29,16 @@ export function App() {
         <div
           className={`${accessToken ? "flex h-full w-full flex-1 overflow-hidden bg-[#F9F9F9]" : ""}`}
         >
-          {accessToken && <NavbarHeader />}
-          <SidebarProvider>
+          {accessToken ? (
+            <>
+              <NavbarHeader />
+              <SidebarProvider>
+                <Outlet />
+              </SidebarProvider>
+            </>
+          ) : (
             <Outlet />
-          </SidebarProvider>
+          )}
           <Toaster position="top-right" richColors />
         </div>
       </div>

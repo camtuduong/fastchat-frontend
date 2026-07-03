@@ -1,4 +1,5 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useGetUserById } from "@/features/chat/hooks/queries/useGetUserById";
 import { bubbleClass } from "@/features/chat/constant";
 import type { MessageUI } from "@/features/chat/types/bubbleChat";
 import { cn } from "@/lib/utils";
@@ -8,6 +9,7 @@ type Props = {
   isMyMessage: boolean;
 };
 export const MessageBubble = ({ message, isMyMessage }: Props) => {
+  const { data: userById } = useGetUserById(message.sender.userId || "");
   return (
     <div
       className={cn(
@@ -21,6 +23,11 @@ export const MessageBubble = ({ message, isMyMessage }: Props) => {
           message.showAvatar && !isMyMessage ? "opacity-100" : "opacity-0",
         )}
       >
+        <AvatarImage
+          src={userById?.avatarUrl}
+          alt="@shadcn"
+          className="grayscale"
+        />
         <AvatarFallback>
           {message.sender.username[0].toUpperCase()}
         </AvatarFallback>

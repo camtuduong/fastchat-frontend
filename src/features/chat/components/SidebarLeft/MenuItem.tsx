@@ -8,6 +8,7 @@ import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { useGetMe } from "@/features/auth/hooks/queries/useGetMe";
 import { LastMessageItem } from "@/features/chat/components/SidebarLeft/LastMessageItem";
 import { conversationTypeToLabel, timeAgo } from "@/features/chat/constant";
+import { useGetUserById } from "@/features/chat/hooks/queries/useGetUserById";
 import type { Conversation } from "@/features/chat/types/conversation";
 import { useNavigate } from "@tanstack/react-router";
 
@@ -33,6 +34,7 @@ export const MenuItem = ({ conversation, isOnline }: Props) => {
   const friends = conversation.participants.find(
     (participant) => participant.username !== me?.username,
   );
+  const { data: userById } = useGetUserById(friends?.userId || "");
 
   const unreadCount = conversation.unreadCount[me?.userId] || 0;
 
@@ -49,13 +51,14 @@ export const MenuItem = ({ conversation, isOnline }: Props) => {
         {isDirectConversation ? (
           <div className="flex items-center gap-x-2">
             <Avatar className="shrink-0">
-              <AvatarBadge
-                className={`${isOnline ? "bg-green-600 dark:bg-green-800" : "bg-gray-200 dark:bg-gray-600"}`}
+              <AvatarImage
+                src={userById?.avatarUrl}
+                alt="@shadcn"
+                className="grayscale"
               />
               <AvatarFallback>
                 {friends?.username[0].toUpperCase()}
               </AvatarFallback>
-
               <AvatarBadge
                 className={`${isOnline ? "bg-green-600 dark:bg-green-800" : "bg-gray-200 dark:bg-gray-600"}`}
               />

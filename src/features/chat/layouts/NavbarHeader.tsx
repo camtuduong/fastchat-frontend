@@ -1,9 +1,10 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FooterNavbar } from "@/features/chat/layouts/FooterNavbar";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 
-import { MessageCircleMore, BookUser } from "lucide-react";
+import { MessageCircleMore, BookUser, User } from "lucide-react";
+import { useGetMe } from "@/features/auth/hooks/queries/useGetMe";
 
 export const Style = {
   button: cn(
@@ -12,6 +13,7 @@ export const Style = {
 };
 
 export const NavbarHeader = () => {
+  const { data: me } = useGetMe();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const navigate = useNavigate();
 
@@ -22,26 +24,27 @@ export const NavbarHeader = () => {
     <div className="z-100 flex w-16 flex-col items-center bg-blue-500 px-2 py-4">
       <div className="flex flex-col items-center gap-4">
         <Avatar size="lg">
-          <AvatarFallback>hi</AvatarFallback>
+          <AvatarImage
+            src={me?.avatarUrl}
+            alt="@shadcn"
+            className="grayscale"
+          />
+          <AvatarFallback>
+            {me?.username[0].toUpperCase() || <User />}
+          </AvatarFallback>
         </Avatar>
 
         <div className="flex flex-col gap-2">
           <button
             onClick={() => navigate({ to: "/chat" })}
-            className={cn(
-              Style.button,
-              isChat ? "bg-blue-600 text-white" : "text-gray-400",
-            )}
+            className={cn(Style.button, isChat ? "bg-blue-600" : "")}
           >
             <MessageCircleMore />
           </button>
 
           <button
             onClick={() => navigate({ to: "/friends" })}
-            className={cn(
-              Style.button,
-              isFriends ? "bg-blue-600 text-white" : "text-gray-400",
-            )}
+            className={cn(Style.button, isFriends ? "bg-blue-600" : "")}
           >
             <BookUser />
           </button>

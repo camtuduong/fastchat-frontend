@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { BellRing, Search } from "lucide-react";
 
-export const LeftSidebarHeader = () => {
+export const RightSidebarHeader = () => {
   return (
     <div className="flex w-full shrink-0 flex-col items-center justify-center gap-2 px-4 py-4">
       <Avatar className="mt-2 h-18 w-18">
