@@ -10,7 +10,8 @@ export const useAuthStore = create<AuthState>()(
       displayName: null,
       isLoading: false,
 
-      clearAuth: () => set({ accessToken: null, user: null }),
+      clearAuth: () =>
+        set({ accessToken: null, user: null, displayName: null }),
       setUser: (user, displayName) => set({ user, displayName }),
     }),
     {
