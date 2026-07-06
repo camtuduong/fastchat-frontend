@@ -9,7 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import type { Participant } from "@/features/chat/types/conversation";
 import { useSocketStore } from "@/stores/useSocketStore";
-import { useGetUserById } from "@/features/chat/hooks/queries/useGetUserById";
+import { useGetUserById } from "@/features/main/hooks/queries/useGetUserById";
 import { Link } from "@tanstack/react-router";
 
 type Props = {

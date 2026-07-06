@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { SearchUser } from "@/features/chat/components/SearchUser";
 import type { User } from "@/features/chat/types/searchUser";
-import { useGetUserBySearch } from "@/features/chat/hooks/queries/useGetUserBySearch";
+import { useGetUserBySearch } from "@/features/main/hooks/queries/useGetUserBySearch";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useState, type ReactNode } from "react";
 import { useCreateNewConversation } from "@/features/chat/hooks/useCreateNewConversation";

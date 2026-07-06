@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useGetUserById } from "@/features/chat/hooks/queries/useGetUserById";
+import { useGetUserById } from "@/features/main/hooks/queries/useGetUserById";
 import { bubbleClass } from "@/features/chat/constant";
 import type { MessageUI } from "@/features/chat/types/bubbleChat";
 import { cn } from "@/lib/utils";

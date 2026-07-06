@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getUserById } from "@/features/chat/api/getUserById";
+import { getUserById } from "@/features/main/api/getUserById";
 
 export const useGetUserById = (userId: string) => {
   const { data, isLoading, error } = useQuery({

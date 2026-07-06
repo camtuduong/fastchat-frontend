@@ -1,7 +1,6 @@
 import { App } from "@/App";
 import SignUpPage from "@/features/auth/pages/SignUpPage";
 import { FriendsPage } from "@/features/friends/pages/FriendsPage";
-import { ProfilePage } from "@/features/profile/pages/ProfilePage";
 import { useAuthStore } from "@/stores/useAuthStore";
 import {
   createRootRoute,
@@ -11,7 +10,6 @@ import {
   redirect,
 } from "@tanstack/react-router";
 import { redirectIfUnauthenticated } from "@/utils/guards";
-import { HomePage } from "@/features/home/pages/HomePage";
 import { ChatPage } from "@/features/chat/pages/ChatPage";
 import { SignInPage } from "@/features/auth/pages/SignInPage";
 import { EmptyChatPage } from "@/features/chat/pages/EmptyChatPage";
@@ -32,8 +30,16 @@ const appLayoutRoute = createRoute({
 export const homeRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
-  beforeLoad: redirectIfUnauthenticated,
-  component: HomePage,
+  beforeLoad: () => {
+    const { accessToken } = useAuthStore.getState();
+
+    if (accessToken) {
+      throw redirect({ to: "/chat" });
+    } else {
+      throw redirect({ to: "/login" });
+    }
+  },
+  component: () => null,
 });
 
 //auth
@@ -69,14 +75,6 @@ const signUpRoute = createRoute({
     }
   },
   component: SignUpPage,
-});
-
-//user profile
-const profileRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "profile",
-  beforeLoad: redirectIfUnauthenticated,
-  component: ProfilePage,
 });
 
 //friends
@@ -118,7 +116,6 @@ const routeTree = rootRoute.addChildren([
   loginRoute,
   signInRedirectRoute,
   signUpRoute,
-  profileRoute,
   appLayoutRoute.addChildren([
     chatRoute.addChildren([chatIndexRoute, chatConversationRoute]),
     friendsRoute.addChildren([friendIndexRoute]),

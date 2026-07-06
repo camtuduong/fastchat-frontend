@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useLogout } from "@/features/auth/hooks/useLogout";
-import { Style } from "@/features/chat/layouts/NavbarHeader";
+import { Style } from "@/features/main/layouts/NavbarHeader";
 import { useNavigate } from "@tanstack/react-router";
 import {
   SettingsIcon,

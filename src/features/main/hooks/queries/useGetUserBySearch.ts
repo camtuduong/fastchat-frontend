@@ -1,4 +1,4 @@
-import { getUserBySearch } from "@/features/chat/api/getUserBySearch";
+import { getUserBySearch } from "@/features/main/api/getUserBySearch";
 import { useQuery } from "@tanstack/react-query";
 
 type props = {

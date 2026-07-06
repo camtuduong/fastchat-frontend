@@ -8,7 +8,7 @@ import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { useGetMe } from "@/features/auth/hooks/queries/useGetMe";
 import { LastMessageItem } from "@/features/chat/components/SidebarLeft/LastMessageItem";
 import { conversationTypeToLabel, timeAgo } from "@/features/chat/constant";
-import { useGetUserById } from "@/features/chat/hooks/queries/useGetUserById";
+import { useGetUserById } from "@/features/main/hooks/queries/useGetUserById";
 import type { Conversation } from "@/features/chat/types/conversation";
 import { useNavigate } from "@tanstack/react-router";
 
@@ -28,6 +28,7 @@ export const MenuItem = ({ conversation, isOnline }: Props) => {
     conversation.type === conversationTypeToLabel.direct;
 
   const participantsName = conversation.participants
+    .filter((participant) => participant.username !== me?.username)
     .map((participant) => participant.username)
     .join(", ");
 
