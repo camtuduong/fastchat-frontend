@@ -7,6 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useLogout } from "@/features/auth/hooks/useLogout";
+import { ProfileDialog } from "@/features/main/components/ProfileDialog";
 import { Style } from "@/features/main/layouts/NavbarHeader";
 import { useNavigate } from "@tanstack/react-router";
 import {
@@ -17,10 +18,12 @@ import {
   BellIcon,
   LogOutIcon,
 } from "lucide-react";
+import { useState } from "react";
 
 export const FooterNavbar = () => {
   const navigate = useNavigate();
   const { mutateAsync: logout } = useLogout();
+  const [profileOpen, setProfileOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -45,7 +48,11 @@ export const FooterNavbar = () => {
           sideOffset={4}
         >
           <DropdownMenuGroup>
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={() => {
+                setProfileOpen(true);
+              }}
+            >
               <SparklesIcon />
               Thông tin tài khoản
             </DropdownMenuItem>
@@ -72,6 +79,7 @@ export const FooterNavbar = () => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      <ProfileDialog open={profileOpen} onOpenChange={setProfileOpen} />
     </div>
   );
 };
