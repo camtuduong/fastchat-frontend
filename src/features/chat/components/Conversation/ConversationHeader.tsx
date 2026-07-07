@@ -10,7 +10,6 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import type { Participant } from "@/features/chat/types/conversation";
 import { useSocketStore } from "@/stores/useSocketStore";
 import { useGetUserById } from "@/features/main/hooks/queries/useGetUserById";
-import { Link } from "@tanstack/react-router";
 
 type Props = {
   members: Participant[] | undefined;
@@ -49,9 +48,9 @@ export const ConversationHeader = ({ members }: Props) => {
               className={`${isOnline ? "bg-green-600 dark:bg-green-800" : "bg-gray-200 dark:bg-gray-600"}`}
             />
           </Avatar>
-          <Link to="/profile" className="truncate">
+          <span className="truncate">
             {members?.map((member) => member.username).join(", ")}
-          </Link>
+          </span>
         </div>
       </div>
       {/* Action buttons */}
