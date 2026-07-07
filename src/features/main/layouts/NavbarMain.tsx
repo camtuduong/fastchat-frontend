@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 
 import { MessageCircleMore, BookUser, User } from "lucide-react";
 import { useGetMe } from "@/features/auth/hooks/queries/useGetMe";
+import { useState } from "react";
+import { ProfileDialog } from "@/features/main/components/ProfileDialog";
 
 export const Style = {
   button: cn(
@@ -14,6 +16,8 @@ export const Style = {
 
 export const NavbarHeader = () => {
   const { data: me } = useGetMe();
+  const [profileOpen, setProfileOpen] = useState(false);
+
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const navigate = useNavigate();
 
@@ -23,12 +27,12 @@ export const NavbarHeader = () => {
   return (
     <div className="z-100 flex w-16 flex-col items-center bg-blue-500 px-2 py-4">
       <div className="flex flex-col items-center gap-4">
-        <Avatar size="lg">
-          <AvatarImage
-            src={me?.avatarUrl}
-            alt="@shadcn"
-            className="grayscale"
-          />
+        <Avatar
+          size="lg"
+          className="cursor-pointer"
+          onClick={() => setProfileOpen(true)}
+        >
+          <AvatarImage src={me?.avatarUrl} alt="@shadcn" />
           <AvatarFallback>
             {me?.username[0].toUpperCase() || <User />}
           </AvatarFallback>
@@ -51,7 +55,8 @@ export const NavbarHeader = () => {
         </div>
       </div>
 
-      <FooterNavbar />
+      <FooterNavbar setProfileOpen={setProfileOpen} />
+      <ProfileDialog open={profileOpen} onOpenChange={setProfileOpen} />
     </div>
   );
 };

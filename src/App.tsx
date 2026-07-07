@@ -1,6 +1,6 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { useGetMe } from "@/features/auth/hooks/queries/useGetMe";
-import { NavbarHeader } from "@/features/main/layouts/NavbarHeader";
+import { NavbarHeader } from "@/features/main/layouts/NavbarMain";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useSocketStore } from "@/stores/useSocketStore";

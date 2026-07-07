@@ -7,8 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useLogout } from "@/features/auth/hooks/useLogout";
-import { ProfileDialog } from "@/features/main/components/ProfileDialog";
-import { Style } from "@/features/main/layouts/NavbarHeader";
+import { Style } from "@/features/main/layouts/NavbarMain";
 import { useNavigate } from "@tanstack/react-router";
 import {
   SettingsIcon,
@@ -18,12 +17,14 @@ import {
   BellIcon,
   LogOutIcon,
 } from "lucide-react";
-import { useState } from "react";
 
-export const FooterNavbar = () => {
+import { type Dispatch } from "react";
+type Props = {
+  setProfileOpen: Dispatch<React.SetStateAction<boolean>>;
+};
+export const FooterNavbar = ({ setProfileOpen }: Props) => {
   const navigate = useNavigate();
   const { mutateAsync: logout } = useLogout();
-  const [profileOpen, setProfileOpen] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -50,7 +51,7 @@ export const FooterNavbar = () => {
           <DropdownMenuGroup>
             <DropdownMenuItem
               onSelect={() => {
-                setProfileOpen(true);
+                setProfileOpen((prev) => !prev);
               }}
             >
               <SparklesIcon />
@@ -79,7 +80,6 @@ export const FooterNavbar = () => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <ProfileDialog open={profileOpen} onOpenChange={setProfileOpen} />
     </div>
   );
 };
