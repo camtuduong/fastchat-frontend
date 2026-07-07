@@ -1,4 +1,4 @@
-import { createNewGroup } from "@/features/chat/api/createNewGroup";
+import { createNewGroup } from "@/features/chat/api/createNewConversation";
 import { useMutation } from "@tanstack/react-query";
 
 type Props = {

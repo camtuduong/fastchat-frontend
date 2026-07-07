@@ -4,7 +4,6 @@ import { ConversationInputChat } from "@/features/chat/components/Conversation/C
 import { ConversationHeader } from "@/features/chat/components/Conversation/ConversationHeader";
 import { useGetAllMessages } from "@/features/chat/hooks/queries/useGetAllMessages";
 import { useGetConversationById } from "@/features/chat/hooks/queries/useGetConversationById";
-import { chatConversationRoute } from "@/routes";
 import { useAuthStore } from "@/stores/useAuthStore";
 import {
   CustomSidebarProvider,
@@ -12,9 +11,13 @@ import {
 } from "@/components/ui/custom-sidebar";
 import { AppCustomSidebar } from "@/features/chat/components/SidebarRight/AppCustomSidebar";
 import { useEffect, useRef } from "react";
+import { useParams } from "@tanstack/react-router";
 
 export const ConversationPage = () => {
-  const conversationId = chatConversationRoute.useParams().conversationId;
+  const conversationId = useParams({
+    strict: false,
+    shouldThrow: false,
+  })?.conversationId;
   const myUsername = useAuthStore((state) => state.user);
   const containerRef = useRef<HTMLDivElement>(null);
 

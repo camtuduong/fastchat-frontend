@@ -1,4 +1,4 @@
-import { getAllFriends } from "@/features/chat/api/getAllFriends";
+import { getAllFriends } from "@/features/friends/api/getAllFriends";
 import { useQuery } from "@tanstack/react-query";
 
 type props = {
@@ -10,5 +10,5 @@ export const useGetAllFriend = ({ params }: props) => {
     queryKey: ["getAllFriends", params],
     queryFn: () => getAllFriends(params),
   });
-  return { data: data?.friends, isLoading, error };
+  return { data: data?.friends || [], isLoading, error };
 };

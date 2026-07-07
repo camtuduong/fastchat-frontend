@@ -13,8 +13,11 @@ import { redirectIfUnauthenticated } from "@/utils/guards";
 import { ChatPage } from "@/features/chat/pages/ChatPage";
 import { SignInPage } from "@/features/auth/pages/SignInPage";
 import { EmptyChatPage } from "@/features/chat/pages/EmptyChatPage";
-import { EmptyFriendPage } from "@/features/friends/pages/EmptyFriend";
+import { FriendsRequestPage } from "@/features/friends/pages/FriendsRequestPage";
 import { ConversationPage } from "@/features/chat/pages/ConversationPage";
+import { ListFriendsPage } from "@/features/friends/pages/ListFriendsPage";
+import { BlockUsersPage } from "@/features/friends/pages/BlockUsersPage";
+import { ListGroupsPage } from "@/features/friends/pages/ListGroupPage";
 
 export const rootRoute = createRootRoute({
   component: App,
@@ -77,20 +80,6 @@ const signUpRoute = createRoute({
   component: SignUpPage,
 });
 
-//friends
-const friendsRoute = createRoute({
-  getParentRoute: () => appLayoutRoute,
-  path: "friends",
-  beforeLoad: redirectIfUnauthenticated,
-  component: FriendsPage,
-});
-
-const friendIndexRoute = createRoute({
-  getParentRoute: () => friendsRoute,
-  path: "/",
-  component: EmptyFriendPage,
-});
-
 //chat
 const chatRoute = createRoute({
   getParentRoute: () => appLayoutRoute,
@@ -111,6 +100,44 @@ export const chatConversationRoute = createRoute({
   component: ConversationPage,
 });
 
+//friends
+export const friendsRoute = createRoute({
+  getParentRoute: () => appLayoutRoute,
+  path: "friends",
+  beforeLoad: redirectIfUnauthenticated,
+  component: FriendsPage,
+});
+
+export const friendListRoute = createRoute({
+  getParentRoute: () => friendsRoute,
+  path: "/",
+  component: ListFriendsPage,
+});
+
+export const friendRequestRoute = createRoute({
+  getParentRoute: () => friendsRoute,
+  path: "requests",
+  component: FriendsRequestPage,
+});
+
+export const blockUsersRoute = createRoute({
+  getParentRoute: () => friendsRoute,
+  path: "blocked-users",
+  component: BlockUsersPage,
+});
+
+export const listGroupsRoute = createRoute({
+  getParentRoute: () => friendsRoute,
+  path: "list-groups",
+  component: ListGroupsPage,
+});
+
+export const friendConversationRoute = createRoute({
+  getParentRoute: () => friendsRoute,
+  path: "$conversationId",
+  component: ConversationPage,
+});
+
 const routeTree = rootRoute.addChildren([
   homeRoute,
   loginRoute,
@@ -118,7 +145,13 @@ const routeTree = rootRoute.addChildren([
   signUpRoute,
   appLayoutRoute.addChildren([
     chatRoute.addChildren([chatIndexRoute, chatConversationRoute]),
-    friendsRoute.addChildren([friendIndexRoute]),
+    friendsRoute.addChildren([
+      friendRequestRoute,
+      friendListRoute,
+      blockUsersRoute,
+      listGroupsRoute,
+      friendConversationRoute,
+    ]),
   ]),
 ]);
 
