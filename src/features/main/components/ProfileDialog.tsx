@@ -23,7 +23,6 @@ export const ProfileDialog = ({ open, onOpenChange }: Props) => {
   const firstName = me?.displayName?.split(" ")[0] || "";
   const lastName = me?.displayName?.split(" ").slice(1).join(" ") || "";
 
-  console.log("me", me);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <form>

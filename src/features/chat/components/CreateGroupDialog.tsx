@@ -14,11 +14,13 @@ import { useGetUserBySearch } from "@/features/main/hooks/queries/useGetUserBySe
 import { useDebounce } from "@/hooks/useDebounce";
 import { useState, type ReactNode } from "react";
 import { useCreateNewConversation } from "@/features/chat/hooks/useCreateNewConversation";
+import { useNavigate } from "@tanstack/react-router";
 
 type Props = {
   buttonTrigger: ReactNode;
 };
 export const CreateGroupDialog = ({ buttonTrigger }: Props) => {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
@@ -48,10 +50,11 @@ export const CreateGroupDialog = ({ buttonTrigger }: Props) => {
     }
 
     try {
-      await createGroupMutation({
+      const result = await createGroupMutation({
         type: "group",
         participants: userIdsSelected,
       });
+      navigate({ to: result.conversation });
     } catch (error) {
       console.error("Failed to create group:", error);
     }
