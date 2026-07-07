@@ -5,7 +5,6 @@ import {
 } from "@/components/ui/collapsible";
 import {
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuAction,
   SidebarMenuButton,
@@ -22,7 +21,6 @@ export function NavMain({
   items: {
     title: string;
     url: string;
-    icon: React.ReactNode;
     isActive?: boolean;
     items?: {
       title: string;
@@ -32,14 +30,12 @@ export function NavMain({
 }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Platform</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible key={item.title} asChild defaultOpen={item.isActive}>
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip={item.title}>
                 <a href={item.url}>
-                  {item.icon}
                   <span>{item.title}</span>
                 </a>
               </SidebarMenuButton>

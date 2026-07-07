@@ -6,13 +6,7 @@ import { useSendMessageGroup } from "@/features/chat/hooks/useSendMessageGroup";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import type { Emoji } from "@/features/chat/types/Message";
-import {
-  SendHorizontal,
-  // CirclePlus,
-  // FileImage,
-  // Sticker,
-  // ImagePlay,
-} from "lucide-react";
+import { SendHorizontal } from "lucide-react";
 
 type Props = {
   conversationId: string;

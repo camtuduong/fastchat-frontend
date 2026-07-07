@@ -1,30 +1,13 @@
 import * as React from "react";
 
 import { NavMain } from "@/components/sidebar/nav-main";
-import { NavProjects } from "@/components/sidebar/nav-projects";
-import { NavSecondary } from "@/components/sidebar/nav-secondary";
-import { NavUser } from "@/components/sidebar/nav-user";
+
 import {
   CustomSidebar,
   CustomSidebarContent,
-  CustomSidebarFooter,
-  CustomSidebarHeader,
-  CustomSidebarMenu,
-  CustomSidebarMenuButton,
-  CustomSidebarMenuItem,
 } from "@/components/ui/custom-sidebar";
-import {
-  TerminalSquareIcon,
-  BotIcon,
-  BookOpenIcon,
-  Settings2Icon,
-  LifeBuoyIcon,
-  SendIcon,
-  FrameIcon,
-  PieChartIcon,
-  MapIcon,
-  TerminalIcon,
-} from "lucide-react";
+
+import { RightSidebarHeader } from "@/features/chat/components/SidebarRight/RightSidebarHeader";
 
 const data = {
   user: {
@@ -34,48 +17,37 @@ const data = {
   },
   navMain: [
     {
-      title: "Playground",
+      title: "Chat Info",
       url: "#",
-      icon: <TerminalSquareIcon />,
       isActive: true,
       items: [
         {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
+          title: "View pinned messages",
           url: "#",
         },
       ],
     },
     {
-      title: "Models",
+      title: "Customise chat",
       url: "#",
-      icon: <BotIcon />,
       items: [
         {
-          title: "Genesis",
+          title: "Change theme",
           url: "#",
         },
         {
-          title: "Explorer",
+          title: "Change emoji",
           url: "#",
         },
         {
-          title: "Quantum",
+          title: "Edit nicknames",
           url: "#",
         },
       ],
     },
     {
-      title: "Documentation",
+      title: "Chat members",
       url: "#",
-      icon: <BookOpenIcon />,
       items: [
         {
           title: "Introduction",
@@ -96,56 +68,41 @@ const data = {
       ],
     },
     {
-      title: "Settings",
+      title: "Media, files and links",
       url: "#",
-      icon: <Settings2Icon />,
+
       items: [
         {
-          title: "General",
+          title: "Media",
           url: "#",
         },
         {
-          title: "Team",
+          title: "Files",
           url: "#",
         },
         {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
+          title: "Links",
           url: "#",
         },
       ],
     },
-  ],
-  navSecondary: [
     {
-      title: "Support",
+      title: "Private & support",
       url: "#",
-      icon: <LifeBuoyIcon />,
-    },
-    {
-      title: "Feedback",
-      url: "#",
-      icon: <SendIcon />,
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: <FrameIcon />,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: <PieChartIcon />,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: <MapIcon />,
+      items: [
+        {
+          title: "Chat notifications",
+          url: "#",
+        },
+        {
+          title: "Report",
+          url: "#",
+        },
+        {
+          title: "Leave group",
+          url: "#",
+        },
+      ],
     },
   ],
 };
@@ -156,36 +113,15 @@ export function AppCustomSidebar({
   return (
     <CustomSidebar variant="floating" {...props}>
       {/* Header */}
-      <CustomSidebarHeader>
-        <CustomSidebarMenu>
-          <CustomSidebarMenuItem>
-            {/* User Profile Detail */}
-            <CustomSidebarMenuButton size="lg" asChild>
-              <a href="#">
-                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                  <TerminalIcon className="size-4" />
-                </div>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">Acme Inc</span>
-                  <span className="truncate text-xs">Enterprise</span>
-                </div>
-              </a>
-            </CustomSidebarMenuButton>
-          </CustomSidebarMenuItem>
-        </CustomSidebarMenu>
-      </CustomSidebarHeader>
-
+      <RightSidebarHeader />
       {/* Content */}
       <CustomSidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
       </CustomSidebarContent>
-
-      {/* Footer */}
+      {/*
       <CustomSidebarFooter>
         <NavUser user={data.user} />
-      </CustomSidebarFooter>
+      </CustomSidebarFooter> */}
     </CustomSidebar>
   );
 }
