@@ -118,10 +118,6 @@ export function AppCustomSidebar({
       <CustomSidebarContent>
         <NavMain items={data.navMain} />
       </CustomSidebarContent>
-      {/*
-      <CustomSidebarFooter>
-        <NavUser user={data.user} />
-      </CustomSidebarFooter> */}
     </CustomSidebar>
   );
 }

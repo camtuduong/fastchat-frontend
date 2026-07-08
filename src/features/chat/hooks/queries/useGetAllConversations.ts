@@ -6,7 +6,7 @@ type Props = {
 };
 export const useGetAllConversations = ({ cursor }: Props) => {
   const { data, isLoading, error } = useQuery({
-    queryKey: ["getAllConversations", cursor],
+    queryKey: ["conversations", cursor],
     queryFn: () => getAllConversations(cursor),
   });
   return { data: data?.conversations || [], isLoading, error };

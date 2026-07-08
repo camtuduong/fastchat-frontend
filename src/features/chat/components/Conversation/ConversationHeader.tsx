@@ -34,11 +34,7 @@ export const ConversationHeader = ({ members }: Props) => {
         </div>
         <div className="flex items-center gap-2">
           <Avatar>
-            <AvatarImage
-              src={userById?.avatarUrl}
-              alt="@shadcn"
-              className="grayscale"
-            />
+            <AvatarImage src={userById?.avatarUrl} alt="@shadcn" />
             <AvatarFallback>
               {members
                 ?.map((member) => member.username[0].toUpperCase())

@@ -25,8 +25,7 @@ export const MessageBubble = ({ message, isMyMessage }: Props) => {
       >
         <AvatarImage
           src={userById?.avatarUrl}
-          alt="@shadcn"
-          className="grayscale"
+          alt={userById?.username || "avatar"}
         />
         <AvatarFallback>
           {message.sender.username[0].toUpperCase()}

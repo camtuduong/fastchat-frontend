@@ -12,7 +12,7 @@ export const LastMessageItem = ({
   isLastMessageFromMe,
 }: Props) => {
   return (
-    <div className="text-muted-foreground text-xs">
+    <div className="text-muted-foreground truncate text-xs">
       {unreadCount > 0
         ? `(${unreadCount} new message${unreadCount > 1 ? "s" : ""})`
         : `${isLastMessageFromMe ? "You: " : ""}${LastMessage?.content ?? ""}`}
