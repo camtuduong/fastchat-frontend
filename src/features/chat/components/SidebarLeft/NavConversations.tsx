@@ -4,11 +4,17 @@ import { SidebarChildLayout } from "@/features/chat/layouts/SidebarChildLayout";
 import type { Conversation } from "@/features/chat/types/conversation";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useSocketStore } from "@/stores/useSocketStore";
+import { useParams } from "@tanstack/react-router";
 
 type Props = {
   conversations: Conversation[];
 };
 export const NavConversations = ({ conversations }: Props) => {
+  const conversationId = useParams({
+    strict: false,
+    shouldThrow: false,
+  })?.conversationId;
+
   const onlineUsers = useSocketStore((state) => state.onlineUsers);
 
   const isOnline = (conversation: Conversation) => {
@@ -23,6 +29,10 @@ export const NavConversations = ({ conversations }: Props) => {
     return false;
   };
 
+  const isActive = (conversation: Conversation) => {
+    return conversation._id === conversationId;
+  };
+
   return (
     <SidebarChildLayout label="Conversations" className="flex flex-col gap-y-2">
       {conversations.map((conversation) => (
@@ -30,6 +40,7 @@ export const NavConversations = ({ conversations }: Props) => {
           key={conversation._id}
           conversation={conversation}
           isOnline={isOnline(conversation)}
+          isActive={isActive(conversation)}
         />
       ))}
     </SidebarChildLayout>

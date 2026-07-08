@@ -3,6 +3,7 @@ import { useGetUserById } from "@/features/main/hooks/queries/useGetUserById";
 import { bubbleClass } from "@/features/chat/constant";
 import type { MessageUI } from "@/features/chat/types/bubbleChat";
 import { cn } from "@/lib/utils";
+import { MessageContentWrapper } from "@/features/chat/layouts/MessageContentWrapper";
 
 type Props = {
   message: MessageUI;
@@ -25,25 +26,25 @@ export const MessageBubble = ({ message, isMyMessage }: Props) => {
       >
         <AvatarImage
           src={userById?.avatarUrl}
-          alt="@shadcn"
-          className="grayscale"
+          alt={userById?.username || "avatar"}
         />
         <AvatarFallback>
           {message.sender.username[0].toUpperCase()}
         </AvatarFallback>
       </Avatar>
-
-      <div
-        className={cn(
-          "max-w-[70%] min-w-0 p-2",
-          "wrap-break-word whitespace-pre-wrap",
-          "flex flex-col gap-10",
-          bubbleClass(message.position, isMyMessage),
-          isMyMessage ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-700",
-        )}
-      >
-        <div className="text-sm wrap-anywhere">{message.content}</div>
-      </div>
+      <MessageContentWrapper isMyMessage={isMyMessage}>
+        <div
+          className={cn(
+            "p-2",
+            bubbleClass(message.position, isMyMessage),
+            isMyMessage
+              ? "bg-blue-500 text-white"
+              : "bg-gray-100 text-gray-700",
+          )}
+        >
+          <div className="text-sm wrap-anywhere">{message.content}</div>
+        </div>
+      </MessageContentWrapper>
     </div>
   );
 };

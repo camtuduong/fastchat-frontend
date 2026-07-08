@@ -21,6 +21,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { useCreateNewConversation } from "@/features/chat/hooks/useCreateNewConversation";
 import type { AxiosError } from "axios";
 import type { AxiosConversationError } from "@/types/api";
+import { Spinner } from "@/components/ui/spinner";
 
 export const ListFriendsPage = () => {
   const navigate = useNavigate();
@@ -68,6 +69,14 @@ export const ListFriendsPage = () => {
       navigate({ to: err.response?.data.conversation });
     }
   };
+
+  if (isPending) {
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <Spinner className="size-6" />
+      </div>
+    );
+  }
 
   return (
     <>

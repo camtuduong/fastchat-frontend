@@ -11,6 +11,7 @@ type Props = {
   onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
   setShowPicker?: React.Dispatch<React.SetStateAction<boolean>>;
   triggerPickerRef?: React.RefObject<HTMLButtonElement | null>;
+  inputRef?: React.RefObject<HTMLTextAreaElement | null>;
 };
 
 export const CustomTextArea = ({
@@ -21,6 +22,7 @@ export const CustomTextArea = ({
   placeholder,
   setShowPicker,
   triggerPickerRef,
+  inputRef,
 }: Props) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -39,6 +41,7 @@ export const CustomTextArea = ({
 
       <Textarea
         value={value}
+        ref={inputRef}
         onChange={onChange}
         onKeyDown={onKeyDown}
         placeholder={placeholder}

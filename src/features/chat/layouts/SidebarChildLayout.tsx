@@ -10,6 +10,7 @@ type Props = {
   label: string;
   children: ReactNode;
   className?: string;
+  
 };
 
 export const SidebarChildLayout = ({ label, children, className }: Props) => {
