@@ -25,6 +25,8 @@ export const ConversationInputChat = ({
   const { mutate: sendMessageDirect, isPending } = useSendMessageDirect();
   const { mutate: sendMessageGroup } = useSendMessageGroup(); // Placeholder for group message sending
 
+  const inputRef = useRef<HTMLTextAreaElement | null>(null);
+
   const handleSendMessage = () => {
     const content = message.trim();
 
@@ -103,6 +105,12 @@ export const ConversationInputChat = ({
       document.removeEventListener("pointerdown", handlePointerDown);
     };
   }, [showPicker]);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [conversationId]);
   return (
     <form
       className="absolute right-0 bottom-1 left-0 flex items-end gap-2 px-4 py-2"
@@ -131,6 +139,7 @@ export const ConversationInputChat = ({
           placeholder="Aa"
           setShowPicker={setShowPicker}
           triggerPickerRef={triggerPickerRef}
+          inputRef={inputRef}
         />
         {showPicker && (
           <div ref={pickerRef} className="absolute right-20 bottom-15 z-10">
