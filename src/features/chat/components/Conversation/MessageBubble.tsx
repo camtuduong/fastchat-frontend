@@ -37,9 +37,7 @@ export const MessageBubble = ({ message, isMyMessage }: Props) => {
           className={cn(
             "p-2",
             bubbleClass(message.position, isMyMessage),
-            isMyMessage
-              ? "bg-blue-500 text-white"
-              : "bg-gray-100 text-gray-700",
+            isMyMessage ? "bg-primary text-white" : "bg-gray-100 text-gray-700",
           )}
         >
           <div className="text-sm wrap-anywhere">{message.content}</div>
