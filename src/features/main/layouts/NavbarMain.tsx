@@ -10,7 +10,7 @@ import { ProfileDialog } from "@/features/main/components/ProfileDialog";
 
 export const Style = {
   button: cn(
-    "flex items-center justify-center rounded-md bg-blue-500 p-2 text-white hover:bg-blue-600",
+    "flex items-center justify-center rounded-md bg-primary p-2 text-white hover:bg-muted-foreground cursor-pointer transition-colors duration-300 ease-in-out",
   ),
 };
 
@@ -25,7 +25,7 @@ export const NavbarHeader = () => {
   const isFriends = pathname.startsWith("/friends");
 
   return (
-    <div className="z-100 flex w-16 flex-col items-center bg-blue-500 px-2 py-4">
+    <div className="bg-primary z-100 flex w-16 flex-col items-center px-2 py-4">
       <div className="flex flex-col items-center gap-4">
         <Avatar
           size="lg"
@@ -41,14 +41,14 @@ export const NavbarHeader = () => {
         <div className="flex flex-col gap-2">
           <button
             onClick={() => navigate({ to: "/chat" })}
-            className={cn(Style.button, isChat ? "bg-blue-600" : "")}
+            className={cn(Style.button, isChat ? "bg-muted-foreground" : "")}
           >
             <MessageCircleMore />
           </button>
 
           <button
             onClick={() => navigate({ to: "/friends" })}
-            className={cn(Style.button, isFriends ? "bg-blue-600" : "")}
+            className={cn(Style.button, isFriends ? "bg-muted-foreground" : "")}
           >
             <BookUser />
           </button>
