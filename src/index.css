@@ -249,6 +249,106 @@
   color-scheme: dark;
 }
 
+/* ===== Bubble của mình (bg-primary text-white) ===== */
+
+.markdown-me h1 {
+  @apply mb-4 text-3xl font-bold;
+}
+
+.markdown-me h2 {
+  @apply mb-3 text-2xl font-bold;
+}
+
+.markdown-me h3 {
+  @apply mb-2 text-xl font-semibold;
+}
+
+.markdown-me a {
+  @apply text-blue-300 underline hover:text-blue-200;
+}
+
+.markdown-me strong {
+  @apply font-bold;
+}
+
+.markdown-me em {
+  @apply italic;
+}
+
+.markdown-me blockquote {
+  @apply border-l-4 border-white/20 pl-4 text-white/80 italic;
+}
+
+.markdown-me ul {
+  @apply list-disc pl-6;
+}
+
+.markdown-me ol {
+  @apply list-decimal pl-6;
+}
+
+.markdown-me :not(pre) > code {
+  @apply rounded bg-white/10 px-1 py-0.5 font-mono text-amber-300;
+}
+
+.markdown-me pre {
+  @apply my-3 overflow-x-auto rounded-lg bg-black/30 p-4;
+}
+
+.markdown-me pre code {
+  @apply rounded bg-transparent p-0 text-white;
+}
+
+/* ===== Bubble của người khác (bg-gray-100 text-gray-700) ===== */
+
+.markdown-other h1 {
+  @apply mb-4 text-3xl font-bold text-gray-900;
+}
+
+.markdown-other h2 {
+  @apply mb-3 text-2xl font-bold text-gray-900;
+}
+
+.markdown-other h3 {
+  @apply mb-2 text-xl font-semibold text-gray-900;
+}
+
+.markdown-other a {
+  @apply text-blue-600 underline hover:text-blue-700;
+}
+
+.markdown-other strong {
+  @apply font-bold text-gray-900;
+}
+
+.markdown-other em {
+  @apply italic;
+}
+
+.markdown-other blockquote {
+  @apply border-l-4 border-gray-300 pl-4 text-gray-600 italic;
+}
+
+.markdown-other ul {
+  @apply list-disc pl-6;
+}
+
+.markdown-other ol {
+  @apply list-decimal pl-6;
+}
+
+.markdown-other :not(pre) > code {
+  @apply rounded bg-gray-200 px-1 py-0.5 font-mono text-red-600;
+}
+
+.markdown-other pre {
+  @apply my-3 overflow-x-auto rounded-lg bg-gray-800 p-4;
+}
+
+.markdown-other pre code {
+  @apply rounded bg-transparent p-0 text-gray-100;
+}
+
 @layer base {
   html,
   body,
@@ -269,6 +369,6 @@
   }
 
   html {
-    @apply font-sans overscroll-none;
+    @apply overscroll-none font-sans;
   }
 }

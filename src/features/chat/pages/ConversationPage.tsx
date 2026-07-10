@@ -82,7 +82,6 @@ export const ConversationPage = () => {
         />
 
         {/* Spacer for footer */}
-        <div className="h-16" />
         <ConversationInputChat
           conversationId={conversationId}
           conversationType={conversationData?.type}

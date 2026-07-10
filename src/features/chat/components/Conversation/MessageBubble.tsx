@@ -1,4 +1,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+
 import { useGetUserById } from "@/features/main/hooks/queries/useGetUserById";
 import { bubbleClass } from "@/features/chat/constant";
 import type { MessageUI } from "@/features/chat/types/bubbleChat";
@@ -35,12 +39,16 @@ export const MessageBubble = ({ message, isMyMessage }: Props) => {
       <MessageContentWrapper isMyMessage={isMyMessage}>
         <div
           className={cn(
-            "p-2",
+            "py-2 text-sm wrap-anywhere",
             bubbleClass(message.position, isMyMessage),
-            isMyMessage ? "bg-primary text-white" : "bg-gray-100 text-gray-700",
+            isMyMessage
+              ? "bg-primary markdown-me pr-2 pl-3 text-white"
+              : "markdown-other bg-gray-100 pr-3 pl-2 text-gray-700",
           )}
         >
-          <div className="text-sm wrap-anywhere">{message.content}</div>
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {message.content}
+          </ReactMarkdown>
         </div>
       </MessageContentWrapper>
     </div>
