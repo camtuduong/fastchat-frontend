@@ -1,4 +1,4 @@
-import { publicApi } from "@/lib/api";
+import { publicApi } from "@/services/api";
 
 export const signup = async (
   username: string,

@@ -1,4 +1,4 @@
-import { api } from "@/lib/api";
+import { api } from "@/services/api";
 import type { Conversation } from "@/features/chat/types/conversation";
 
 type GetConversationByIdResponse = {

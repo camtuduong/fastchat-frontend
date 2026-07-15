@@ -1,5 +1,5 @@
 import type { Conversation } from "@/features/chat/types/conversation";
-import { api } from "@/lib/api";
+import { api } from "@/services/api";
 
 type GetAllConversationsResponse = {
   conversations: Conversation[];
