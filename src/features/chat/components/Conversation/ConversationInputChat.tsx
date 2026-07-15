@@ -1,4 +1,4 @@
-import { useSendMessageDirect } from "@/features/chat/hooks/useSendMessageDirect";
+import { X } from "lucide-react";
 import { useSendMessageGroup } from "@/features/chat/hooks/useSendMessageGroup";
 import { useEffect, useRef, useState } from "react";
 
@@ -12,6 +12,8 @@ import { Eye } from "lucide-react";
 import { FormatterActions } from "@/features/chat/components/Conversation/FormatterActions";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { ReviewImgUpload } from "@/features/chat/components/Conversation/ReviewImgUpload";
+import { useSendMessageDirect } from "@/features/chat/hooks/useSendMessageDirect";
 
 const Style = {
   container: "relative mb-3 flex items-end gap-2 px-4 py-2",
@@ -24,6 +26,12 @@ const Style = {
   eyeIcon:
     "text-muted-foreground hover:text-accent-foreground hover:bg-accent absolute top-1 right-2.5 cursor-pointer rounded-lg p-2 transition-colors duration-100",
   formatterContainer: "relative flex min-w-0 flex-1",
+};
+
+type PreviewImage = {
+  id: string;
+  file: File;
+  url: string;
 };
 
 type Props = {
@@ -40,6 +48,7 @@ export const ConversationInputChat = ({
   const [showPicker, setShowPicker] = useState(false);
   const [textFormatter, setTextFormatter] = useState(false);
   const [showMarkDown, setShowMarkDown] = useState(false);
+  const [fileImage, setFileImage] = useState<PreviewImage[]>([]);
 
   const isSendingRef = useRef(false);
   const pickerRef = useRef<HTMLDivElement | null>(null);
@@ -91,20 +100,20 @@ export const ConversationInputChat = ({
           },
         },
       );
-    } else if (conversationType === "group") {
-      sendMessageGroup(
-        {
-          conversationId: conversationId,
-          content,
-          attachments: [],
-        },
-        {
-          onSettled: () => {
-            isSendingRef.current = false;
-          },
-        },
-      );
     }
+
+    sendMessageGroup(
+      {
+        conversationId: conversationId,
+        content,
+        attachments: [],
+      },
+      {
+        onSettled: () => {
+          isSendingRef.current = false;
+        },
+      },
+    );
     setMessage(""); // Clear the input after sending
   };
 
@@ -127,6 +136,35 @@ export const ConversationInputChat = ({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     handleSendMessage();
+  };
+
+  const handleImgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.currentTarget;
+
+    if (!input.files || input.files.length === 0) return;
+
+    const files = Array.from(input.files);
+
+    setFileImage((prev) => [
+      ...prev,
+      ...files.map((file) => ({
+        id: crypto.randomUUID(),
+        file,
+        url: URL.createObjectURL(file),
+      })),
+    ]);
+
+    input.value = "";
+  };
+
+  const removeImage = (id: string) => {
+    setFileImage((prev) => {
+      const imageToRemove = prev.find((img) => img.id === id);
+      if (imageToRemove) {
+        URL.revokeObjectURL(imageToRemove.url);
+      }
+      return prev.filter((img) => img.id !== id);
+    });
   };
 
   useEffect(() => {
@@ -157,12 +195,34 @@ export const ConversationInputChat = ({
   return (
     <form className={Style.container} onSubmit={handleSubmit}>
       {isPending && <div className={Style.textPending}>sending...</div>}
+
       <div
         className={cn(
           Style.actionButtonContainer,
-          isExpanded || textFormatter ? "flex-col" : "flex-row",
+          isExpanded || textFormatter || (fileImage && fileImage.length > 0)
+            ? "flex-col"
+            : "flex-row",
         )}
       >
+        {/* img review  */}
+        {fileImage.length > 0 && (
+          <div className="flex flex-wrap gap-1 p-2">
+            {fileImage.map((file) => (
+              <div key={file.id} className="relative p-1">
+                <ReviewImgUpload imgUrl={file.url} />
+                <button
+                  type="button"
+                  className="bg-accent-foreground hover:bg-destructive/50 absolute top-3 right-2 cursor-pointer rounded-full p-1 text-white transition-colors duration-100"
+                  onClick={() => removeImage(file.id)}
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* input content message  */}
         <div className={Style.inputContainer}>
           {!showMarkDown ? (
             <Textarea
@@ -182,7 +242,7 @@ export const ConversationInputChat = ({
               className={cn(Style.input, textFormatter ? "pr-10" : "")}
             />
           ) : (
-            <div className={cn(Style.input, "markdown-other p-3")}>
+            <div className={cn(Style.input, "markdown-other p-4 text-sm")}>
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {message}
               </ReactMarkdown>
@@ -205,19 +265,27 @@ export const ConversationInputChat = ({
           )}
         </div>
 
+        {/* button actions */}
         <div
           className={cn(
             "text-muted-foreground flex h-full gap-1 p-3",
             textFormatter ? "justify-between" : "justify-end self-end",
           )}
         >
-          {textFormatter && <FormatterActions wrapSelection={wrapSelection} />}
+          {textFormatter && (
+            <FormatterActions
+              showMarkDown={showMarkDown}
+              wrapSelection={wrapSelection}
+            />
+          )}
           <InputActions
             setTextFormatter={setTextFormatter}
             triggerPickerRef={triggerPickerRef}
+            showMarkDown={showMarkDown}
             setShowPicker={setShowPicker}
             isPending={isPending}
             isTextFormatter={textFormatter}
+            onChange={handleImgChange}
           />
         </div>
       </div>

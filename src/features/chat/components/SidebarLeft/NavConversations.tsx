@@ -1,10 +1,12 @@
 import { MenuItem } from "@/features/chat/components/SidebarLeft/MenuItem";
 import { conversationTypeToLabel } from "@/features/chat/constant";
+import { useSeenConversation } from "@/features/chat/hooks/useSeenConversation";
 import { SidebarChildLayout } from "@/features/chat/layouts/SidebarChildLayout";
 import type { Conversation } from "@/features/chat/types/conversation";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useSocketStore } from "@/stores/useSocketStore";
 import { useParams } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 type Props = {
   conversations: Conversation[];
@@ -14,6 +16,8 @@ export const NavConversations = ({ conversations }: Props) => {
     strict: false,
     shouldThrow: false,
   })?.conversationId;
+
+  const { mutate: seenConversation } = useSeenConversation();
 
   const onlineUsers = useSocketStore((state) => state.onlineUsers);
 
@@ -32,6 +36,12 @@ export const NavConversations = ({ conversations }: Props) => {
   const isActive = (conversation: Conversation) => {
     return conversation._id === conversationId;
   };
+
+  useEffect(() => {
+    if (conversationId) {
+      seenConversation(conversationId);
+    }
+  }, [conversationId, seenConversation]);
 
   return (
     <SidebarChildLayout label="Conversations" className="flex flex-col gap-y-2">
