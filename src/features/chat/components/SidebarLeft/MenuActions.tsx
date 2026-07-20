@@ -25,7 +25,7 @@ export const MenuActions = ({ style, conversationId }: Props) => {
       setOpenAlertDialog(false);
     }
   };
-  const handleReopenConversation = async () => {
+  const handleRemoveConversationForMe = async () => {
     try {
       await removeConversationForMe(conversationId);
     } catch (error) {
@@ -58,7 +58,9 @@ export const MenuActions = ({ style, conversationId }: Props) => {
       <AlertDialog
         open={openAlertDialog}
         onOpenChange={handleOpenChange}
-        handleReopenConversation={handleReopenConversation}
+        onConfirm={handleRemoveConversationForMe}
+        title="Remove Conversation"
+        description="Once you delete your copy of this conversation, it cannot be undone."
       />
     </DropdownMenu>
   );

@@ -15,6 +15,7 @@ type Props = {
 };
 export const MessageBubble = ({ message, isMyMessage }: Props) => {
   const { data: userById } = useGetUserById(message.sender.userId || "");
+
   return (
     <div
       className={cn(
@@ -44,11 +45,30 @@ export const MessageBubble = ({ message, isMyMessage }: Props) => {
             isMyMessage
               ? "bg-primary markdown-me pr-2 pl-3 text-white"
               : "markdown-other bg-gray-100 pr-3 pl-2 text-gray-700",
+            message?.attachments?.length > 0
+              ? "bg-transparent hover:bg-gray-200"
+              : "",
           )}
         >
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
-            {message.content}
-          </ReactMarkdown>
+          {message?.attachments?.length > 0 ? (
+            <div className="mb-2 flex flex-wrap gap-2">
+              {message.attachments.map((attachment, index) => (
+                <div key={index} className="w-32">
+                  <video
+                    autoPlay
+                    loop
+                    muted
+                    src={attachment.url}
+                    className="h-auto w-full rounded-md object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {message.content}
+            </ReactMarkdown>
+          )}
         </div>
       </MessageContentWrapper>
     </div>

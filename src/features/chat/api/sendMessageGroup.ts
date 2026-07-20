@@ -1,9 +1,10 @@
+import type { Attachment } from "@/features/chat/types/Message";
 import { api } from "@/services/api";
 
 export type Props = {
   conversationId: string;
-  content: string;
-  attachments: string[];
+  content?: string;
+  attachments?: Attachment[];
 };
 
 export const sendMessageGroup = async ({

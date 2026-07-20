@@ -1,19 +1,25 @@
-import { X } from "lucide-react";
 import { useSendMessageGroup } from "@/features/chat/hooks/useSendMessageGroup";
 import { useEffect, useRef, useState } from "react";
 
 import { Textarea } from "@/components/ui/textarea";
+import { FormatterActions } from "@/features/chat/components/Conversation/FormatterActions";
 import { InputActions } from "@/features/chat/components/Conversation/InputActions";
-import type { Emoji } from "@/features/chat/types/Message";
+import { StickerPicker } from "@/features/chat/components/StickerPicker";
+import { useSendMessageDirect } from "@/features/chat/hooks/useSendMessageDirect";
+import type { Attachment, Emoji } from "@/features/chat/types/Message";
 import { cn } from "@/lib/utils";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { Eye } from "lucide-react";
-import { FormatterActions } from "@/features/chat/components/Conversation/FormatterActions";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { ReviewImgUpload } from "@/features/chat/components/Conversation/ReviewImgUpload";
-import { useSendMessageDirect } from "@/features/chat/hooks/useSendMessageDirect";
+import type {
+  PreviewImage,
+  StickerData,
+  StickerSelected,
+} from "@/features/chat/types/sticker";
+import { AlertDialog } from "@/features/chat/components/AlertDialog";
+import { AttachmentsReview } from "@/features/chat/components/Conversation/AttachmentsReview";
 
 const Style = {
   container: "relative mb-3 flex items-end gap-2 px-4 py-2",
@@ -28,11 +34,15 @@ const Style = {
   formatterContainer: "relative flex min-w-0 flex-1",
 };
 
-type PreviewImage = {
-  id: string;
-  file: File;
-  url: string;
-};
+export type PendingPreview =
+  | {
+      type: "sticker";
+      data: StickerSelected;
+    }
+  | {
+      type: "image";
+      data: PreviewImage[];
+    };
 
 type Props = {
   conversationId: string;
@@ -45,10 +55,19 @@ export const ConversationInputChat = ({
 }: Props) => {
   const [message, setMessage] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
+
   const [showPicker, setShowPicker] = useState(false);
   const [textFormatter, setTextFormatter] = useState(false);
   const [showMarkDown, setShowMarkDown] = useState(false);
-  const [fileImage, setFileImage] = useState<PreviewImage[]>([]);
+  const [showStickerPicker, setShowStickerPicker] = useState(false);
+
+  const [preview, setPreview] = useState<PendingPreview | null>(null);
+  const [pendingPreview, setPendingPreview] = useState<PendingPreview | null>(
+    null,
+  );
+
+  //==> At any given time, only one image can be displayed: a sticker or images.
+  const [openAlertDialog, setOpenAlertDialog] = useState(false);
 
   const isSendingRef = useRef(false);
   const pickerRef = useRef<HTMLDivElement | null>(null);
@@ -81,18 +100,89 @@ export const ConversationInputChat = ({
 
   const handleSendMessage = () => {
     const content = message.trim();
+    let attachments: Attachment[] = [];
 
-    if (!content || isPending || isSendingRef.current) {
+    if ((content === "" && !preview) || isPending || isSendingRef.current) {
       return;
     }
 
+    if (preview) {
+      if (preview?.type === "image" && preview.data.length > 0) {
+        attachments = preview.data.map((file) => ({
+          id: file.id,
+          type: "image" as const,
+          url: file.url,
+          name: file?.file?.name,
+        }));
+      }
+
+      if (preview?.type === "sticker") {
+        attachments = [
+          {
+            id: preview.data.id,
+            type: "video" as const,
+            url: preview.data.url,
+            name: preview.data.title,
+          },
+        ];
+      }
+    }
+
     isSendingRef.current = true;
+
     if (conversationType === "direct") {
-      sendMessageDirect(
+      if (attachments.length > 0) {
+        sendMessageDirect(
+          {
+            conversationId: conversationId,
+            attachments,
+          },
+          {
+            onSettled: () => {
+              isSendingRef.current = false;
+            },
+          },
+        );
+      }
+      if (content) {
+        sendMessageDirect(
+          {
+            conversationId: conversationId,
+            content,
+          },
+          {
+            onSettled: () => {
+              isSendingRef.current = false;
+            },
+          },
+        );
+      }
+
+      setPreview(null); // Clear the preview after sending
+      setMessage("");
+
+      return;
+    }
+
+    if (attachments.length > 0) {
+      sendMessageGroup(
+        {
+          conversationId: conversationId,
+          content: "",
+          attachments,
+        },
+        {
+          onSettled: () => {
+            isSendingRef.current = false;
+          },
+        },
+      );
+    }
+    if (content) {
+      sendMessageGroup(
         {
           conversationId: conversationId,
           content,
-          attachments: [],
         },
         {
           onSettled: () => {
@@ -102,21 +192,9 @@ export const ConversationInputChat = ({
       );
     }
 
-    sendMessageGroup(
-      {
-        conversationId: conversationId,
-        content,
-        attachments: [],
-      },
-      {
-        onSettled: () => {
-          isSendingRef.current = false;
-        },
-      },
-    );
+    setPreview(null); // Clear the preview after sending
     setMessage(""); // Clear the input after sending
   };
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.nativeEvent.isComposing) {
       return;
@@ -138,6 +216,32 @@ export const ConversationInputChat = ({
     handleSendMessage();
   };
 
+  const requestChangePreview = (nextPreview: PendingPreview) => {
+    if (!preview) {
+      setPreview(nextPreview);
+      return;
+    }
+
+    setPendingPreview(nextPreview);
+    if (nextPreview.type === "image" && preview.type === "image") {
+      if (!pendingPreview) return;
+
+      setPreview(pendingPreview);
+      setPendingPreview(null);
+
+      return;
+    }
+
+    if (nextPreview.type === "sticker" && preview.type === "sticker") {
+      if (nextPreview.data.id === preview.data.id) {
+        setPendingPreview(null);
+        setShowStickerPicker(false);
+        return;
+      }
+    }
+    setOpenAlertDialog(true);
+  };
+
   const handleImgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.currentTarget;
 
@@ -145,30 +249,81 @@ export const ConversationInputChat = ({
 
     const files = Array.from(input.files);
 
-    setFileImage((prev) => [
-      ...prev,
-      ...files.map((file) => ({
-        id: crypto.randomUUID(),
-        file,
-        url: URL.createObjectURL(file),
-      })),
-    ]);
+    requestChangePreview({
+      type: "image",
+      data: [
+        ...(preview?.type === "image" ? preview.data : []),
+        ...files.map((file) => ({
+          id: crypto.randomUUID(),
+          file,
+          url: URL.createObjectURL(file),
+        })),
+      ],
+    });
 
     input.value = "";
   };
 
   const removeImage = (id: string) => {
-    setFileImage((prev) => {
-      const imageToRemove = prev.find((img) => img.id === id);
+    setPreview((prev) => {
+      if (prev?.type !== "image") return prev;
+
+      const imageToRemove = prev.data.find((img) => img.id === id);
+
       if (imageToRemove) {
         URL.revokeObjectURL(imageToRemove.url);
       }
-      return prev.filter((img) => img.id !== id);
+
+      const nextImages = prev.data.filter((img) => img.id !== id);
+
+      if (nextImages.length === 0) {
+        return null;
+      }
+
+      return {
+        type: "image",
+        data: nextImages,
+      };
     });
   };
 
+  const handleStickerClick = (sticker: StickerData, imageUrl: string) => {
+    if (!imageUrl) return;
+
+    requestChangePreview({
+      type: "sticker",
+      data: {
+        id: sticker.id.toString(),
+        url: imageUrl,
+        title: sticker.title,
+      },
+    });
+  };
+
+  const removeSticker = (id: string) => {
+    if (preview?.type === "sticker" && preview.data.id === id) {
+      setPreview(null);
+    }
+  };
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    setOpenAlertDialog(nextOpen);
+
+    if (!nextOpen) {
+      setOpenAlertDialog(false);
+    }
+  };
+
+  const handleConfirmReplacePreview = () => {
+    if (!pendingPreview) return;
+
+    setPreview(pendingPreview);
+    setPendingPreview(null);
+    setOpenAlertDialog(false);
+  };
+
   useEffect(() => {
-    if (!showPicker) return;
+    if (!showPicker && !showStickerPicker) return;
     const handlePointerDown = (event: PointerEvent) => {
       const target = event.target;
 
@@ -179,19 +334,21 @@ export const ConversationInputChat = ({
 
       if (!clickedInsidePicker && !clickedTriggerButton) {
         setShowPicker(false);
+        setShowStickerPicker(false);
       }
     };
     document.addEventListener("pointerdown", handlePointerDown);
     return () => {
       document.removeEventListener("pointerdown", handlePointerDown);
     };
-  }, [showPicker]);
+  }, [showPicker, showStickerPicker]);
 
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
   }, [conversationId]);
+
   return (
     <form className={Style.container} onSubmit={handleSubmit}>
       {isPending && <div className={Style.textPending}>sending...</div>}
@@ -199,27 +356,16 @@ export const ConversationInputChat = ({
       <div
         className={cn(
           Style.actionButtonContainer,
-          isExpanded || textFormatter || (fileImage && fileImage.length > 0)
-            ? "flex-col"
-            : "flex-row",
+          isExpanded || textFormatter || preview ? "flex-col" : "flex-row",
         )}
       >
-        {/* img review  */}
-        {fileImage.length > 0 && (
-          <div className="flex flex-wrap gap-1 p-2">
-            {fileImage.map((file) => (
-              <div key={file.id} className="relative p-1">
-                <ReviewImgUpload imgUrl={file.url} />
-                <button
-                  type="button"
-                  className="bg-accent-foreground hover:bg-destructive/50 absolute top-3 right-2 cursor-pointer rounded-full p-1 text-white transition-colors duration-100"
-                  onClick={() => removeImage(file.id)}
-                >
-                  <X size={16} />
-                </button>
-              </div>
-            ))}
-          </div>
+        {/*  preview img or sticker   */}
+        {preview && (
+          <AttachmentsReview
+            preview={preview}
+            removeImage={removeImage}
+            removeSticker={removeSticker}
+          />
         )}
 
         {/* input content message  */}
@@ -248,6 +394,7 @@ export const ConversationInputChat = ({
               </ReactMarkdown>
             </div>
           )}
+          {/* nút xem formatted message */}
           {textFormatter && (
             <button
               type="button"
@@ -283,8 +430,11 @@ export const ConversationInputChat = ({
             triggerPickerRef={triggerPickerRef}
             showMarkDown={showMarkDown}
             setShowPicker={setShowPicker}
+            setShowStickerPicker={setShowStickerPicker}
             isPending={isPending}
             isTextFormatter={textFormatter}
+            showStickerPicker={showStickerPicker}
+            showPicker={showPicker}
             onChange={handleImgChange}
           />
         </div>
@@ -299,6 +449,21 @@ export const ConversationInputChat = ({
           />
         </div>
       )}
+
+      {showStickerPicker && (
+        <StickerPicker
+          pickerRef={pickerRef}
+          onStickerClick={handleStickerClick}
+        />
+      )}
+
+      <AlertDialog
+        open={openAlertDialog}
+        onOpenChange={handleOpenChange}
+        onConfirm={handleConfirmReplacePreview}
+        title="Do you want to replace the attachment?"
+        description="Replacing the attachment cannot be undone."
+      />
     </form>
   );
 };

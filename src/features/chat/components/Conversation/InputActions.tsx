@@ -8,15 +8,16 @@ import {
   Smile,
   SendHorizontal,
   ChevronUp,
+  Sticker,
 } from "lucide-react";
 
 const Style = {
   container: "flex items-center gap-1",
   actionButtonContainer: "flex gap-1",
-  actionButton: (showMarkDown: boolean) =>
+  actionButton: (isActive?: boolean) =>
     cn(
       "cursor-pointer items-center hover:bg-accent-foreground/10 rounded-md p-2 transition-colors duration-100 bg-transparent text-muted-foreground hover:text-accent-foreground [&_svg]:size-4",
-      showMarkDown ? "text-accent-foreground/10" : "",
+      isActive ? "bg-accent text-accent-foreground" : "",
     ),
 };
 type Props = {
@@ -25,8 +26,11 @@ type Props = {
   setShowPicker: React.Dispatch<React.SetStateAction<boolean>>;
   isPending: boolean;
   isTextFormatter?: boolean;
+  setShowStickerPicker: React.Dispatch<React.SetStateAction<boolean>>;
   showMarkDown: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  showStickerPicker?: boolean;
+  showPicker?: boolean;
 };
 
 export const InputActions = ({
@@ -37,15 +41,15 @@ export const InputActions = ({
   isTextFormatter,
   showMarkDown,
   onChange,
+  setShowStickerPicker,
+  showStickerPicker,
+  showPicker,
 }: Props) => {
   return (
     <div className={Style.container}>
       <Button
         type="button"
-        className={cn(
-          Style.actionButton(showMarkDown),
-          isTextFormatter ? "bg-accent text-accent-foreground" : "",
-        )}
+        className={cn(Style.actionButton(isTextFormatter))}
         onClick={() => {
           setTextFormatter((prev) => !prev);
         }}
@@ -58,19 +62,38 @@ export const InputActions = ({
         className="data-vertical:self-center data-[orientation=vertical]:h-6"
       />
       <div className="flex gap-1">
-        <UploadImg onChange={onChange} className={cn(Style.actionButton(showMarkDown))} />
+        <UploadImg
+          onChange={onChange}
+          className={cn(Style.actionButton(showMarkDown))}
+          disabled={showMarkDown}
+        />
+
         <Button
           ref={triggerPickerRef}
+          disabled={showMarkDown}
           type="button"
           onClick={() => {
+            setShowStickerPicker(false);
             setShowPicker?.((prev) => !prev);
           }}
-          className={Style.actionButton(showMarkDown)}
+          className={Style.actionButton(showPicker)}
         >
           <Smile size={20} />
         </Button>
 
-        <Button type="submit" disabled={isPending}>
+        <Button
+          type="button"
+          disabled={showMarkDown}
+          onClick={() => {
+            setShowPicker(false);
+            setShowStickerPicker?.((prev) => !prev);
+          }}
+          className={Style.actionButton(showStickerPicker)}
+        >
+          <Sticker size={20} />
+        </Button>
+
+        <Button disabled={showMarkDown || isPending} type="submit">
           <SendHorizontal size={20} />
         </Button>
       </div>
