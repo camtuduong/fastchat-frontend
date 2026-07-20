@@ -1,6 +1,9 @@
 import { refreshToken } from "@/features/auth/api/refreshToken";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { useNavigate } from "@tanstack/react-router";
 import axios from "axios";
+
+const navigate = useNavigate();
 
 const publicApi = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -41,6 +44,14 @@ api.interceptors.response.use(
       original.headers.Authorization = `Bearer ${data.accessToken}`;
       return api(original);
     } catch (err) {
+      useAuthStore.setState({
+        accessToken: null,
+      });
+
+      navigate({
+        to: "/login",
+      });
+
       throw err;
     }
   },
