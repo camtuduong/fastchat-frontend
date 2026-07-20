@@ -1,10 +1,11 @@
 import { sendMessageGroup } from "@/features/chat/api/sendMessageGroup";
+import type { Attachment } from "@/features/chat/types/Message";
 import { useMutation } from "@tanstack/react-query";
 
 type Props = {
   conversationId: string;
-  content: string;
-  attachments: string[];
+  content?: string;
+  attachments?: Attachment[];
 };
 
 export const useSendMessageGroup = () => {

@@ -12,21 +12,23 @@ import { Button } from "@/components/ui/button";
 type Props = {
   open: boolean;
   onOpenChange: (nextOpen: boolean) => void;
-  handleReopenConversation: () => void;
+  onConfirm: () => void;
+  title: string;
+  description: string;
 };
 export const AlertDialog = ({
   open,
   onOpenChange,
-  handleReopenConversation,
+  onConfirm,
+  title,
+  description,
 }: Props) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Remove Conversation</DialogTitle>
-          <DialogDescription>
-            Once you delete your copy of this conversation, it cannot be undone.
-          </DialogDescription>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <DialogClose asChild>
@@ -34,12 +36,8 @@ export const AlertDialog = ({
               Cancel
             </Button>
           </DialogClose>
-          <Button
-            type="button"
-            variant="destructive"
-            onClick={handleReopenConversation}
-          >
-            Remove
+          <Button type="button" variant="destructive" onClick={onConfirm}>
+            Confirm
           </Button>
         </DialogFooter>
       </DialogContent>

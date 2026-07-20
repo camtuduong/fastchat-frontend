@@ -1,10 +1,11 @@
-import { api } from "@/lib/api";
+import type { Attachment } from "@/features/chat/types/Message";
+import { api } from "@/services/api";
 
 export type Props = {
   conversationId: string;
   receiverId?: string;
-  content: string;
-  attachments: string[];
+  content?: string;
+  attachments?: Attachment[];
 };
 
 export const sendMessageDirect = async ({

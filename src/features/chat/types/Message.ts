@@ -22,7 +22,6 @@ interface Attachment {
   type: "image" | "video" | "file";
   url: string;
   name: string;
-  size: number;
 }
 
 export interface Emoji {

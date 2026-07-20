@@ -1,5 +1,5 @@
 import type { Message } from "@/features/chat/types/Message";
-import { api } from "@/lib/api";
+import { api } from "@/services/api";
 
 export type GetAllMessagesResponse = Message;
 
