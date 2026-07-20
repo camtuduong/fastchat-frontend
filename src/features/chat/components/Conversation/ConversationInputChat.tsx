@@ -74,8 +74,8 @@ export const ConversationInputChat = ({
   const triggerPickerRef = useRef<HTMLButtonElement | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
-  const { mutate: sendMessageDirect, isPending } = useSendMessageDirect();
-  const { mutate: sendMessageGroup } = useSendMessageGroup(); // Placeholder for group message sending
+  const { mutateAsync: sendMessageDirect, isPending } = useSendMessageDirect();
+  const { mutateAsync: sendMessageGroup } = useSendMessageGroup(); // Placeholder for group message sending
 
   const wrapSelection = (prefix: string, suffix = prefix) => {
     const textarea = inputRef.current;
@@ -98,7 +98,7 @@ export const ConversationInputChat = ({
     });
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     const content = message.trim();
     let attachments: Attachment[] = [];
 
@@ -132,7 +132,7 @@ export const ConversationInputChat = ({
 
     if (conversationType === "direct") {
       if (attachments.length > 0) {
-        sendMessageDirect(
+        await sendMessageDirect(
           {
             conversationId: conversationId,
             attachments,
@@ -145,7 +145,7 @@ export const ConversationInputChat = ({
         );
       }
       if (content) {
-        sendMessageDirect(
+        await sendMessageDirect(
           {
             conversationId: conversationId,
             content,
@@ -165,7 +165,7 @@ export const ConversationInputChat = ({
     }
 
     if (attachments.length > 0) {
-      sendMessageGroup(
+      await sendMessageGroup(
         {
           conversationId: conversationId,
           content: "",
@@ -179,7 +179,7 @@ export const ConversationInputChat = ({
       );
     }
     if (content) {
-      sendMessageGroup(
+      await sendMessageGroup(
         {
           conversationId: conversationId,
           content,
