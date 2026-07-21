@@ -1,9 +1,7 @@
 import { refreshToken } from "@/features/auth/api/refreshToken";
+import { router } from "@/routes";
 import { useAuthStore } from "@/stores/useAuthStore";
-import { useNavigate } from "@tanstack/react-router";
 import axios from "axios";
-
-const navigate = useNavigate();
 
 const publicApi = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -48,7 +46,7 @@ api.interceptors.response.use(
         accessToken: null,
       });
 
-      navigate({
+      router.navigate({
         to: "/login",
       });
 
