@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { AlertDialog } from "@/features/chat/components/AlertDialog";
 import { useRemoveConversationForMe } from "@/features/chat/hooks/useRemoveConversationForMe";
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 type Props = {
@@ -51,7 +51,7 @@ export const MenuActions = ({ style, conversationId }: Props) => {
               setOpenAlertDialog(true);
             }}
           >
-            Remove
+            <Trash2 /> Remove
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>

@@ -8,8 +8,8 @@ interface MessageItem {
   sender: Sender;
   content: string;
   attachments: Attachment[] | [];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface Sender {

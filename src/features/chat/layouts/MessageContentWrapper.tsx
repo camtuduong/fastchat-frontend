@@ -1,11 +1,22 @@
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { useState } from "react";
+import { MessageWrapperActions } from "@/features/chat/components/MessageWrapper/MessageWrapperActions";
 import { cn } from "@/lib/utils";
-import { CornerUpLeft, EllipsisVertical } from "lucide-react";
+import { CornerUpLeft } from "lucide-react";
 import type { ReactNode } from "react";
+import type { MessageUI } from "@/features/chat/types/bubbleChat";
+import { useDeleteMessage } from "@/features/chat/hooks/useDeleteMessage";
+import { AlertDialog } from "@/features/chat/components/AlertDialog";
 
 type Props = {
   isMyMessage?: boolean;
   children: ReactNode;
+  message?: MessageUI;
 };
 
 const Style = {
@@ -16,7 +27,39 @@ const Style = {
     "bg-accent text-muted-foreground rounded-full shadow-md border border-border p-1",
 };
 
-export const MessageContentWrapper = ({ children, isMyMessage }: Props) => {
+export const MessageContentWrapper = ({
+  children,
+  isMyMessage,
+  message,
+}: Props) => {
+  const [openMoreAction, setOpenMoreAction] = useState(false);
+
+  const [openAlertDialog, setOpenAlertDialog] = useState(false);
+  const { mutateAsync: deleteMessage } = useDeleteMessage();
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(message?.content || "");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    setOpenAlertDialog(nextOpen);
+  };
+
+  const handleDeleteMessage = async () => {
+    if (message?._id) {
+      try {
+        await deleteMessage(message._id);
+        setOpenAlertDialog(false);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
   return (
     <div
       className={cn(
@@ -31,14 +74,40 @@ export const MessageContentWrapper = ({ children, isMyMessage }: Props) => {
         className={cn(
           Style.actionButtonContainer,
           isMyMessage ? "right-full pr-2" : "left-full pl-2",
+          openMoreAction ? "opacity-100" : "opacity-0",
         )}
       >
-        <Button variant="icon" size="icon-sm" className={Style.actionButton}>
-          <CornerUpLeft />
-        </Button>
-        <Button variant="icon" size="icon-sm" className={Style.actionButton}>
-          <EllipsisVertical />
-        </Button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="icon"
+              size="icon-sm"
+              className={Style.actionButton}
+            >
+              <CornerUpLeft />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p className="text-xs text-gray-500">Reply</p>
+          </TooltipContent>
+        </Tooltip>
+
+        <MessageWrapperActions
+          open={openMoreAction}
+          onOpenChange={setOpenMoreAction}
+          className={Style.actionButton}
+          isMyMessage={isMyMessage}
+          onCopy={handleCopy}
+          setOpenAlertDialog={setOpenAlertDialog}
+        />
+
+        <AlertDialog
+          open={openAlertDialog}
+          onOpenChange={handleOpenChange}
+          onConfirm={handleDeleteMessage}
+          title="Remove message"
+          description="Once you delete this message, it cannot be undone."
+        />
       </div>
     </div>
   );
