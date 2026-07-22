@@ -57,9 +57,10 @@ export const MessageBubble = ({ message, isMyMessage }: Props) => {
         >
           {message?.replyTo && (
             <ReplyMessage
-              avatarUrl={message.replyTo.sender.avatarUrl}
-              displayName={message.replyTo.sender.displayName}
-              content={message.replyTo.content}
+              avatarUrl={message?.replyTo?.sender?.avatarUrl}
+              displayName={message?.replyTo?.sender?.displayName}
+              content={message?.replyTo?.content}
+              isMyMessage={isMyMessage}
             />
           )}
           {message?.attachments?.length > 0 ? (

@@ -51,12 +51,12 @@ export const SearchUser = ({
               className="bg-muted flex items-center gap-1.5 rounded-full py-0.5 pr-1.5 pl-1 text-sm"
             >
               <Avatar className="h-5 w-5">
-                <AvatarImage src={user.avatarUrl} alt={user.displayName} />
+                <AvatarImage src={user?.avatarUrl} alt={user.displayName} />
                 <AvatarFallback className="text-[10px]">
-                  {user.displayName[0]}
+                  {user?.displayName[0]}
                 </AvatarFallback>
               </Avatar>
-              <span>{user.displayName}</span>
+              <span>{user?.displayName}</span>
               <button
                 type="button"
                 onClick={() => handleRemove(user._id)}
@@ -110,8 +110,11 @@ export const SearchUser = ({
                   className="hover:bg-muted flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm disabled:opacity-40"
                 >
                   <Avatar className="h-7 w-7">
-                    <AvatarImage src={user.avatarUrl} alt={user.displayName} />
-                    <AvatarFallback>{user.displayName[0]}</AvatarFallback>
+                    <AvatarImage
+                      src={user?.avatarUrl}
+                      alt={user?.displayName}
+                    />
+                    <AvatarFallback>{user?.displayName?.[0]}</AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col items-start">
                     <span className="font-medium">{user.displayName}</span>

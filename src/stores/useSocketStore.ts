@@ -48,7 +48,6 @@ export const useSocketStore = create<SocketState>((set, get) => ({
       const conversationId = conversation._id.toString();
 
       // Append new message vào cache của conversation đang mở
-
       queryClient.setQueryData<
         InfiniteData<GetAllMessagesResponse, string | null>
       >(["messages", conversationId], (oldData) => {
@@ -89,7 +88,6 @@ export const useSocketStore = create<SocketState>((set, get) => ({
     });
 
     socket.on("delete-message", ({ conversation }) => {
-      console.log("Received delete-message event:", conversation);
       const conversationId = conversation._id.toString();
 
       queryClient.invalidateQueries({
@@ -99,10 +97,6 @@ export const useSocketStore = create<SocketState>((set, get) => ({
       queryClient.setQueriesData<{ conversations: Conversation[] }>(
         { queryKey: ["conversations"] },
         (oldData) => {
-          console.log(
-            "Updating conversations after delete-message event:",
-            oldData,
-          );
           if (!oldData) return oldData;
           return {
             ...oldData,
