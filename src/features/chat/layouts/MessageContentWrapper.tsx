@@ -22,6 +22,7 @@ type Props = {
 
 const Style = {
   container: "group relative w-fit max-w-[70%] min-w-0",
+  attachmentContainer: "w-full max-w-[70%]",
   actionButtonContainer:
     "absolute bottom-0.5 flex opacity-0 group-hover:opacity-100 min-h-0 gap-1 rounded-md p-1",
   actionButton:
@@ -65,7 +66,9 @@ export const MessageContentWrapper = ({
   return (
     <div
       className={cn(
-        Style.container,
+        message?.attachments?.length
+          ? Style.attachmentContainer
+          : Style.container,
         "wrap-break-word whitespace-pre-wrap",
         "flex flex-col gap-10",
       )}

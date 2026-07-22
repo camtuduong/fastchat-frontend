@@ -3,6 +3,7 @@ import { MessageBubble } from "@/features/chat/components/Conversation/MessageBu
 import { messagePositionToLabel, timeAgo } from "@/features/chat/constant";
 import type { Message } from "@/features/chat/types/Message";
 import { bubbleChat } from "@/features/chat/utils/bubbleChat";
+import { cn } from "@/lib/utils";
 
 type Props = {
   conversationMessages: Message;
@@ -46,7 +47,12 @@ export const ConversationBody = ({
               <div>
                 {(message.position === messagePositionToLabel.single ||
                   message.position === messagePositionToLabel.last) && (
-                  <div className="flex justify-end gap-2">
+                  <div
+                    className={cn(
+                      "flex gap-2",
+                      isMyMessage ? "justify-end" : "justify-start",
+                    )}
+                  >
                     {!isMyMessage && (
                       <p className="mb-1 text-xs font-semibold text-gray-500">
                         {message.sender.displayName}
