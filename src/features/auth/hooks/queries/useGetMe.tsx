@@ -16,7 +16,7 @@ export const useGetMe = () => {
     if (data?.user?.username) {
       useAuthStore
         .getState()
-        .setUser(data.user.username, data.user.displayName || null);
+        .setUser(data.user._id, data.user.displayName || null);
     }
   }, [data]);
   return { data: data?.user, error, isLoading };

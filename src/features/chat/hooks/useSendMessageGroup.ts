@@ -6,6 +6,7 @@ type Props = {
   conversationId: string;
   content?: string;
   attachments?: Attachment[];
+  replyTo?: string;
 };
 
 export const useSendMessageGroup = () => {

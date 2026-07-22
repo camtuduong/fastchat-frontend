@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { useMessageStore } from "@/stores/useMessage";
 import {
   Tooltip,
   TooltipContent,
@@ -32,6 +33,7 @@ export const MessageContentWrapper = ({
   isMyMessage,
   message,
 }: Props) => {
+  const { setReplyMessage } = useMessageStore();
   const [openMoreAction, setOpenMoreAction] = useState(false);
 
   const [openAlertDialog, setOpenAlertDialog] = useState(false);
@@ -83,6 +85,11 @@ export const MessageContentWrapper = ({
               variant="icon"
               size="icon-sm"
               className={Style.actionButton}
+              onClick={() => {
+                if (message) {
+                  setReplyMessage(message);
+                }
+              }}
             >
               <CornerUpLeft />
             </Button>

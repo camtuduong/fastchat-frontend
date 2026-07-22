@@ -18,7 +18,7 @@ export const ConversationPage = () => {
     strict: false,
     shouldThrow: false,
   })?.conversationId;
-  const myUsername = useAuthStore((state) => state.user);
+  const myUserId = useAuthStore((state) => state.userId);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { data: conversationData } = useGetConversationById(
@@ -32,13 +32,13 @@ export const ConversationPage = () => {
     isFetchingNextPage,
   } = useGetAllMessages(conversationId ?? "");
 
-  if (!conversationId || !myUsername) {
+  if (!conversationId || !myUserId) {
     return null;
   }
 
   const members = conversationData?.participants
     .map((participant) => participant)
-    .filter((participant) => participant.username !== myUsername);
+    .filter((participant) => participant.userId !== myUserId);
 
   const onScroll = async () => {
     const container = containerRef.current!;
@@ -75,7 +75,7 @@ export const ConversationPage = () => {
         <ConversationHeader members={members} />
         <ConversationBody
           conversationMessages={conversationMessages}
-          myUsername={myUsername}
+          myUserId={myUserId}
           containerRef={containerRef}
           onScroll={onScroll}
           isFetchingNextPage={isFetchingNextPage}

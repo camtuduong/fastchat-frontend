@@ -1,11 +1,12 @@
 import { Spinner } from "@/components/ui/spinner";
 import { MessageBubble } from "@/features/chat/components/Conversation/MessageBubble";
+import { messagePositionToLabel, timeAgo } from "@/features/chat/constant";
 import type { Message } from "@/features/chat/types/Message";
 import { bubbleChat } from "@/features/chat/utils/bubbleChat";
 
 type Props = {
   conversationMessages: Message;
-  myUsername: string;
+  myUserId: string;
   containerRef: React.RefObject<HTMLDivElement | null>;
   onScroll: () => void;
   isFetchingNextPage: boolean;
@@ -13,7 +14,7 @@ type Props = {
 
 export const ConversationBody = ({
   conversationMessages,
-  myUsername,
+  myUserId,
   containerRef,
   onScroll,
   isFetchingNextPage,
@@ -34,10 +35,30 @@ export const ConversationBody = ({
         onScroll={onScroll}
       >
         {layout.reverse().map((message) => {
-          const isMyMessage = myUsername === message.sender.username;
+          const isMyMessage = myUserId === message.sender.userId;
+          const messageTime = timeAgo(message.createdAt || "");
+
           return (
-            <div key={message._id} className={`flex w-full gap-4 p-px`}>
-              <MessageBubble message={message} isMyMessage={isMyMessage} />
+            <div
+              key={message._id}
+              className={`flex w-full gap-4 p-px ${isMyMessage ? "justify-end" : "justify-start"}`}
+            >
+              <div>
+                {(message.position === messagePositionToLabel.single ||
+                  message.position === messagePositionToLabel.last) && (
+                  <div className="flex justify-end gap-2">
+                    {!isMyMessage && (
+                      <p className="mb-1 text-xs font-semibold text-gray-500">
+                        {message.sender.displayName}
+                      </p>
+                    )}
+                    <p className="mb-1 self-end text-xs text-gray-400">
+                      {messageTime}
+                    </p>
+                  </div>
+                )}
+                <MessageBubble message={message} isMyMessage={isMyMessage} />
+              </div>
             </div>
           );
         })}
