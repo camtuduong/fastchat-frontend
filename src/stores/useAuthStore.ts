@@ -6,20 +6,20 @@ export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       accessToken: null,
-      user: null,
+      userId: null,
       displayName: null,
       isLoading: false,
 
       clearAuth: () =>
-        set({ accessToken: null, user: null, displayName: null }),
-      setUser: (user, displayName) => set({ user, displayName }),
+        set({ accessToken: null, userId: null, displayName: null }),
+      setUser: (userId, displayName) => set({ userId, displayName }),
     }),
     {
       name: "auth-storage",
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         accessToken: state.accessToken,
-        user: state.user,
+        userId: state.userId,
         displayName: state.displayName,
       }),
     },

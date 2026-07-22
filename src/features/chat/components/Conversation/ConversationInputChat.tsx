@@ -10,7 +10,7 @@ import type { Attachment, Emoji } from "@/features/chat/types/Message";
 import { cn } from "@/lib/utils";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
-import { Eye } from "lucide-react";
+import { Eye, X } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import type {
@@ -20,6 +20,8 @@ import type {
 } from "@/features/chat/types/sticker";
 import { AlertDialog } from "@/features/chat/components/AlertDialog";
 import { AttachmentsReview } from "@/features/chat/components/Conversation/AttachmentsReview";
+import { useMessageStore } from "@/stores/useMessage";
+import { ReplyMessage } from "@/features/chat/components/Conversation/ReplyMessage";
 
 const Style = {
   container: "relative mb-3 flex items-end gap-2 px-4 py-2",
@@ -69,6 +71,9 @@ export const ConversationInputChat = ({
   //==> At any given time, only one image can be displayed: a sticker or images.
   const [openAlertDialog, setOpenAlertDialog] = useState(false);
 
+  //state reply message store
+  const { replyMessage, clearReplyMessage } = useMessageStore();
+
   const isSendingRef = useRef(false);
   const pickerRef = useRef<HTMLDivElement | null>(null);
   const triggerPickerRef = useRef<HTMLButtonElement | null>(null);
@@ -101,6 +106,7 @@ export const ConversationInputChat = ({
   const handleSendMessage = async () => {
     const content = message.trim();
     let attachments: Attachment[] = [];
+    const replyTo = replyMessage?._id;
 
     if ((content === "" && !preview) || isPending || isSendingRef.current) {
       return;
@@ -136,6 +142,7 @@ export const ConversationInputChat = ({
           {
             conversationId: conversationId,
             attachments,
+            replyTo,
           },
           {
             onSettled: () => {
@@ -149,6 +156,7 @@ export const ConversationInputChat = ({
           {
             conversationId: conversationId,
             content,
+            replyTo,
           },
           {
             onSettled: () => {
@@ -160,6 +168,7 @@ export const ConversationInputChat = ({
 
       setPreview(null); // Clear the preview after sending
       setMessage("");
+      clearReplyMessage(); // Clear the reply message after sending
 
       return;
     }
@@ -170,6 +179,7 @@ export const ConversationInputChat = ({
           conversationId: conversationId,
           content: "",
           attachments,
+          replyTo,
         },
         {
           onSettled: () => {
@@ -183,6 +193,7 @@ export const ConversationInputChat = ({
         {
           conversationId: conversationId,
           content,
+          replyTo,
         },
         {
           onSettled: () => {
@@ -194,6 +205,7 @@ export const ConversationInputChat = ({
 
     setPreview(null); // Clear the preview after sending
     setMessage(""); // Clear the input after sending
+    clearReplyMessage(); // Clear the reply message after sending
   };
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.nativeEvent.isComposing) {
@@ -347,7 +359,14 @@ export const ConversationInputChat = ({
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, [conversationId]);
+  }, [
+    conversationId,
+    replyMessage,
+    showPicker,
+    showStickerPicker,
+    textFormatter,
+    preview,
+  ]);
 
   return (
     <form className={Style.container} onSubmit={handleSubmit}>
@@ -356,9 +375,30 @@ export const ConversationInputChat = ({
       <div
         className={cn(
           Style.actionButtonContainer,
-          isExpanded || textFormatter || preview ? "flex-col" : "flex-row",
+          isExpanded || textFormatter || preview || replyMessage
+            ? "flex-col"
+            : "flex-row",
         )}
       >
+        {/* reply message review */}
+        {replyMessage && (
+          <>
+            <ReplyMessage
+              avatarUrl={replyMessage.sender.avatarUrl}
+              displayName={replyMessage.sender.displayName}
+              content={replyMessage.content}
+              className="m-2"
+            />
+            <button
+              type="button"
+              className="bg-accent-foreground hover:bg-destructive/50 absolute top-6 right-8 cursor-pointer rounded-full p-1 text-white transition-colors duration-100"
+              onClick={() => clearReplyMessage()}
+            >
+              <X size={12} />
+            </button>
+          </>
+        )}
+
         {/*  preview img or sticker   */}
         {preview && (
           <AttachmentsReview

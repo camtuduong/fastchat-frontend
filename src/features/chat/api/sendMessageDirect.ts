@@ -6,6 +6,7 @@ export type Props = {
   receiverId?: string;
   content?: string;
   attachments?: Attachment[];
+  replyTo?: string;
 };
 
 export const sendMessageDirect = async ({
@@ -13,12 +14,14 @@ export const sendMessageDirect = async ({
   receiverId,
   content,
   attachments,
+  replyTo,
 }: Props) => {
   const res = await api.post("/messages/direct", {
     conversationId,
     receiverId,
     content,
     attachments,
+    replyTo,
   });
   return res.data;
 };

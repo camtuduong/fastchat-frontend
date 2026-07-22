@@ -6,16 +6,16 @@ import type {
 
 export const bubbleClass = (position: BubblePosition, isMyMessage: boolean) => {
   switch (position) {
-    case "single":
-      return "rounded-2xl";
+    case messagePositionToLabel.single:
+      return "rounded-2xl p-2";
 
-    case "first":
+    case messagePositionToLabel.first:
       return `${isMyMessage ? "rounded-l-2xl rounded-br-2xl rounded-tr-sm" : "rounded-b-2xl rounded-r-2xl"}`;
 
-    case "middle":
+    case messagePositionToLabel.middle:
       return `${isMyMessage ? "rounded-l-2xl rounded-r-md" : "rounded-l-md rounded-r-2xl "}`;
 
-    case "last":
+    case messagePositionToLabel.last:
       return `mt-2 ${isMyMessage ? "rounded-l-2xl rounded-tr-2xl rounded-br-sm" : "rounded-t-2xl rounded-r-2xl"}`;
   }
 };
@@ -43,4 +43,11 @@ export const timeAgo = (date: string) => {
   if (days < 7) return `${days} ngày trước`;
 
   return new Date(date).toLocaleDateString("vi-VN");
+};
+
+export const messagePositionToLabel: Record<BubblePosition, string> = {
+  single: "single",
+  first: "first",
+  middle: "middle",
+  last: "last",
 };

@@ -48,6 +48,7 @@ export const useSocketStore = create<SocketState>((set, get) => ({
       const conversationId = conversation._id.toString();
 
       // Append new message vào cache của conversation đang mở
+
       queryClient.setQueryData<
         InfiniteData<GetAllMessagesResponse, string | null>
       >(["messages", conversationId], (oldData) => {
@@ -65,7 +66,7 @@ export const useSocketStore = create<SocketState>((set, get) => ({
 
       // Cập nhật lastMessage + unreadCount trong danh sách conversations
       queryClient.setQueriesData<{ conversations: Conversation[] }>(
-        { queryKey: ["getAllConversations"] },
+        { queryKey: ["conversations"] },
         (oldData) => {
           if (!oldData) return oldData;
           return {
@@ -77,6 +78,40 @@ export const useSocketStore = create<SocketState>((set, get) => ({
                     lastMessage: conversation.lastMessage,
                     lastMessageAt: conversation.lastMessageAt,
                     unreadCount,
+                  }
+                : conv,
+            ),
+          };
+        },
+      );
+
+      queryClient.invalidateQueries({ queryKey: ["conversations"] });
+    });
+
+    socket.on("delete-message", ({ conversation }) => {
+      console.log("Received delete-message event:", conversation);
+      const conversationId = conversation._id.toString();
+
+      queryClient.invalidateQueries({
+        queryKey: ["messages", conversationId],
+      });
+
+      queryClient.setQueriesData<{ conversations: Conversation[] }>(
+        { queryKey: ["conversations"] },
+        (oldData) => {
+          console.log(
+            "Updating conversations after delete-message event:",
+            oldData,
+          );
+          if (!oldData) return oldData;
+          return {
+            ...oldData,
+            conversations: oldData.conversations.map((conv) =>
+              conv._id === conversationId
+                ? {
+                    ...conv,
+                    lastMessage: conversation.lastMessage,
+                    lastMessageAt: conversation.lastMessageAt,
                   }
                 : conv,
             ),

@@ -7,6 +7,7 @@ type Props = {
   receiverId?: string;
   content?: string;
   attachments?: Attachment[];
+  replyTo?: string;
 };
 
 export const useSendMessageDirect = () => {

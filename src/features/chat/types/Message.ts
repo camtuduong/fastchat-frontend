@@ -8,13 +8,15 @@ interface MessageItem {
   sender: Sender;
   content: string;
   attachments: Attachment[] | [];
-  createdAt: Date;
-  updatedAt: Date;
+  replyTo: MessageItem | null | undefined;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface Sender {
   userId: string;
-  username: string;
+  displayName: string;
+  avatarUrl: string;
 }
 
 interface Attachment {

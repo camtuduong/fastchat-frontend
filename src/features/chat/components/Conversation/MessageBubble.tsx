@@ -3,23 +3,32 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-import { useGetUserById } from "@/features/main/hooks/queries/useGetUserById";
 import { bubbleClass } from "@/features/chat/constant";
 import type { MessageUI } from "@/features/chat/types/bubbleChat";
 import { cn } from "@/lib/utils";
 import { MessageContentWrapper } from "@/features/chat/layouts/MessageContentWrapper";
+import { ReplyMessage } from "@/features/chat/components/Conversation/ReplyMessage";
 
 type Props = {
   message: MessageUI;
   isMyMessage: boolean;
 };
-export const MessageBubble = ({ message, isMyMessage }: Props) => {
-  const { data: userById } = useGetUserById(message.sender.userId || "");
 
+const Style = {
+  bubble: "py-2 text-sm wrap-anywhere",
+  myMessage: "bg-primary markdown-me pr-2 pl-3 text-white",
+  otherMessage: "markdown-other bg-gray-100 pr-3 pl-2 text-gray-700",
+  attachmentContainer: "mb-2 flex flex-wrap gap-2",
+  attachmentVideo: "h-auto w-full rounded-md object-cover",
+
+  replyMessageContainer:
+    "m-0 flex flex-col rounded-tr-sm rounded-br-sm rounded-bl-xl rounded-tl-xl bg-gray-100 p-2 mb-2",
+};
+export const MessageBubble = ({ message, isMyMessage }: Props) => {
   return (
     <div
       className={cn(
-        "flex w-full items-end gap-4",
+        "flex w-full items-end gap-4 p-px",
         isMyMessage ? "justify-end" : "justify-start",
       )}
     >
@@ -30,28 +39,31 @@ export const MessageBubble = ({ message, isMyMessage }: Props) => {
         )}
       >
         <AvatarImage
-          src={userById?.avatarUrl}
-          alt={userById?.username || "avatar"}
+          src={message.sender?.avatarUrl}
+          alt={message.sender?.displayName || "avatar"}
         />
         <AvatarFallback>
-          {message.sender.username[0].toUpperCase()}
+          {message.sender?.displayName?.[0]?.toUpperCase()}
         </AvatarFallback>
       </Avatar>
-      <MessageContentWrapper isMyMessage={isMyMessage}>
+      <MessageContentWrapper isMyMessage={isMyMessage} message={message}>
         <div
           className={cn(
-            "py-2 text-sm wrap-anywhere",
+            Style.bubble,
             bubbleClass(message.position, isMyMessage),
-            isMyMessage
-              ? "bg-primary markdown-me pr-2 pl-3 text-white"
-              : "markdown-other bg-gray-100 pr-3 pl-2 text-gray-700",
-            message?.attachments?.length > 0
-              ? "bg-transparent hover:bg-gray-200"
-              : "",
+            isMyMessage ? Style.myMessage : Style.otherMessage,
+            message?.attachments?.length > 0 ? Style.attachmentContainer : "",
           )}
         >
+          {message?.replyTo && (
+            <ReplyMessage
+              avatarUrl={message.replyTo.sender.avatarUrl}
+              displayName={message.replyTo.sender.displayName}
+              content={message.replyTo.content}
+            />
+          )}
           {message?.attachments?.length > 0 ? (
-            <div className="mb-2 flex flex-wrap gap-2">
+            <div className={Style.attachmentContainer}>
               {message.attachments.map((attachment, index) => (
                 <div key={index} className="w-32">
                   <video
@@ -59,14 +71,14 @@ export const MessageBubble = ({ message, isMyMessage }: Props) => {
                     loop
                     muted
                     src={attachment.url}
-                    className="h-auto w-full rounded-md object-cover"
+                    className={Style.attachmentVideo}
                   />
                 </div>
               ))}
             </div>
           ) : (
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
-              {message.content}
+              {message.content.trim()}
             </ReactMarkdown>
           )}
         </div>

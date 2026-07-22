@@ -13,8 +13,8 @@ type Props = {
 };
 
 export function AppSidebarFriend({ conversationsData, ...props }: Props) {
-  const { user, displayName } = useAuthStore((state) => state);
-  if (!user || !displayName) return null;
+  const { userId, displayName } = useAuthStore((state) => state);
+  if (!userId || !displayName) return null;
 
   return (
     <Sidebar variant="inset" {...props}>
