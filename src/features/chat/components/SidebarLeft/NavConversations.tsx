@@ -24,7 +24,7 @@ export const NavConversations = ({ conversations }: Props) => {
   const isOnline = (conversation: Conversation) => {
     if (conversation.type === conversationTypeToLabel.direct) {
       const otherParticipant = conversation.participants.find(
-        (participant) => participant.username !== useAuthStore.getState().user,
+        (participant) => participant.userId !== useAuthStore.getState().userId,
       );
       return otherParticipant
         ? onlineUsers.includes(otherParticipant.userId)
