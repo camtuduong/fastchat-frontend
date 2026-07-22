@@ -7,6 +7,7 @@ type Props = {
   displayName: string;
   content: string;
   className?: string;
+  isMyMessage?: boolean;
 };
 
 export const ReplyMessage = ({
@@ -14,12 +15,16 @@ export const ReplyMessage = ({
   displayName,
   content,
   className,
+  isMyMessage = true,
 }: Props) => {
   const fallBackImage = displayName?.charAt(0)?.toUpperCase();
   return (
     <div
       className={cn(
-        "mb-1 flex flex-col rounded-t-xl rounded-b-sm bg-gray-100 p-2",
+        "mb-1 flex flex-col p-2",
+        isMyMessage
+          ? "text-primary rounded-tl-xl rounded-tr-sm rounded-br-sm rounded-bl-xl bg-gray-100"
+          : "bg-primary rounded-tl-sm rounded-tr-xl rounded-br-xl rounded-bl-sm text-white",
         className,
       )}
     >
@@ -34,13 +39,23 @@ export const ReplyMessage = ({
         </Avatar>
 
         <span
-          className="text-primary min-w-0 truncate font-medium"
+          className={cn(
+            isMyMessage ? "text-primary" : "text-white",
+            "min-w-0 truncate font-medium",
+          )}
           title={displayName}
         >
           {displayName}
         </span>
       </div>
-      <div className="text-primary min-w-60 pl-2 text-sm">{content}</div>
+      <div
+        className={cn(
+          isMyMessage ? "text-primary" : "text-white",
+          "min-w-60 pl-2 text-sm",
+        )}
+      >
+        {content}
+      </div>
     </div>
   );
 };
