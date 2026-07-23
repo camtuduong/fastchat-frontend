@@ -22,11 +22,11 @@ type Props = {
 
 const Style = {
   container: "group relative w-fit max-w-[70%] min-w-0",
-  attachmentContainer: "w-full max-w-[70%]",
+  attachmentContainer: "group relative w-full max-w-[70%]",
   actionButtonContainer:
     "absolute bottom-0.5 flex opacity-0 group-hover:opacity-100 min-h-0 gap-1 rounded-md p-1",
   actionButton:
-    "bg-accent text-muted-foreground rounded-full shadow-md border border-border p-1",
+    "bg-accent/5 hover:bg-chart-1 text-muted-foreground rounded-full shadow-md border border-border p-1",
 };
 
 export const MessageContentWrapper = ({
@@ -98,7 +98,7 @@ export const MessageContentWrapper = ({
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p className="text-xs text-gray-500">Reply</p>
+            <p className="text-xs">Reply</p>
           </TooltipContent>
         </Tooltip>
 

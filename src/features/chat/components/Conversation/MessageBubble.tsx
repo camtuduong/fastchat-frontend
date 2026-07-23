@@ -17,9 +17,11 @@ type Props = {
 const Style = {
   bubble: "py-2 text-sm wrap-anywhere",
   myMessage: "bg-primary markdown-me pr-2 pl-3 text-white",
-  otherMessage: "markdown-other bg-gray-100 pr-3 pl-2 text-gray-700",
-  attachmentContainer: "mb-2 flex w-full flex-wrap gap-2 bg-transparent",
-  attachmentVideo: "h-auto w-full rounded-md object-cover",
+  otherMessage:
+    "markdown-other bg-gray-100 dark:bg-accent pr-3 pl-2 text-gray-700 dark:text-gray-200",
+  attachmentContainer:
+    "mb-2 flex w-full flex-wrap gap-2 bg-transparent p-2 hover:bg-red-500/5",
+  attachmentVideo: "h-auto w-32 rounded-md object-cover",
 
   replyMessageContainer:
     "m-0 flex flex-col rounded-tr-sm rounded-br-sm rounded-bl-xl rounded-tl-xl bg-gray-100 p-2 mb-2",
@@ -52,7 +54,9 @@ export const MessageBubble = ({ message, isMyMessage }: Props) => {
             Style.bubble,
             bubbleClass(message.position, isMyMessage),
             isMyMessage ? Style.myMessage : Style.otherMessage,
-            message?.attachments?.length > 0 ? Style.attachmentContainer : "",
+            message?.attachments?.length > 0 && !message?.replyTo
+              ? Style.attachmentContainer
+              : "",
           )}
         >
           {message?.replyTo && (
@@ -64,9 +68,9 @@ export const MessageBubble = ({ message, isMyMessage }: Props) => {
             />
           )}
           {message?.attachments?.length > 0 ? (
-            <div className={Style.attachmentContainer}>
+            <div>
               {message.attachments.map((attachment) => (
-                <div key={attachment.id} className="w-full">
+                <div key={attachment.id}>
                   <video
                     autoPlay
                     loop

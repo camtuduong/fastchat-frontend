@@ -63,10 +63,10 @@ export const ListFriendsPage = () => {
         type: "direct",
         participants: userId,
       });
-      navigate({ to: result.conversation });
+      navigate({ to: `/chat/${result.conversation}` });
     } catch (error) {
       const err = error as AxiosError<AxiosConversationError>;
-      navigate({ to: err.response?.data.conversation });
+      navigate({ to: `/chat/${err.response?.data.conversation}` });
     }
   };
 
@@ -114,7 +114,7 @@ export const ListFriendsPage = () => {
               {grouped[letter].map((friend) => (
                 <button
                   key={friend._id}
-                  className="hover:bg-accent hover:text-accent-foreground relative flex w-full cursor-pointer items-center gap-2 rounded-md p-2"
+                  className="hover:bg-accent/5 hover:text-accent-foreground relative flex w-full cursor-pointer items-center gap-2 rounded-md p-2"
                   onClick={() => {
                     handleCreateGroup([friend._id]);
                   }}

@@ -15,9 +15,6 @@ export const SidebarHeaderAndSearch = () => {
       <div className="mb-4 flex items-center justify-between gap-2">
         <div className="text-lg font-semibold">Chats with Friends</div>
         <div className="flex gap-1">
-          {/* <Button className="p-1" variant="icon" size="icon">
-            <Ellipsis />
-          </Button> */}
           <CreateGroupDialog
             buttonTrigger={
               <Button className="p-1" variant="icon" size="icon">

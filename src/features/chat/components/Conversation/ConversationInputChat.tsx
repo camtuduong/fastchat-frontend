@@ -387,11 +387,12 @@ export const ConversationInputChat = ({
               avatarUrl={replyMessage.sender.avatarUrl}
               displayName={replyMessage.sender.displayName}
               content={replyMessage.content}
-              className="m-2"
+              className="bg-accent/10 dark:bg-accent m-2 rounded-lg p-2"
+              description={<span className="shrink-0">Replying to:</span>}
             />
             <button
               type="button"
-              className="bg-accent-foreground hover:bg-destructive/50 absolute top-6 right-8 cursor-pointer rounded-full p-1 text-white transition-colors duration-100"
+              className="bg-accent-foreground hover:bg-destructive absolute top-6 right-8 cursor-pointer rounded-full p-1 text-white transition-colors duration-100"
               onClick={() => clearReplyMessage()}
             >
               <X size={12} />

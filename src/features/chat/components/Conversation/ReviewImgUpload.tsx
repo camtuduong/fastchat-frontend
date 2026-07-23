@@ -7,7 +7,7 @@ export const ReviewImgUpload = ({ imgUrl }: Props) => {
     <img
       src={imgUrl}
       alt="preview"
-      className="h-40 w-40 rounded-2xl object-cover shadow-md"
+      className="h-32 w-32 rounded-2xl object-cover shadow-md"
     />
   );
 };

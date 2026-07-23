@@ -13,3 +13,7 @@ export {
 export const removeVietnameseTones = (str: string) => {
   return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 };
+
+const DATE_FORMAT = "yyyy-MM-dd HH:mm:ss"; // Định dạng ngày giờ
+
+export { DATE_FORMAT };

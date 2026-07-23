@@ -54,7 +54,7 @@ export const CreateGroupDialog = ({ buttonTrigger }: Props) => {
         type: "group",
         participants: userIdsSelected,
       });
-      navigate({ to: result.conversation });
+      navigate({ to: `/chat/${result.conversation}` });
     } catch (error) {
       console.error("Failed to create group:", error);
     }

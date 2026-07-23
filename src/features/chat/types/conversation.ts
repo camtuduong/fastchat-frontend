@@ -15,7 +15,7 @@ interface Conversation {
 }
 interface Participant {
   userId: string;
-  username: string;
+  displayName: string;
   joinedAt: string;
 }
 

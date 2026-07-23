@@ -21,7 +21,7 @@ export const AttachmentsReview = ({
             <ReviewImgUpload imgUrl={file.url} />
             <button
               type="button"
-              className="bg-accent-foreground hover:bg-destructive/50 absolute top-3 right-2 cursor-pointer rounded-full p-1 text-white transition-colors duration-100"
+              className="bg-accent-foreground hover:bg-destructive absolute top-3 right-2 cursor-pointer rounded-full p-1 text-white transition-colors duration-100"
               onClick={() => removeImage?.(file.id)}
             >
               <X size={16} />
@@ -37,11 +37,11 @@ export const AttachmentsReview = ({
             muted
             playsInline
             src={preview.data.url}
-            className="h-40 w-40 rounded-2xl object-cover shadow-md"
+            className="h-32 w-32 rounded-2xl object-cover shadow-md"
           />
           <button
             type="button"
-            className="bg-accent-foreground hover:bg-destructive/50 absolute top-3 right-2 cursor-pointer rounded-full p-1 text-white transition-colors duration-100"
+            className="bg-accent-foreground hover:bg-destructive absolute top-3 right-2 cursor-pointer rounded-full p-1 text-white transition-colors duration-100"
             onClick={() => removeSticker?.(preview.data.id)}
           >
             <X size={16} />
