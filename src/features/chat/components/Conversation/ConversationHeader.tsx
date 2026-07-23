@@ -37,7 +37,7 @@ export const ConversationHeader = ({ members }: Props) => {
             <AvatarImage src={userById?.avatarUrl} alt="@shadcn" />
             <AvatarFallback>
               {members
-                ?.map((member) => member.displayName[0].toUpperCase())
+                ?.map((member) => member.displayName?.[0]?.toUpperCase())
                 .join(", ")}
             </AvatarFallback>
             <AvatarBadge
