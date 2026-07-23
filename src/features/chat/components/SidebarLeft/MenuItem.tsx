@@ -29,7 +29,7 @@ const Style = {
   lastMessage: "text-muted-foreground text-sm truncate",
   lastMessageTimeAgo: "text-muted-foreground text-xs",
   buttonAction:
-    "cursor-pointer hover:bg-accent absolute top-1/2 right-2 z-10 -translate-y-1/2 transform items-center rounded-full p-2 opacity-0 bg-white group-hover/menu-item:opacity-100 shadow-md transition-opacity",
+    "cursor-pointer hover:bg-gray-5 absolute top-1/2 right-2 z-10 -translate-y-1/2 transform items-center rounded-full p-2 opacity-0 dark:bg-primary dark:hover:bg-accent bg-background group-hover/menu-item:opacity-100 shadow-md transition-opacity",
 };
 
 export const MenuItem = ({ conversation, isOnline, isActive }: Props) => {
@@ -57,7 +57,10 @@ export const MenuItem = ({ conversation, isOnline, isActive }: Props) => {
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
-        className={cn(Style.container, isActive && "bg-primary/5")}
+        className={cn(
+          Style.container,
+          isActive && "bg-primary/5 dark:bg-accent",
+        )}
         onClick={() => navigate({ to: `/chat/${conversation._id}` })}
         asChild
       >

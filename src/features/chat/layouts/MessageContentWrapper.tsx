@@ -98,7 +98,7 @@ export const MessageContentWrapper = ({
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p className="text-xs text-gray-500">Reply</p>
+            <p className="text-xs">Reply</p>
           </TooltipContent>
         </Tooltip>
 

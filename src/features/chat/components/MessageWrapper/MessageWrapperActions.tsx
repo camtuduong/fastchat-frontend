@@ -39,7 +39,7 @@ export const MessageWrapperActions = ({
           </DropdownMenuTrigger>
         </TooltipTrigger>
         <TooltipContent>
-          <p className="text-xs text-gray-500">More</p>
+          <p className="text-xs">More</p>
         </TooltipContent>
       </Tooltip>
       <DropdownMenuContent

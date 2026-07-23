@@ -17,7 +17,8 @@ type Props = {
 const Style = {
   bubble: "py-2 text-sm wrap-anywhere",
   myMessage: "bg-primary markdown-me pr-2 pl-3 text-white",
-  otherMessage: "markdown-other bg-gray-100 pr-3 pl-2 text-gray-700",
+  otherMessage:
+    "markdown-other bg-gray-100 dark:bg-accent pr-3 pl-2 text-gray-700 dark:text-gray-200",
   attachmentContainer: "mb-2 flex w-full flex-wrap gap-2 bg-transparent",
   attachmentVideo: "h-auto w-full rounded-md object-cover",
 
