@@ -40,16 +40,16 @@ export const MenuItem = ({ conversation, isOnline, isActive }: Props) => {
     conversation.type === conversationTypeToLabel.direct;
 
   const participantsName = conversation.participants
-    .filter((participant) => participant.username !== me?.username)
-    .map((participant) => participant.username)
+    .filter((participant) => participant.userId !== me?._id)
+    .map((participant) => participant.displayName)
     .join(", ");
 
   const friends = conversation.participants.find(
-    (participant) => participant.username !== me?.username,
+    (participant) => participant.userId !== me?._id,
   );
   const { data: userById } = useGetUserById(friends?.userId || "");
 
-  const unreadCount = conversation.unreadCount[me?.userId] || 0;
+  const unreadCount = conversation.unreadCount[me?._id] || 0;
 
   const isLastMessageFromMe = conversation.lastMessage?.senderId === me?._id;
   const lastMessageTimeAgo = timeAgo(conversation?.lastMessageAt || "");
@@ -69,7 +69,7 @@ export const MenuItem = ({ conversation, isOnline, isActive }: Props) => {
             <Avatar className={Style.avatar}>
               <AvatarImage src={userById?.avatarUrl} alt="@shadcn" />
               <AvatarFallback>
-                {friends?.username[0].toUpperCase()}
+                {friends?.displayName[0].toUpperCase()}
               </AvatarFallback>
               <AvatarBadge
                 className={`${isOnline ? "bg-green-600 dark:bg-green-800" : "bg-gray-200 dark:bg-gray-600"}`}
@@ -77,7 +77,7 @@ export const MenuItem = ({ conversation, isOnline, isActive }: Props) => {
             </Avatar>
             <div className="flex-1 truncate">
               <div className="flex items-center justify-between">
-                <div className="truncate">{friends?.username}</div>
+                <div className="truncate">{friends?.displayName}</div>
                 <span className={Style.lastMessageTimeAgo}>
                   {lastMessageTimeAgo}
                 </span>

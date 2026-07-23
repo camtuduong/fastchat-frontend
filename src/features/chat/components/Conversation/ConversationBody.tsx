@@ -4,6 +4,9 @@ import { messagePositionToLabel, timeAgo } from "@/features/chat/constant";
 import type { Message } from "@/features/chat/types/Message";
 import { bubbleChat } from "@/features/chat/utils/bubbleChat";
 import { cn } from "@/lib/utils";
+import { useRef } from "react";
+import { format } from "date-fns";
+import { DATE_FORMAT } from "@/utils/constant";
 
 type Props = {
   conversationMessages: Message;
@@ -11,6 +14,8 @@ type Props = {
   containerRef: React.RefObject<HTMLDivElement | null>;
   onScroll: () => void;
   isFetchingNextPage: boolean;
+  conversationType?: "direct" | "group";
+  conversationAt?: string;
 };
 
 export const ConversationBody = ({
@@ -19,8 +24,11 @@ export const ConversationBody = ({
   containerRef,
   onScroll,
   isFetchingNextPage,
+  conversationType,
+  conversationAt,
 }: Props) => {
   const layout = bubbleChat(conversationMessages.messages);
+  const playCountRef = useRef(0);
 
   return (
     <>
@@ -35,6 +43,37 @@ export const ConversationBody = ({
         className="flex min-h-0 flex-1 flex-col overflow-x-hidden overflow-y-auto overscroll-contain rounded-b-xl p-8 pt-4"
         onScroll={onScroll}
       >
+        <div className="mb-4 flex w-full flex-col items-center justify-center text-xs text-gray-400">
+          <video
+            autoPlay
+            muted
+            playsInline
+            className="h-70 w-70"
+            src="/first.webm"
+            onMouseEnter={(e) => {
+              e.currentTarget.play();
+              e.currentTarget.currentTime = 0;
+              void e.currentTarget.play();
+            }}
+            onEnded={(e) => {
+              if (playCountRef.current < 2) {
+                playCountRef.current += 1;
+                void e.currentTarget.play();
+              }
+            }}
+          />
+          <div className="flex flex-col items-center justify-center gap-1">
+            <span className="text-sm">
+              You started the conversation at{" "}
+              {format(new Date(conversationAt || ""), DATE_FORMAT)}
+            </span>
+            <span className="text-lg">
+              Let's chat with your friend
+              {conversationType === "direct" ? "" : "s"}!
+            </span>
+          </div>
+        </div>
+
         {layout.reverse().map((message) => {
           const isMyMessage = myUserId === message.sender.userId;
           const messageTime = timeAgo(message.createdAt || "");

@@ -18,7 +18,7 @@ type Props = {
 export const ConversationHeader = ({ members }: Props) => {
   const onlineUsers = useSocketStore((state) => state.onlineUsers);
   const isOnline = members?.some((member) =>
-    onlineUsers.includes(member.username),
+    onlineUsers.includes(member.userId),
   );
   const { data: userById } = useGetUserById(members?.[0]?.userId || "");
 
@@ -37,7 +37,7 @@ export const ConversationHeader = ({ members }: Props) => {
             <AvatarImage src={userById?.avatarUrl} alt="@shadcn" />
             <AvatarFallback>
               {members
-                ?.map((member) => member.username[0].toUpperCase())
+                ?.map((member) => member.displayName[0].toUpperCase())
                 .join(", ")}
             </AvatarFallback>
             <AvatarBadge
@@ -45,7 +45,7 @@ export const ConversationHeader = ({ members }: Props) => {
             />
           </Avatar>
           <span className="truncate">
-            {members?.map((member) => member.username).join(", ")}
+            {members?.map((member) => member.displayName).join(", ")}
           </span>
         </div>
       </div>
