@@ -12,6 +12,7 @@ import {
 import { AppCustomSidebar } from "@/features/chat/components/SidebarRight/AppCustomSidebar";
 import { useEffect, useRef } from "react";
 import { useParams } from "@tanstack/react-router";
+import { useMessageStore } from "@/stores/useMessage";
 
 export const ConversationPage = () => {
   const conversationId = useParams({
@@ -20,6 +21,8 @@ export const ConversationPage = () => {
   })?.conversationId;
   const myUserId = useAuthStore((state) => state.userId);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const { clearReplyMessage } = useMessageStore();
 
   const { data: conversationData } = useGetConversationById(
     conversationId ?? "",
@@ -58,7 +61,13 @@ export const ConversationPage = () => {
     if (!container) return;
 
     container.scrollTop = container.scrollHeight;
-  }, [conversationMessages.messages.length]);
+  }, [conversationMessages?.messages.length]);
+
+  useEffect(() => {
+    return () => {
+      clearReplyMessage();
+    };
+  }, [conversationId]);
 
   if (isLoading) {
     return (

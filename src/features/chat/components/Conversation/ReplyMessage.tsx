@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CornerDownRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { ReactNode } from "react";
 
 type Props = {
   avatarUrl: string;
@@ -8,6 +9,7 @@ type Props = {
   content: string;
   className?: string;
   isMyMessage?: boolean;
+  description?: ReactNode;
 };
 
 export const ReplyMessage = ({
@@ -16,6 +18,7 @@ export const ReplyMessage = ({
   content,
   className,
   isMyMessage = true,
+  description,
 }: Props) => {
   const fallBackImage = displayName?.charAt(0)?.toUpperCase();
   return (
@@ -31,7 +34,7 @@ export const ReplyMessage = ({
       <div className="text-muted-foreground flex items-center gap-2 text-sm">
         <CornerDownRight className="h-4 w-4 shrink-0" />
 
-        <span className="shrink-0">Replying to:</span>
+        {description}
 
         <Avatar size="sm" className="shrink-0">
           <AvatarImage src={avatarUrl} />
@@ -45,7 +48,7 @@ export const ReplyMessage = ({
           {displayName}
         </span>
       </div>
-      <div className={cn("min-w-60 pl-2 text-sm")}>{content}</div>
+      <div className={cn("min-w-40 pl-2 text-sm")}>{content}</div>
     </div>
   );
 };

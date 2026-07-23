@@ -63,10 +63,10 @@ export const ListFriendsPage = () => {
         type: "direct",
         participants: userId,
       });
-      navigate({ to: result.conversation });
+      navigate({ to: `/chat/${result.conversation}` });
     } catch (error) {
       const err = error as AxiosError<AxiosConversationError>;
-      navigate({ to: err.response?.data.conversation });
+      navigate({ to: `/chat/${err.response?.data.conversation}` });
     }
   };
 

@@ -49,7 +49,7 @@ export const ConversationBody = ({
                   message.position === messagePositionToLabel.last) && (
                   <div
                     className={cn(
-                      "flex gap-2",
+                      "mt-4 flex gap-2",
                       isMyMessage ? "justify-end" : "justify-start",
                     )}
                   >
