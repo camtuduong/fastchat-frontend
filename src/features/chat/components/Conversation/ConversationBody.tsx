@@ -1,8 +1,11 @@
 import { Spinner } from "@/components/ui/spinner";
 import { MessageBubble } from "@/features/chat/components/Conversation/MessageBubble";
-import { messagePositionToLabel, timeAgo } from "@/features/chat/constant";
+import {
+  bubbleChat,
+  messagePositionToLabel,
+  timeAgo,
+} from "@/features/chat/constant";
 import type { Message } from "@/features/chat/types/Message";
-import { bubbleChat } from "@/features/chat/utils/bubbleChat";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { DATE_FORMAT } from "@/utils/constant";

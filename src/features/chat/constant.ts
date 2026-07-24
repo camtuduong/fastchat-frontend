@@ -1,8 +1,57 @@
-import type { BubblePosition } from "@/features/chat/types/bubbleChat";
+import type {
+  BubblePosition,
+  MessageUI,
+} from "@/features/chat/types/bubbleChat";
 import type {
   Conversation,
   ConversationType,
 } from "@/features/chat/types/conversation";
+import type { MessageItem } from "@/features/chat/types/Message";
+
+const TEN_MINUTES_IN_MINUTES = 20;
+
+const getTimeDiffInMs = (currentDate: string, compareDate: string) => {
+  const diffMs =
+    new Date(currentDate).getTime() - new Date(compareDate).getTime();
+
+  return Math.abs(diffMs) / (60 * 1000);
+};
+
+export const bubbleChat = (messageItem: MessageItem[]): MessageUI[] => {
+  return messageItem.map((message, index) => {
+    const prevMessage = messageItem[index - 1];
+    const nextMessage = messageItem[index + 1];
+
+    const samePrev =
+      !!prevMessage &&
+      prevMessage.sender.userId === message.sender.userId &&
+      getTimeDiffInMs(message.createdAt, prevMessage?.createdAt || "") <
+        TEN_MINUTES_IN_MINUTES;
+    const sameNext =
+      !!nextMessage &&
+      nextMessage.sender.userId === message.sender.userId &&
+      getTimeDiffInMs(nextMessage?.createdAt || "", message.createdAt) <
+        TEN_MINUTES_IN_MINUTES;
+
+    let position: BubblePosition;
+
+    if (!samePrev && !sameNext) {
+      position = "single";
+    } else if (samePrev && !sameNext) {
+      position = "last";
+    } else if (samePrev && sameNext) {
+      position = "middle";
+    } else {
+      position = "first";
+    }
+
+    return {
+      ...message,
+      position,
+      showAvatar: position === "single" || position === "last",
+    };
+  });
+};
 
 export const bubbleClass = (position: BubblePosition, isMyMessage: boolean) => {
   switch (position) {
@@ -37,10 +86,10 @@ export const timeAgo = (date: string) => {
   const hours = Math.floor(diffMs / 3600000);
   const days = Math.floor(diffMs / 86400000);
 
-  if (diffMs < 60000) return "Vừa xong";
-  if (minutes < 60) return `${minutes} phút trước`;
-  if (hours < 24) return `${hours} giờ trước`;
-  if (days < 7) return `${days} ngày trước`;
+  if (diffMs < 60000) return "just now";
+  if (minutes < 60) return `${minutes} minutes ago`;
+  if (hours < 24) return `${hours} hours ago`;
+  if (days < 7) return `${days} days ago`;
 
   return new Date(date).toLocaleDateString("vi-VN");
 };
