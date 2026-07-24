@@ -15,11 +15,12 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { useState, type ReactNode } from "react";
 import { useCreateNewConversation } from "@/features/chat/hooks/useCreateNewConversation";
 import { useNavigate } from "@tanstack/react-router";
+import { conversationTypeToLabel } from "@/features/chat/constant";
 
 type Props = {
   buttonTrigger: ReactNode;
 };
-export const CreateGroupDialog = ({ buttonTrigger }: Props) => {
+export const CreateConversationDialog = ({ buttonTrigger }: Props) => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -51,7 +52,10 @@ export const CreateGroupDialog = ({ buttonTrigger }: Props) => {
 
     try {
       const result = await createGroupMutation({
-        type: "group",
+        type:
+          userIdsSelected.length === 1
+            ? conversationTypeToLabel.direct
+            : conversationTypeToLabel.group,
         participants: userIdsSelected,
       });
       navigate({ to: `/chat/${result.conversation}` });
@@ -72,7 +76,7 @@ export const CreateGroupDialog = ({ buttonTrigger }: Props) => {
           }}
         >
           <DialogHeader>
-            <DialogTitle>Create Group</DialogTitle>
+            <DialogTitle>Create Conversation</DialogTitle>
           </DialogHeader>
           <SearchUser
             searchValue={searchValue}
@@ -89,9 +93,9 @@ export const CreateGroupDialog = ({ buttonTrigger }: Props) => {
             </DialogClose>
             <Button
               type="submit"
-              disabled={userIdsSelected.length <= 1 || isPending}
+              disabled={userIdsSelected.length === 0 || isPending}
             >
-              {isPending ? "Creating..." : "Create Group"}
+              {isPending ? "Creating..." : "Create Conversation"}
             </Button>
           </DialogFooter>
         </form>

@@ -4,7 +4,6 @@ import { messagePositionToLabel, timeAgo } from "@/features/chat/constant";
 import type { Message } from "@/features/chat/types/Message";
 import { bubbleChat } from "@/features/chat/utils/bubbleChat";
 import { cn } from "@/lib/utils";
-import { useRef } from "react";
 import { format } from "date-fns";
 import { DATE_FORMAT } from "@/utils/constant";
 
@@ -28,7 +27,6 @@ export const ConversationBody = ({
   conversationAt,
 }: Props) => {
   const layout = bubbleChat(conversationMessages.messages);
-  const playCountRef = useRef(0);
 
   return (
     <>
@@ -52,14 +50,6 @@ export const ConversationBody = ({
             src="/first.webm"
             onMouseEnter={(e) => {
               e.currentTarget.play();
-              e.currentTarget.currentTime = 0;
-              void e.currentTarget.play();
-            }}
-            onEnded={(e) => {
-              if (playCountRef.current < 2) {
-                playCountRef.current += 1;
-                void e.currentTarget.play();
-              }
             }}
           />
           <div className="flex flex-col items-center justify-center gap-1">
