@@ -56,7 +56,7 @@ export const bubbleChat = (messageItem: MessageItem[]): MessageUI[] => {
 export const bubbleClass = (position: BubblePosition, isMyMessage: boolean) => {
   switch (position) {
     case messagePositionToLabel.single:
-      return "rounded-2xl p-2";
+      return "rounded-2xl";
 
     case messagePositionToLabel.first:
       return `${isMyMessage ? "rounded-l-2xl rounded-br-2xl rounded-tr-sm" : "rounded-b-2xl rounded-r-2xl"}`;
@@ -65,7 +65,26 @@ export const bubbleClass = (position: BubblePosition, isMyMessage: boolean) => {
       return `${isMyMessage ? "rounded-l-2xl rounded-r-md" : "rounded-l-md rounded-r-2xl "}`;
 
     case messagePositionToLabel.last:
-      return `mt-2 ${isMyMessage ? "rounded-l-2xl rounded-tr-2xl rounded-br-sm" : "rounded-t-2xl rounded-r-2xl"}`;
+      return ` ${isMyMessage ? "rounded-l-2xl rounded-tr-2xl rounded-br-sm" : "rounded-t-2xl rounded-r-2xl"}`;
+  }
+};
+
+export const bubbleReplyClass = (
+  position: BubblePosition,
+  isMyMessage: boolean,
+) => {
+  switch (position) {
+    case messagePositionToLabel.single:
+      return "rounded-t-2xl rounded-b-xl";
+
+    case messagePositionToLabel.first:
+      return `${isMyMessage ? "rounded-tl-2xl rounded-b-xl rounded-tr-sm" : "rounded-b-xl rounded-r-2xl"}`;
+
+    case messagePositionToLabel.middle:
+      return `${isMyMessage ? "rounded-tl-2xl rounded-b-xl rounded-tr-sm" : "rounded-tl-md rounded-tr-2xl rounded-b-xl"}`;
+
+    case messagePositionToLabel.last:
+      return ` ${isMyMessage ? "rounded-l-2xl rounded-tr-2xl rounded-br-sm" : "rounded-t-2xl rounded-r-2xl"}`;
   }
 };
 

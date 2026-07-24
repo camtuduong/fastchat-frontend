@@ -2,6 +2,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CornerDownRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
+import { bubbleReplyClass } from "@/features/chat/constant";
+import type { BubblePosition } from "@/features/chat/types/bubbleChat";
 
 type Props = {
   avatarUrl: string;
@@ -10,6 +12,7 @@ type Props = {
   className?: string;
   isMyMessage?: boolean;
   description?: ReactNode;
+  messagePosition?: BubblePosition;
 };
 
 export const ReplyMessage = ({
@@ -19,15 +22,18 @@ export const ReplyMessage = ({
   className,
   isMyMessage = true,
   description,
+  messagePosition,
 }: Props) => {
   const fallBackImage = displayName?.charAt(0)?.toUpperCase();
   return (
     <div
       className={cn(
         "mb-1 flex flex-col p-2",
+        bubbleReplyClass(messagePosition!, isMyMessage),
         isMyMessage
-          ? "bg-chart-5 rounded-tl-xl rounded-tr-sm rounded-br-sm rounded-bl-xl"
-          : "dark:bg-background rounded-tl-sm rounded-tr-xl rounded-br-xl rounded-bl-sm bg-white dark:text-white",
+          ? "bg-chart-5"
+          : "dark:bg-background bg-white dark:text-white",
+
         className,
       )}
     >

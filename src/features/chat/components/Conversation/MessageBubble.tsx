@@ -16,9 +16,9 @@ type Props = {
 
 const Style = {
   bubble: "py-2 text-sm wrap-anywhere",
-  myMessage: "bg-primary markdown-me p-2 text-white",
+  myMessage: "bg-primary markdown-me text-white p-0.5",
   otherMessage:
-    "markdown-other bg-gray-100 dark:bg-accent p-2 text-gray-700 dark:text-gray-200",
+    "markdown-other bg-gray-100 dark:bg-accent p-0.5 text-gray-700 dark:text-gray-200",
   attachmentContainer:
     "mb-2 flex w-full flex-wrap gap-2 bg-transparent p-2 hover:bg-red-500/5",
   attachmentVideo: "h-auto w-32 rounded-md object-cover",
@@ -65,6 +65,7 @@ export const MessageBubble = ({ message, isMyMessage }: Props) => {
               displayName={message?.replyTo?.sender?.displayName}
               content={message?.replyTo?.content}
               isMyMessage={isMyMessage}
+              messagePosition={message?.position}
             />
           )}
           {message?.attachments?.length > 0 ? (
@@ -82,9 +83,11 @@ export const MessageBubble = ({ message, isMyMessage }: Props) => {
               ))}
             </div>
           ) : (
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
-              {message.content.trim()}
-            </ReactMarkdown>
+            <div className="px-2 py-1">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {message.content.trim()}
+              </ReactMarkdown>
+            </div>
           )}
         </div>
       </MessageContentWrapper>
