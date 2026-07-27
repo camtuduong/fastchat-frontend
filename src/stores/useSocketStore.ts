@@ -87,32 +87,36 @@ export const useSocketStore = create<SocketState>((set, get) => ({
       queryClient.invalidateQueries({ queryKey: ["conversations"] });
     });
 
-    socket.on("delete-message", ({ conversation }) => {
-      const conversationId = conversation._id.toString();
+    socket.on(
+      "delete-message",
+      ({ conversation }: { conversation: Conversation }) => {
+        console.log("Received delete-message event:", conversation);
+        const conversationId = conversation._id.toString();
 
-      queryClient.invalidateQueries({
-        queryKey: ["messages", conversationId],
-      });
+        queryClient.setQueriesData<{ conversations: Conversation[] }>(
+          { queryKey: ["conversations"] },
+          (oldData) => {
+            if (!oldData) return oldData;
+            return {
+              ...oldData,
+              conversations: oldData.conversations.map((conv) =>
+                conv._id === conversationId
+                  ? {
+                      ...conv,
+                      lastMessage: conversation.lastMessage,
+                      lastMessageAt: conversation.lastMessageAt,
+                    }
+                  : conv,
+              ),
+            };
+          },
+        );
 
-      queryClient.setQueriesData<{ conversations: Conversation[] }>(
-        { queryKey: ["conversations"] },
-        (oldData) => {
-          if (!oldData) return oldData;
-          return {
-            ...oldData,
-            conversations: oldData.conversations.map((conv) =>
-              conv._id === conversationId
-                ? {
-                    ...conv,
-                    lastMessage: conversation.lastMessage,
-                    lastMessageAt: conversation.lastMessageAt,
-                  }
-                : conv,
-            ),
-          };
-        },
-      );
-    });
+        queryClient.invalidateQueries({
+          queryKey: ["messages", conversationId],
+        });
+      },
+    );
   },
   disconnectSocket: () => {
     const socket = get().socket;

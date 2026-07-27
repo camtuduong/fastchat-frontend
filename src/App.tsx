@@ -39,7 +39,7 @@ export function App() {
           ) : (
             <Outlet />
           )}
-          <Toaster position="top-right" richColors />
+          <Toaster position="top-right" />
         </div>
       </div>
     </ThemeProvider>

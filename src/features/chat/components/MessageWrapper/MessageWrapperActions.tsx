@@ -3,6 +3,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { EllipsisVertical, Trash2, Copy, Pin } from "lucide-react";
@@ -57,10 +58,17 @@ export const MessageWrapperActions = ({
           Pin
         </DropdownMenuItem>
         {isMyMessage && (
-          <DropdownMenuItem onClick={() => setOpenAlertDialog(true)}>
-            <Trash2 />
-            Delete
-          </DropdownMenuItem>
+          <>
+            <DropdownMenuSeparator />
+            {/* <DropdownMenuItem onClick={() => {}}>
+              <Pencil />
+              Edit
+            </DropdownMenuItem> */}
+            <DropdownMenuItem onClick={() => setOpenAlertDialog(true)}>
+              <Trash2 />
+              Delete
+            </DropdownMenuItem>
+          </>
         )}
       </DropdownMenuContent>
     </DropdownMenu>

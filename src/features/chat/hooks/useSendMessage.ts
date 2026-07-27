@@ -1,4 +1,4 @@
-import { sendMessageDirect } from "@/features/chat/api/sendMessageDirect";
+import { sendMessage } from "@/features/chat/api/sendMessage";
 import type { Attachment } from "@/features/chat/types/Message";
 import { useMutation } from "@tanstack/react-query";
 
@@ -10,8 +10,8 @@ type Props = {
   replyTo?: string;
 };
 
-export const useSendMessageDirect = () => {
+export const useSendMessage = () => {
   return useMutation({
-    mutationFn: (params: Props) => sendMessageDirect(params),
+    mutationFn: (params: Props) => sendMessage(params),
   });
 };

@@ -1,11 +1,10 @@
 import { create } from "zustand";
-
-interface ConversationStore {
-  conversationId: string;
-  setConversationId: (conversationId: string) => void;
-}
+import type { ConversationStore } from "@/types/store";
 
 export const useConversationStore = create<ConversationStore>((set) => ({
-  conversationId: "",
-  setConversationId: (conversationId) => set({ conversationId }),
+  conversationDataDetail: null,
+
+  setConversationDataDetail: (conversationDataDetail) =>
+    set({ conversationDataDetail }),
+  clearConversationDataDetail: () => set({ conversationDataDetail: null }),
 }));

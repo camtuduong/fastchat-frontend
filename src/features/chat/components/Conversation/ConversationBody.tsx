@@ -1,12 +1,15 @@
 import { Spinner } from "@/components/ui/spinner";
 import { MessageBubble } from "@/features/chat/components/Conversation/MessageBubble";
-import { messagePositionToLabel, timeAgo } from "@/features/chat/constant";
+import {
+  bubbleChat,
+  messagePositionToLabel,
+  timeAgo,
+} from "@/features/chat/constant";
 import type { Message } from "@/features/chat/types/Message";
-import { bubbleChat } from "@/features/chat/utils/bubbleChat";
 import { cn } from "@/lib/utils";
-import { useRef } from "react";
 import { format } from "date-fns";
 import { DATE_FORMAT } from "@/utils/constant";
+import type { ConversationType } from "@/features/chat/types/conversation";
 
 type Props = {
   conversationMessages: Message;
@@ -14,7 +17,7 @@ type Props = {
   containerRef: React.RefObject<HTMLDivElement | null>;
   onScroll: () => void;
   isFetchingNextPage: boolean;
-  conversationType?: "direct" | "group";
+  conversationType?: ConversationType;
   conversationAt?: string;
 };
 
@@ -28,7 +31,11 @@ export const ConversationBody = ({
   conversationAt,
 }: Props) => {
   const layout = bubbleChat(conversationMessages.messages);
-  const playCountRef = useRef(0);
+  const conversationDate = conversationAt ? new Date(conversationAt) : null;
+  const formattedConversationDate =
+    conversationDate && !Number.isNaN(conversationDate.getTime())
+      ? format(conversationDate, DATE_FORMAT)
+      : null;
 
   return (
     <>
@@ -52,20 +59,12 @@ export const ConversationBody = ({
             src="/first.webm"
             onMouseEnter={(e) => {
               e.currentTarget.play();
-              e.currentTarget.currentTime = 0;
-              void e.currentTarget.play();
-            }}
-            onEnded={(e) => {
-              if (playCountRef.current < 2) {
-                playCountRef.current += 1;
-                void e.currentTarget.play();
-              }
             }}
           />
           <div className="flex flex-col items-center justify-center gap-1">
             <span className="text-sm">
-              You started the conversation at{" "}
-              {format(new Date(conversationAt || ""), DATE_FORMAT)}
+              You started the conversation
+              {formattedConversationDate && ` at ${formattedConversationDate}`}
             </span>
             <span className="text-lg">
               Let's chat with your friend
@@ -79,11 +78,8 @@ export const ConversationBody = ({
           const messageTime = timeAgo(message.createdAt || "");
 
           return (
-            <div
-              key={message._id}
-              className={`flex w-full gap-4 p-px ${isMyMessage ? "justify-end" : "justify-start"}`}
-            >
-              <div>
+            <div key={message._id} className="flex w-full gap-4 p-px">
+              <div className="flex w-full flex-col">
                 {(message.position === messagePositionToLabel.single ||
                   message.position === messagePositionToLabel.last) && (
                   <div

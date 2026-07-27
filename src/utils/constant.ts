@@ -1,3 +1,5 @@
+import type { SidebarContentStatusType } from "@/types/store";
+
 const GIF_DEFAULT_QUERY = "String"; // Giá trị mặc định cho truy vấn tìm kiếm GIF
 const GIF_PICKER_LIMIT = 24; // Số lượng GIF hiển thị trong picker
 const GIF_FORMAT_FILTER = "gif"; // Định dạng GIF trong picker
@@ -17,3 +19,11 @@ export const removeVietnameseTones = (str: string) => {
 const DATE_FORMAT = "yyyy-MM-dd HH:mm:ss"; // Định dạng ngày giờ
 
 export { DATE_FORMAT };
+
+export const SIDEBAR_CONTENT_STATUS: Record<string, SidebarContentStatusType> =
+  {
+    DEFAULT: "default",
+    PINNED: "pinned",
+    MEMBERS: "members",
+    SHARED: "shared",
+  };

@@ -15,6 +15,7 @@ type Props = {
   onConfirm: () => void;
   title: string;
   description: string;
+  isPending?: boolean;
 };
 export const AlertDialog = ({
   open,
@@ -22,6 +23,7 @@ export const AlertDialog = ({
   onConfirm,
   title,
   description,
+  isPending,
 }: Props) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -37,7 +39,7 @@ export const AlertDialog = ({
             </Button>
           </DialogClose>
           <Button type="button" variant="destructive" onClick={onConfirm}>
-            Confirm
+            {isPending ? "Confirming..." : "Confirm"}
           </Button>
         </DialogFooter>
       </DialogContent>

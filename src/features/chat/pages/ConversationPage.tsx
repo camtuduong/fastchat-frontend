@@ -13,6 +13,8 @@ import { AppCustomSidebar } from "@/features/chat/components/SidebarRight/AppCus
 import { useEffect, useRef } from "react";
 import { useParams } from "@tanstack/react-router";
 import { useMessageStore } from "@/stores/useMessage";
+import { useConversationStore } from "@/stores/useConversationStore";
+import { useSidebarContentStatus } from "@/stores/useSidebarContentStatus";
 
 export const ConversationPage = () => {
   const conversationId = useParams({
@@ -22,11 +24,21 @@ export const ConversationPage = () => {
   const myUserId = useAuthStore((state) => state.userId);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { clearReplyMessage } = useMessageStore();
+  const clearReplyMessage = useMessageStore((state) => state.clearReplyMessage);
+
+  const setConversationDataDetail = useConversationStore(
+    (state) => state.setConversationDataDetail,
+  );
+  const clearConversationDataDetail = useConversationStore(
+    (state) => state.clearConversationDataDetail,
+  );
+
+  const clearStatus = useSidebarContentStatus((state) => state.clearStatus);
 
   const { data: conversationData } = useGetConversationById(
     conversationId ?? "",
   );
+
   const {
     data: conversationMessages,
     isLoading,
@@ -38,10 +50,6 @@ export const ConversationPage = () => {
   if (!conversationId || !myUserId) {
     return null;
   }
-
-  const members = conversationData?.participants
-    .map((participant) => participant)
-    .filter((participant) => participant.userId !== myUserId);
 
   const onScroll = async () => {
     const container = containerRef.current!;
@@ -64,10 +72,21 @@ export const ConversationPage = () => {
   }, [conversationMessages?.messages.length]);
 
   useEffect(() => {
+    if (!conversationData) return;
+
+    setConversationDataDetail(conversationData);
+  }, [conversationData, setConversationDataDetail]);
+
+  useEffect(() => {
     return () => {
       clearReplyMessage();
     };
-  }, [conversationId]);
+  }, [
+    conversationId,
+    clearReplyMessage,
+    clearConversationDataDetail,
+    clearStatus,
+  ]);
 
   if (isLoading) {
     return (
@@ -81,7 +100,7 @@ export const ConversationPage = () => {
     <CustomSidebarProvider>
       <AppCustomSidebar />
       <CustomSidebarInset className="min-h-0 flex-1 overflow-hidden">
-        <ConversationHeader members={members} />
+        <ConversationHeader conversationData={conversationData} />
         <ConversationBody
           conversationMessages={conversationMessages}
           myUserId={myUserId}

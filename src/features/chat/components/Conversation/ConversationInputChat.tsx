@@ -1,11 +1,10 @@
-import { useSendMessageGroup } from "@/features/chat/hooks/useSendMessageGroup";
 import { useEffect, useRef, useState } from "react";
 
 import { Textarea } from "@/components/ui/textarea";
 import { FormatterActions } from "@/features/chat/components/Conversation/FormatterActions";
 import { InputActions } from "@/features/chat/components/Conversation/InputActions";
 import { StickerPicker } from "@/features/chat/components/StickerPicker";
-import { useSendMessageDirect } from "@/features/chat/hooks/useSendMessageDirect";
+import { useSendMessage } from "@/features/chat/hooks/useSendMessage";
 import type { Attachment, Emoji } from "@/features/chat/types/Message";
 import { cn } from "@/lib/utils";
 import data from "@emoji-mart/data";
@@ -51,10 +50,7 @@ type Props = {
   conversationType?: "direct" | "group";
 };
 
-export const ConversationInputChat = ({
-  conversationId,
-  conversationType,
-}: Props) => {
+export const ConversationInputChat = ({ conversationId }: Props) => {
   const [message, setMessage] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -72,15 +68,16 @@ export const ConversationInputChat = ({
   const [openAlertDialog, setOpenAlertDialog] = useState(false);
 
   //state reply message store
-  const { replyMessage, clearReplyMessage } = useMessageStore();
+  const replyMessage = useMessageStore((state) => state.replyMessage);
+  const clearReplyMessage = useMessageStore((state) => state.clearReplyMessage);
 
   const isSendingRef = useRef(false);
   const pickerRef = useRef<HTMLDivElement | null>(null);
   const triggerPickerRef = useRef<HTMLButtonElement | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
-  const { mutateAsync: sendMessageDirect, isPending } = useSendMessageDirect();
-  const { mutateAsync: sendMessageGroup } = useSendMessageGroup(); // Placeholder for group message sending
+  const { mutateAsync: sendMessage, isPending } = useSendMessage();
+  // const { mutateAsync: sendMessageGroup } = useSendMessageGroup(); // Placeholder for group message sending
 
   const wrapSelection = (prefix: string, suffix = prefix) => {
     const textarea = inputRef.current;
@@ -136,48 +133,10 @@ export const ConversationInputChat = ({
 
     isSendingRef.current = true;
 
-    if (conversationType === "direct") {
-      if (attachments.length > 0) {
-        await sendMessageDirect(
-          {
-            conversationId: conversationId,
-            attachments,
-            replyTo,
-          },
-          {
-            onSettled: () => {
-              isSendingRef.current = false;
-            },
-          },
-        );
-      }
-      if (content) {
-        await sendMessageDirect(
-          {
-            conversationId: conversationId,
-            content,
-            replyTo,
-          },
-          {
-            onSettled: () => {
-              isSendingRef.current = false;
-            },
-          },
-        );
-      }
-
-      setPreview(null); // Clear the preview after sending
-      setMessage("");
-      clearReplyMessage(); // Clear the reply message after sending
-
-      return;
-    }
-
     if (attachments.length > 0) {
-      await sendMessageGroup(
+      await sendMessage(
         {
           conversationId: conversationId,
-          content: "",
           attachments,
           replyTo,
         },
@@ -189,7 +148,7 @@ export const ConversationInputChat = ({
       );
     }
     if (content) {
-      await sendMessageGroup(
+      await sendMessage(
         {
           conversationId: conversationId,
           content,
@@ -204,7 +163,7 @@ export const ConversationInputChat = ({
     }
 
     setPreview(null); // Clear the preview after sending
-    setMessage(""); // Clear the input after sending
+    setMessage("");
     clearReplyMessage(); // Clear the reply message after sending
   };
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -389,6 +348,7 @@ export const ConversationInputChat = ({
               content={replyMessage.content}
               className="bg-accent/10 dark:bg-accent m-2 rounded-lg p-2"
               description={<span className="shrink-0">Replying to:</span>}
+              hasAttachment={(replyMessage.attachments?.length ?? 0) > 0}
             />
             <button
               type="button"

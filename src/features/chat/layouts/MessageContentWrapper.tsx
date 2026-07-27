@@ -21,8 +21,8 @@ type Props = {
 };
 
 const Style = {
-  container: "group relative w-fit max-w-[70%] min-w-0",
-  attachmentContainer: "group relative w-full max-w-[70%]",
+  container: "group relative w-fit max-w-[70%] min-w-0 ",
+  attachmentContainer: "group relative w-fit max-w-[70%] min-w-0",
   actionButtonContainer:
     "absolute bottom-0.5 flex opacity-0 group-hover:opacity-100 min-h-0 gap-1 rounded-md p-1",
   actionButton:
@@ -38,7 +38,7 @@ export const MessageContentWrapper = ({
   const [openMoreAction, setOpenMoreAction] = useState(false);
 
   const [openAlertDialog, setOpenAlertDialog] = useState(false);
-  const { mutateAsync: deleteMessage } = useDeleteMessage();
+  const { mutateAsync: deleteMessage, isPending } = useDeleteMessage();
 
   const handleCopy = async () => {
     try {
@@ -117,6 +117,7 @@ export const MessageContentWrapper = ({
           onConfirm={handleDeleteMessage}
           title="Remove message"
           description="Once you delete this message, it cannot be undone."
+          isPending={isPending}
         />
       </div>
     </div>

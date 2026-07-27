@@ -9,14 +9,14 @@ export type Props = {
   replyTo?: string;
 };
 
-export const sendMessageDirect = async ({
+export const sendMessage = async ({
   conversationId,
   receiverId,
   content,
   attachments,
   replyTo,
 }: Props) => {
-  const res = await api.post("/messages/direct", {
+  const res = await api.post("/messages", {
     conversationId,
     receiverId,
     content,
