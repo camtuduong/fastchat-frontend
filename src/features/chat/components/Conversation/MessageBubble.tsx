@@ -69,7 +69,7 @@ export const MessageBubble = ({ message, isMyMessage }: Props) => {
             />
           )}
           {message?.attachments?.length > 0 ? (
-            <div className="p-2">
+            <div className={message?.replyTo ? "mt-2" : ""}>
               {message.attachments.map((attachment) => (
                 <div key={attachment.id}>
                   <video
