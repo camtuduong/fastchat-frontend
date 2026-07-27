@@ -6,7 +6,7 @@ import { BellRing, Search } from "lucide-react";
 type Props = {
   conversationDataDetail: Conversation | null;
 };
-export const RightSidebarHeader = ({ conversationDataDetail }: Props) => {
+export const RightSidebarHeader = ({}: Props) => {
   return (
     <div className="flex w-full shrink-0 flex-col items-center justify-center gap-2 px-4 py-4">
       <Avatar className="mt-2 h-18 w-18">
