@@ -55,7 +55,7 @@ export const MessageBubble = ({ message, isMyMessage }: Props) => {
             bubbleClass(message.position, isMyMessage),
             isMyMessage ? Style.myMessage : Style.otherMessage,
             message?.attachments?.length > 0 && !message?.replyTo
-              ? cn(Style.attachmentContainer, isMyMessage ? "self-end" : "")
+              ? cn(Style.attachmentContainer)
               : "",
           )}
         >
@@ -69,7 +69,7 @@ export const MessageBubble = ({ message, isMyMessage }: Props) => {
             />
           )}
           {message?.attachments?.length > 0 ? (
-            <div>
+            <div className="p-2">
               {message.attachments.map((attachment) => (
                 <div key={attachment.id}>
                   <video

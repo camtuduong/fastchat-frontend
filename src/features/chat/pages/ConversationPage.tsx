@@ -11,13 +11,12 @@ import {
 } from "@/components/ui/custom-sidebar";
 import { AppCustomSidebar } from "@/features/chat/components/SidebarRight/AppCustomSidebar";
 import { useEffect, useRef } from "react";
-import { useNavigate, useParams } from "@tanstack/react-router";
+import { useParams } from "@tanstack/react-router";
 import { useMessageStore } from "@/stores/useMessage";
 import { useConversationStore } from "@/stores/useConversationStore";
 import { useSidebarContentStatus } from "@/stores/useSidebarContentStatus";
 
 export const ConversationPage = () => {
-  const navigate = useNavigate();
   const conversationId = useParams({
     strict: false,
     shouldThrow: false,
@@ -36,8 +35,9 @@ export const ConversationPage = () => {
 
   const clearStatus = useSidebarContentStatus((state) => state.clearStatus);
 
-  const { data: conversationData, error: conversationError } =
-    useGetConversationById(conversationId ?? "");
+  const { data: conversationData } = useGetConversationById(
+    conversationId ?? "",
+  );
 
   const {
     data: conversationMessages,
@@ -48,11 +48,6 @@ export const ConversationPage = () => {
   } = useGetAllMessages(conversationId ?? "");
 
   if (!conversationId || !myUserId) {
-    return null;
-  }
-
-  if (conversationError) {
-    void navigate({ to: "/chat" });
     return null;
   }
 

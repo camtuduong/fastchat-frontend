@@ -13,6 +13,7 @@ type Props = {
   isMyMessage?: boolean;
   description?: ReactNode;
   messagePosition?: BubblePosition;
+  hasAttachment?: boolean;
 };
 
 export const ReplyMessage = ({
@@ -23,6 +24,7 @@ export const ReplyMessage = ({
   isMyMessage = true,
   description,
   messagePosition,
+  hasAttachment,
 }: Props) => {
   const fallBackImage = displayName?.charAt(0)?.toUpperCase();
   return (
@@ -35,6 +37,7 @@ export const ReplyMessage = ({
           : "dark:bg-background bg-white dark:text-white",
 
         className,
+        hasAttachment && "p-3",
       )}
     >
       <div className="text-muted-foreground flex items-center gap-2 text-sm">

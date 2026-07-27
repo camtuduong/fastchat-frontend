@@ -348,6 +348,7 @@ export const ConversationInputChat = ({ conversationId }: Props) => {
               content={replyMessage.content}
               className="bg-accent/10 dark:bg-accent m-2 rounded-lg p-2"
               description={<span className="shrink-0">Replying to:</span>}
+              hasAttachment={(replyMessage.attachments?.length ?? 0) > 0}
             />
             <button
               type="button"
