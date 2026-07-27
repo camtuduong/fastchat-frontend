@@ -9,6 +9,7 @@ import type { Message } from "@/features/chat/types/Message";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { DATE_FORMAT } from "@/utils/constant";
+import type { ConversationType } from "@/features/chat/types/conversation";
 
 type Props = {
   conversationMessages: Message;
@@ -16,7 +17,7 @@ type Props = {
   containerRef: React.RefObject<HTMLDivElement | null>;
   onScroll: () => void;
   isFetchingNextPage: boolean;
-  conversationType?: "direct" | "group";
+  conversationType?: ConversationType;
   conversationAt?: string;
 };
 
@@ -30,6 +31,11 @@ export const ConversationBody = ({
   conversationAt,
 }: Props) => {
   const layout = bubbleChat(conversationMessages.messages);
+  const conversationDate = conversationAt ? new Date(conversationAt) : null;
+  const formattedConversationDate =
+    conversationDate && !Number.isNaN(conversationDate.getTime())
+      ? format(conversationDate, DATE_FORMAT)
+      : null;
 
   return (
     <>
@@ -57,8 +63,8 @@ export const ConversationBody = ({
           />
           <div className="flex flex-col items-center justify-center gap-1">
             <span className="text-sm">
-              You started the conversation at{" "}
-              {format(new Date(conversationAt || ""), DATE_FORMAT)}
+              You started the conversation
+              {formattedConversationDate && ` at ${formattedConversationDate}`}
             </span>
             <span className="text-lg">
               Let's chat with your friend

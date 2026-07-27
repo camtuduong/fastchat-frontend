@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useLogout } from "@/features/auth/hooks/useLogout";
 import { Style } from "@/features/main/layouts/NavbarMain";
+import { useUserStore } from "@/stores/useUser";
 import { useNavigate } from "@tanstack/react-router";
 import {
   SettingsIcon,
@@ -25,10 +26,12 @@ type Props = {
 export const FooterNavbar = ({ setProfileOpen }: Props) => {
   const navigate = useNavigate();
   const { mutateAsync: logout } = useLogout();
+  const clear = useUserStore((state) => state.clear);
 
   const handleLogout = async () => {
     try {
       await logout();
+      clear();
       navigate({ to: "/login" });
     } catch (error) {
       console.error("Error logging out:", error);

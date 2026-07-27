@@ -17,6 +17,9 @@ interface Participant {
   userId: string;
   displayName: string;
   joinedAt: string;
+  clearAt: boolean;
+  avatarUrl: string;
+  hidden: boolean;
 }
 
 interface Group {

@@ -1,4 +1,8 @@
 import type { MessageUI } from "@/features/chat/types/bubbleChat";
+import type {
+  Conversation,
+  Participant,
+} from "@/features/chat/types/conversation";
 import type { Socket } from "socket.io-client";
 
 export interface AuthState {
@@ -25,3 +29,35 @@ export interface MessageState {
   setReplyMessage: (message: MessageUI) => void;
   clearReplyMessage: () => void;
 }
+
+export interface ConversationStore {
+  conversationDataDetail: Conversation | null;
+  setConversationDataDetail: (
+    conversationDataDetail: Conversation | null,
+  ) => void;
+  clearConversationDataDetail: () => void;
+}
+
+export interface SidebarContentStatus {
+  status: SidebarContentStatusType | null;
+  setStatus: (status: SidebarContentStatusType) => void;
+  clearStatus: () => void;
+}
+
+export type SidebarContentStatusType =
+  | "default"
+  | "pinned"
+  | "members"
+  | "shared";
+
+export type UserState = {
+  users: Record<string, Participant>;
+
+  addUsers: (users: Participant[]) => void;
+
+  updateUser: (user: Participant) => void;
+
+  removeUser: (id: string) => void;
+
+  clear: () => void;
+};

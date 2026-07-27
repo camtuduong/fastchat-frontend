@@ -8,6 +8,8 @@ import {
 } from "@/components/ui/custom-sidebar";
 
 import { RightSidebarHeader } from "@/features/chat/components/SidebarRight/RightSidebarHeader";
+import { useConversationStore } from "@/stores/useConversationStore";
+import { useSidebarContentStatus } from "@/stores/useSidebarContentStatus";
 
 const data = {
   user: {
@@ -110,14 +112,33 @@ const data = {
 export function AppCustomSidebar({
   ...props
 }: React.ComponentProps<typeof CustomSidebar>) {
+  const conversationDataDetail = useConversationStore(
+    (state) => state.conversationDataDetail,
+  );
+  const status = useSidebarContentStatus((state) => state.status);
+
+  // console.log("conversationDataDetail", conversationDataDetail);
+  // console.log("status", status);
+
+  const renderSidebarContent = () => {
+    switch (status) {
+      default:
+        return (
+          <div className="flex flex-col gap-2 p-4">
+            <RightSidebarHeader
+              conversationDataDetail={conversationDataDetail}
+            />
+            <CustomSidebarContent>
+              <NavMain items={data.navMain} />
+            </CustomSidebarContent>
+          </div>
+        );
+    }
+  };
+
   return (
     <CustomSidebar variant="floating" {...props}>
-      {/* Header */}
-      <RightSidebarHeader />
-      {/* Content */}
-      <CustomSidebarContent>
-        <NavMain items={data.navMain} />
-      </CustomSidebarContent>
+      {renderSidebarContent()}
     </CustomSidebar>
   );
 }

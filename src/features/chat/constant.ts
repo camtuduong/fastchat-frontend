@@ -100,7 +100,11 @@ export const getMembers = (conversationData: Conversation, userId: string) => {
 };
 
 export const timeAgo = (date: string) => {
-  const diffMs = Date.now() - new Date(date).getTime();
+  const parsedDate = new Date(date);
+
+  if (Number.isNaN(parsedDate.getTime())) return "";
+
+  const diffMs = Date.now() - parsedDate.getTime();
   const minutes = Math.floor(diffMs / 60000);
   const hours = Math.floor(diffMs / 3600000);
   const days = Math.floor(diffMs / 86400000);
@@ -110,7 +114,7 @@ export const timeAgo = (date: string) => {
   if (hours < 24) return `${hours} hours ago`;
   if (days < 7) return `${days} days ago`;
 
-  return new Date(date).toLocaleDateString("vi-VN");
+  return parsedDate.toLocaleDateString("vi-VN");
 };
 
 export const messagePositionToLabel: Record<BubblePosition, string> = {
@@ -119,3 +123,5 @@ export const messagePositionToLabel: Record<BubblePosition, string> = {
   middle: "middle",
   last: "last",
 };
+
+

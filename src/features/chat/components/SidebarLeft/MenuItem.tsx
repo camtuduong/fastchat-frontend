@@ -5,7 +5,6 @@ import {
   AvatarImage,
 } from "@/components/ui/avatar";
 import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
-import { useGetMe } from "@/features/auth/hooks/queries/useGetMe";
 import { LastMessageItem } from "@/features/chat/components/SidebarLeft/LastMessageItem";
 import { conversationTypeToLabel, timeAgo } from "@/features/chat/constant";
 import { useGetUserById } from "@/features/main/hooks/queries/useGetUserById";
@@ -14,6 +13,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 
 import { MenuActions } from "@/features/chat/components/SidebarLeft/MenuActions";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 type Props = {
   conversation: Conversation;
@@ -33,38 +33,30 @@ const Style = {
 };
 
 export const MenuItem = ({ conversation, isOnline, isActive }: Props) => {
-  const { data: me } = useGetMe();
+  const userId = useAuthStore((state) => state.userId);
+  if (!userId) return null;
 
   const navigate = useNavigate();
-  const isDirectConversation =
-    conversation.type === conversationTypeToLabel.direct;
 
   const participantsName = conversation.participants
-    .filter((participant) => participant.userId !== me?._id)
+    .filter((participant) => participant.userId !== userId)
     .map((participant) => participant.displayName)
     .join(", ");
 
   const friends = conversation.participants.find(
-    (participant) => participant.userId !== me?._id,
+    (participant) => participant.userId !== userId,
   );
   const { data: userById } = useGetUserById(friends?.userId || "");
 
-  const unreadCount = conversation.unreadCount[me?._id] || 0;
+  const unreadCount = conversation.unreadCount[userId] || 0;
 
-  const isLastMessageFromMe = conversation.lastMessage?.senderId === me?._id;
+  const isLastMessageFromMe = conversation.lastMessage?.senderId === userId;
   const lastMessageTimeAgo = timeAgo(conversation.lastMessageAt);
 
-  return (
-    <SidebarMenuItem>
-      <SidebarMenuButton
-        className={cn(
-          Style.container,
-          isActive && "bg-primary/5 dark:bg-accent",
-        )}
-        onClick={() => navigate({ to: `/chat/${conversation._id}` })}
-        asChild
-      >
-        {isDirectConversation ? (
+  const renderConversationByTypeInNav = () => {
+    switch (conversation.type) {
+      case conversationTypeToLabel.direct:
+        return (
           <div className={Style.containerItem}>
             <Avatar className={Style.avatar}>
               <AvatarImage src={userById?.avatarUrl} alt="@shadcn" />
@@ -91,7 +83,9 @@ export const MenuItem = ({ conversation, isOnline, isActive }: Props) => {
               />
             </div>
           </div>
-        ) : (
+        );
+      case conversationTypeToLabel.group:
+        return (
           <div className={Style.containerItem}>
             <Avatar className={Style.avatar}>
               <AvatarImage
@@ -121,7 +115,22 @@ export const MenuItem = ({ conversation, isOnline, isActive }: Props) => {
               />
             </div>
           </div>
+        );
+      default:
+        return null;
+    }
+  };
+  return (
+    <SidebarMenuItem>
+      <SidebarMenuButton
+        className={cn(
+          Style.container,
+          isActive && "bg-primary/5 dark:bg-accent",
         )}
+        onClick={() => navigate({ to: `/chat/${conversation._id}` })}
+        asChild
+      >
+        {renderConversationByTypeInNav()}
       </SidebarMenuButton>
 
       {/* menu action */}
