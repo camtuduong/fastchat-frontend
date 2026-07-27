@@ -20,7 +20,7 @@ const Style = {
   otherMessage:
     "markdown-other bg-gray-100 dark:bg-accent p-0.5 text-gray-700 dark:text-gray-200",
   attachmentContainer:
-    "mb-2 flex w-full flex-wrap gap-2 bg-transparent p-2 hover:bg-red-500/5",
+    "mb-2 flex w-fit flex-wrap gap-2 bg-transparent p-2 hover:bg-accent/5",
   attachmentVideo: "h-auto w-32 rounded-md object-cover",
 
   replyMessageContainer:
@@ -55,7 +55,7 @@ export const MessageBubble = ({ message, isMyMessage }: Props) => {
             bubbleClass(message.position, isMyMessage),
             isMyMessage ? Style.myMessage : Style.otherMessage,
             message?.attachments?.length > 0 && !message?.replyTo
-              ? Style.attachmentContainer
+              ? cn(Style.attachmentContainer, isMyMessage ? "self-end" : "")
               : "",
           )}
         >
