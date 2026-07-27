@@ -31,7 +31,7 @@ const Style = {
   inputContainer: "relative flex min-w-0 flex-1",
   input: "max-h-48 min-h-14 resize-none border-none py-4 text-base leading-6",
   eyeIcon:
-    "text-muted-foreground hover:text-accent-foreground hover:bg-accent absolute top-1 right-2.5 cursor-pointer rounded-lg p-2 transition-colors duration-100",
+    "text-muted-foreground hover:text-accent-foreground hover:bg-accent/5 absolute top-1 right-2.5 cursor-pointer rounded-lg p-2 transition-colors duration-100",
   formatterContainer: "relative flex min-w-0 flex-1",
 };
 
@@ -401,7 +401,7 @@ export const ConversationInputChat = ({ conversationId }: Props) => {
               type="button"
               className={cn(
                 Style.eyeIcon,
-                showMarkDown ? "bg-accent text-accent-foreground" : "",
+                showMarkDown ? "bg-accent/5 text-accent-foreground" : "",
               )}
               onClick={() => setShowMarkDown((prev) => !prev)}
             >

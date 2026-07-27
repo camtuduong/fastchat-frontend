@@ -129,7 +129,7 @@ export const ListFriendsPage = () => {
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <button
-                        className="text-muted-foreground hover:bg-accent-foreground hover:text-accent absolute right-2 cursor-pointer rounded-md p-2 text-sm"
+                        className="text-muted-foreground hover:bg-accent-foreground/5 hover:text-accent absolute right-2 cursor-pointer rounded-md p-2 text-sm"
                         onClick={() => {
                           console.log(`Remove friend: ${friend.username}`);
                         }}
