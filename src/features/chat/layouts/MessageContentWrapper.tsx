@@ -38,7 +38,7 @@ export const MessageContentWrapper = ({
   const [openMoreAction, setOpenMoreAction] = useState(false);
 
   const [openAlertDialog, setOpenAlertDialog] = useState(false);
-  const { mutateAsync: deleteMessage } = useDeleteMessage();
+  const { mutateAsync: deleteMessage, isPending } = useDeleteMessage();
 
   const handleCopy = async () => {
     try {
@@ -117,6 +117,7 @@ export const MessageContentWrapper = ({
           onConfirm={handleDeleteMessage}
           title="Remove message"
           description="Once you delete this message, it cannot be undone."
+          isPending={isPending}
         />
       </div>
     </div>

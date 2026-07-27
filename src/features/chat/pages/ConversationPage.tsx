@@ -13,6 +13,8 @@ import { AppCustomSidebar } from "@/features/chat/components/SidebarRight/AppCus
 import { useEffect, useRef } from "react";
 import { useParams } from "@tanstack/react-router";
 import { useMessageStore } from "@/stores/useMessage";
+import { useConversationStore } from "@/stores/useConversationStore";
+import { useSidebarContentStatus } from "@/stores/useSidebarContentStatus";
 
 export const ConversationPage = () => {
   const conversationId = useParams({
@@ -22,11 +24,21 @@ export const ConversationPage = () => {
   const myUserId = useAuthStore((state) => state.userId);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { clearReplyMessage } = useMessageStore();
+  const clearReplyMessage = useMessageStore((state) => state.clearReplyMessage);
+
+  const setConversationDataDetail = useConversationStore(
+    (state) => state.setConversationDataDetail,
+  );
+  const clearConversationDataDetail = useConversationStore(
+    (state) => state.clearConversationDataDetail,
+  );
+
+  const clearStatus = useSidebarContentStatus((state) => state.clearStatus);
 
   const { data: conversationData } = useGetConversationById(
     conversationId ?? "",
   );
+
   const {
     data: conversationMessages,
     isLoading,
@@ -64,10 +76,16 @@ export const ConversationPage = () => {
   }, [conversationMessages?.messages.length]);
 
   useEffect(() => {
+    if (!conversationData) return;
+
+    setConversationDataDetail(conversationData);
+  }, [conversationData, setConversationDataDetail]);
+
+  useEffect(() => {
     return () => {
       clearReplyMessage();
     };
-  }, [conversationId]);
+  }, [conversationId, clearConversationDataDetail, clearStatus]);
 
   if (isLoading) {
     return (

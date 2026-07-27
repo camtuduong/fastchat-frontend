@@ -165,40 +165,6 @@ export const ConversationInputChat = ({ conversationId }: Props) => {
     setPreview(null); // Clear the preview after sending
     setMessage("");
     clearReplyMessage(); // Clear the reply message after sending
-
-    // if (attachments.length > 0) {
-    //   await sendMessageGroup(
-    //     {
-    //       conversationId: conversationId,
-    //       content: "",
-    //       attachments,
-    //       replyTo,
-    //     },
-    //     {
-    //       onSettled: () => {
-    //         isSendingRef.current = false;
-    //       },
-    //     },
-    //   );
-    // }
-    // if (content) {
-    //   await sendMessageGroup(
-    //     {
-    //       conversationId: conversationId,
-    //       content,
-    //       replyTo,
-    //     },
-    //     {
-    //       onSettled: () => {
-    //         isSendingRef.current = false;
-    //       },
-    //     },
-    //   );
-    // }
-
-    // setPreview(null); // Clear the preview after sending
-    // setMessage(""); // Clear the input after sending
-    // clearReplyMessage(); // Clear the reply message after sending
   };
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.nativeEvent.isComposing) {

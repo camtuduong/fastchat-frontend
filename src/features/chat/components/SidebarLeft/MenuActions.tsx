@@ -16,7 +16,8 @@ type Props = {
 };
 export const MenuActions = ({ style, conversationId }: Props) => {
   const [openAlertDialog, setOpenAlertDialog] = useState(false);
-  const { mutateAsync: removeConversationForMe } = useRemoveConversationForMe();
+  const { mutateAsync: removeConversationForMe, isPending } =
+    useRemoveConversationForMe();
 
   const handleOpenChange = (nextOpen: boolean) => {
     setOpenAlertDialog(nextOpen);
@@ -61,6 +62,7 @@ export const MenuActions = ({ style, conversationId }: Props) => {
         onConfirm={handleRemoveConversationForMe}
         title="Remove Conversation"
         description="Once you delete your copy of this conversation, it cannot be undone."
+        isPending={isPending}
       />
     </DropdownMenu>
   );

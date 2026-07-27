@@ -52,7 +52,7 @@ export const MenuItem = ({ conversation, isOnline, isActive }: Props) => {
   const unreadCount = conversation.unreadCount[me?._id] || 0;
 
   const isLastMessageFromMe = conversation.lastMessage?.senderId === me?._id;
-  const lastMessageTimeAgo = timeAgo(conversation?.lastMessageAt || "");
+  const lastMessageTimeAgo = timeAgo(conversation.lastMessageAt);
 
   return (
     <SidebarMenuItem>
@@ -78,9 +78,11 @@ export const MenuItem = ({ conversation, isOnline, isActive }: Props) => {
             <div className="flex-1 truncate">
               <div className="flex items-center justify-between">
                 <div className="truncate">{friends?.displayName}</div>
-                <span className={Style.lastMessageTimeAgo}>
-                  {lastMessageTimeAgo}
-                </span>
+                {conversation.lastMessageAt && (
+                  <span className={Style.lastMessageTimeAgo}>
+                    {lastMessageTimeAgo}
+                  </span>
+                )}
               </div>
               <LastMessageItem
                 unreadCount={unreadCount}
@@ -106,9 +108,11 @@ export const MenuItem = ({ conversation, isOnline, isActive }: Props) => {
                 <div className="truncate">
                   {conversation?.group?.name || participantsName}
                 </div>
-                <span className={Style.lastMessageTimeAgo}>
-                  {lastMessageTimeAgo}
-                </span>
+                {conversation.lastMessageAt && (
+                  <span className={Style.lastMessageTimeAgo}>
+                    {lastMessageTimeAgo}
+                  </span>
+                )}
               </div>
               <LastMessageItem
                 unreadCount={unreadCount}

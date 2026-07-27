@@ -72,11 +72,8 @@ export const ConversationBody = ({
           const messageTime = timeAgo(message.createdAt || "");
 
           return (
-            <div
-              key={message._id}
-              className={`flex w-full gap-4 p-px ${isMyMessage ? "justify-end" : "justify-start"}`}
-            >
-              <div>
+            <div key={message._id} className="flex w-full gap-4 p-px">
+              <div className="flex w-full flex-col">
                 {(message.position === messagePositionToLabel.single ||
                   message.position === messagePositionToLabel.last) && (
                   <div

@@ -54,7 +54,7 @@ export const ReplyMessage = ({
           {displayName}
         </span>
       </div>
-      <div className={cn("min-w-40 pl-2 text-sm")}>{content}</div>
+      <div className={cn("min-w-0 pl-2 text-sm")}>{content}</div>
     </div>
   );
 };
