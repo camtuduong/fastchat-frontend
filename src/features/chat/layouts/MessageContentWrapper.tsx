@@ -13,6 +13,7 @@ import type { ReactNode } from "react";
 import type { MessageUI } from "@/features/chat/types/bubbleChat";
 import { useDeleteMessage } from "@/features/chat/hooks/useDeleteMessage";
 import { AlertDialog } from "@/features/chat/components/AlertDialog";
+import { usePinMessage } from "@/features/chat/hooks/usePinMessage";
 
 type Props = {
   isMyMessage?: boolean;
@@ -39,6 +40,7 @@ export const MessageContentWrapper = ({
 
   const [openAlertDialog, setOpenAlertDialog] = useState(false);
   const { mutateAsync: deleteMessage, isPending } = useDeleteMessage();
+  const { mutateAsync: pinMessage } = usePinMessage();
 
   const handleCopy = async () => {
     try {
@@ -57,6 +59,17 @@ export const MessageContentWrapper = ({
       try {
         await deleteMessage(message._id);
         setOpenAlertDialog(false);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  const handlePinMessage = async () => {
+    if (message?._id) {
+      try {
+        await pinMessage(message._id);
+        setOpenMoreAction(false);
       } catch (error) {
         console.error(error);
       }
@@ -109,6 +122,7 @@ export const MessageContentWrapper = ({
           isMyMessage={isMyMessage}
           onCopy={handleCopy}
           setOpenAlertDialog={setOpenAlertDialog}
+          onPinMessage={handlePinMessage}
         />
 
         <AlertDialog

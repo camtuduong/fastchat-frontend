@@ -2,6 +2,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { MessageBubble } from "@/features/chat/components/Conversation/MessageBubble";
 import {
   bubbleChat,
+  conversationTypeToLabel,
   messagePositionToLabel,
   timeAgo,
 } from "@/features/chat/constant";
@@ -9,7 +10,7 @@ import type { Message } from "@/features/chat/types/Message";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { DATE_FORMAT } from "@/utils/constant";
-import type { ConversationType } from "@/features/chat/types/conversation";
+import type { Conversation } from "@/features/chat/types/conversation";
 
 type Props = {
   conversationMessages: Message;
@@ -17,8 +18,7 @@ type Props = {
   containerRef: React.RefObject<HTMLDivElement | null>;
   onScroll: () => void;
   isFetchingNextPage: boolean;
-  conversationType?: ConversationType;
-  conversationAt?: string;
+  conversationData: Conversation | undefined;
 };
 
 export const ConversationBody = ({
@@ -27,15 +27,23 @@ export const ConversationBody = ({
   containerRef,
   onScroll,
   isFetchingNextPage,
-  conversationType,
-  conversationAt,
+  conversationData,
 }: Props) => {
   const layout = bubbleChat(conversationMessages.messages);
-  const conversationDate = conversationAt ? new Date(conversationAt) : null;
+  const conversationDate = conversationData?.createdAt
+    ? new Date(conversationData.createdAt)
+    : null;
+
   const formattedConversationDate =
     conversationDate && !Number.isNaN(conversationDate.getTime())
       ? format(conversationDate, DATE_FORMAT)
       : null;
+
+  // const { data: pinnedMessages } = useGetAllMessagesPinned(
+  //   conversationData?._id ?? "",
+  // );
+
+  // console.log("pinnedMessages", pinnedMessages);
 
   return (
     <>
@@ -68,7 +76,10 @@ export const ConversationBody = ({
             </span>
             <span className="text-lg">
               Let's chat with your friend
-              {conversationType === "direct" ? "" : "s"}!
+              {conversationData?.type === conversationTypeToLabel.direct
+                ? ""
+                : "s"}
+              !
             </span>
           </div>
         </div>

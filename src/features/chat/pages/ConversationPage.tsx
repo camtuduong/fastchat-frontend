@@ -125,8 +125,7 @@ export const ConversationPage = () => {
           containerRef={containerRef}
           onScroll={onScroll}
           isFetchingNextPage={isFetchingNextPage}
-          conversationType={conversationData?.type}
-          conversationAt={conversationData?.createdAt}
+          conversationData={conversationData}
         />
 
         {/* Spacer for footer */}

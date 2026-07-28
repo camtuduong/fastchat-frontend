@@ -90,7 +90,6 @@ export const useSocketStore = create<SocketState>((set, get) => ({
     socket.on(
       "delete-message",
       ({ conversation }: { conversation: Conversation }) => {
-        console.log("Received delete-message event:", conversation);
         const conversationId = conversation._id.toString();
 
         queryClient.setQueriesData<{ conversations: Conversation[] }>(
@@ -117,6 +116,15 @@ export const useSocketStore = create<SocketState>((set, get) => ({
         });
       },
     );
+
+    socket.on("pin-message", (message) => {
+      queryClient.invalidateQueries({
+        queryKey: ["messages", message.conversationId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["messages-Pinned", message.conversationId],
+      });
+    });
   },
   disconnectSocket: () => {
     const socket = get().socket;
