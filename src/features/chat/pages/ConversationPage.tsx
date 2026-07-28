@@ -11,12 +11,15 @@ import {
 } from "@/components/ui/custom-sidebar";
 import { AppCustomSidebar } from "@/features/chat/components/SidebarRight/AppCustomSidebar";
 import { useEffect, useRef } from "react";
-import { useParams } from "@tanstack/react-router";
+import { useNavigate, useParams } from "@tanstack/react-router";
 import { useMessageStore } from "@/stores/useMessage";
 import { useConversationStore } from "@/stores/useConversationStore";
 import { useSidebarContentStatus } from "@/stores/useSidebarContentStatus";
+import { useSeenConversation } from "@/features/chat/hooks/useSeenConversation";
 
 export const ConversationPage = () => {
+  const navigate = useNavigate();
+
   const conversationId = useParams({
     strict: false,
     shouldThrow: false,
@@ -35,9 +38,12 @@ export const ConversationPage = () => {
 
   const clearStatus = useSidebarContentStatus((state) => state.clearStatus);
 
-  const { data: conversationData } = useGetConversationById(
-    conversationId ?? "",
-  );
+  if (!conversationId || !myUserId) {
+    return null;
+  }
+
+  const { data: conversationData, error: conversationError } =
+    useGetConversationById(conversationId ?? "");
 
   const {
     data: conversationMessages,
@@ -45,11 +51,11 @@ export const ConversationPage = () => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    error: messagesError,
   } = useGetAllMessages(conversationId ?? "");
 
-  if (!conversationId || !myUserId) {
-    return null;
-  }
+  const { mutate: seenConversation, error: seenConversationError } =
+    useSeenConversation();
 
   const onScroll = async () => {
     const container = containerRef.current!;
@@ -65,17 +71,22 @@ export const ConversationPage = () => {
   };
 
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    container.scrollTop = container.scrollHeight;
-  }, [conversationMessages?.messages.length]);
+    if (conversationId) {
+      seenConversation(conversationId);
+    }
+  }, [conversationId, seenConversation]);
 
   useEffect(() => {
     if (!conversationData) return;
 
     setConversationDataDetail(conversationData);
   }, [conversationData, setConversationDataDetail]);
+
+  useEffect(() => {
+    if (conversationError || messagesError || seenConversationError) {
+      navigate({ to: "/chat" });
+    }
+  }, [conversationError, messagesError, seenConversationError]);
 
   useEffect(() => {
     return () => {
@@ -87,6 +98,13 @@ export const ConversationPage = () => {
     clearConversationDataDetail,
     clearStatus,
   ]);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    container.scrollTop = container.scrollHeight;
+  }, [conversationMessages?.messages.length]);
 
   if (isLoading) {
     return (
