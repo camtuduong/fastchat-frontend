@@ -13,7 +13,7 @@ export const InputField = forwardRef<HTMLInputElement, Props>(
         {props.label && (
           <label
             htmlFor={props.id}
-            className="block text-sm font-medium text-(--gray-3)"
+            className="text-gray-3 block text-sm font-medium"
           >
             {props.label}
           </label>
@@ -22,7 +22,7 @@ export const InputField = forwardRef<HTMLInputElement, Props>(
           ref={ref}
           {...props}
           className={cn(
-            "mt-1 w-full rounded-md border border-(--border-input) px-3 py-2 focus:border-(--color-plum) focus:outline-none",
+            "border-gray-3 focus:border-plum dark:text-gray-3 mt-1 w-full rounded-md border px-3 py-2 focus:outline-none",
             className,
           )}
         />
