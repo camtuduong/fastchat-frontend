@@ -13,7 +13,7 @@ import type { ReactNode } from "react";
 import type { MessageUI } from "@/features/chat/types/bubbleChat";
 import { useDeleteMessage } from "@/features/chat/hooks/useDeleteMessage";
 import { AlertDialog } from "@/features/chat/components/AlertDialog";
-import { usePinMessage } from "@/features/chat/hooks/usePinMessage";
+import { usePinMessageInConversation } from "@/features/chat/hooks/usePinMessageInConversation";
 import { useCustomSidebarStore } from "@/stores/useCustomSidebarStore";
 
 type Props = {
@@ -44,7 +44,7 @@ export const MessageContentWrapper = ({
   const setOpen = useCustomSidebarStore((state) => state.setOpen);
 
   const { mutateAsync: deleteMessage, isPending } = useDeleteMessage();
-  const { mutateAsync: pinMessage } = usePinMessage();
+  const { mutateAsync: pinMessage } = usePinMessageInConversation();
 
   const handleCopy = async () => {
     try {
@@ -72,7 +72,10 @@ export const MessageContentWrapper = ({
   const handlePinMessage = async () => {
     if (message?._id) {
       try {
-        await pinMessage(message._id);
+        await pinMessage({
+          conversationId: message.conversationId,
+          messageId: message._id,
+        });
         setOpenMoreAction(false);
         setOpen(true);
       } catch (error) {
