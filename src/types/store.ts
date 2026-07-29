@@ -38,17 +38,16 @@ export interface ConversationStore {
   clearConversationDataDetail: () => void;
 }
 
-export interface SidebarContentStatus {
-  status: SidebarContentStatusType | null;
-  setStatus: (status: SidebarContentStatusType) => void;
+export interface CustomSidebarStore {
+  open: boolean;
+  status: SidebarStatusType | null;
+
+  setOpen: (open: boolean) => void;
+  setStatus: (status: SidebarStatusType) => void;
   clearStatus: () => void;
 }
 
-export type SidebarContentStatusType =
-  | "default"
-  | "pinned"
-  | "members"
-  | "shared";
+export type SidebarStatusType = "default" | "pinned" | "members" | "shared";
 
 export type UserState = {
   users: Record<string, Participant>;

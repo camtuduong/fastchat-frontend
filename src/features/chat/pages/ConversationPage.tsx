@@ -14,8 +14,8 @@ import { useEffect, useRef } from "react";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { useMessageStore } from "@/stores/useMessage";
 import { useConversationStore } from "@/stores/useConversationStore";
-import { useSidebarContentStatus } from "@/stores/useSidebarContentStatus";
 import { useSeenConversation } from "@/features/chat/hooks/useSeenConversation";
+import { useCustomSidebarStore } from "@/stores/useCustomSidebarStore";
 
 export const ConversationPage = () => {
   const navigate = useNavigate();
@@ -36,7 +36,8 @@ export const ConversationPage = () => {
     (state) => state.clearConversationDataDetail,
   );
 
-  const clearStatus = useSidebarContentStatus((state) => state.clearStatus);
+  const clearStatus = useCustomSidebarStore((state) => state.clearStatus);
+  const setOpen = useCustomSidebarStore((state) => state.setOpen);
 
   if (!conversationId || !myUserId) {
     return null;
@@ -89,22 +90,18 @@ export const ConversationPage = () => {
   }, [conversationError, messagesError, seenConversationError]);
 
   useEffect(() => {
-    return () => {
-      clearReplyMessage();
-    };
-  }, [
-    conversationId,
-    clearReplyMessage,
-    clearConversationDataDetail,
-    clearStatus,
-  ]);
+    clearReplyMessage();
+    clearConversationDataDetail();
+    clearStatus();
+    setOpen(false);
+  }, [conversationId]);
 
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+  // useEffect(() => {
+  //   const container = containerRef.current;
+  //   if (!container) return;
 
-    container.scrollTop = container.scrollHeight;
-  }, [conversationMessages?.messages.length]);
+  //   container.scrollTop = container.scrollHeight;
+  // }, [conversationMessages?.messages.length]);
 
   if (isLoading) {
     return (

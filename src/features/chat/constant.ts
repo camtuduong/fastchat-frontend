@@ -123,5 +123,3 @@ export const messagePositionToLabel: Record<BubblePosition, string> = {
   middle: "middle",
   last: "last",
 };
-
-

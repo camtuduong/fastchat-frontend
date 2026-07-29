@@ -21,8 +21,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Info } from "lucide-react";
-import { useSidebarContentStatus } from "@/stores/useSidebarContentStatus";
 import { SIDEBAR_CONTENT_STATUS } from "@/utils/constant";
+import { useCustomSidebarStore } from "@/stores/useCustomSidebarStore";
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state_info";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -74,7 +74,9 @@ function CustomSidebarProvider({
 
   // This is the internal state of the sidebar.
   // We use openProp and setOpenProp for control from outside the component.
-  const [_open, _setOpen] = React.useState(defaultOpen);
+  const _open = useCustomSidebarStore((s) => s.open);
+  const _setOpen = useCustomSidebarStore((s) => s.setOpen);
+
   const open = openProp ?? _open;
   const setOpen = React.useCallback(
     (value: boolean | ((value: boolean) => boolean)) => {
@@ -260,7 +262,7 @@ function CustomSidebarTrigger({
   ...props
 }: React.ComponentProps<typeof Button>) {
   const { toggleSidebar } = useCustomSidebar();
-  const setStatus = useSidebarContentStatus((state) => state.setStatus);
+  const setStatus = useCustomSidebarStore((state) => state.setStatus);
 
   return (
     <Button

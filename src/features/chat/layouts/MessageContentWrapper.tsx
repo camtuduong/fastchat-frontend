@@ -14,6 +14,7 @@ import type { MessageUI } from "@/features/chat/types/bubbleChat";
 import { useDeleteMessage } from "@/features/chat/hooks/useDeleteMessage";
 import { AlertDialog } from "@/features/chat/components/AlertDialog";
 import { usePinMessage } from "@/features/chat/hooks/usePinMessage";
+import { useCustomSidebarStore } from "@/stores/useCustomSidebarStore";
 
 type Props = {
   isMyMessage?: boolean;
@@ -39,6 +40,9 @@ export const MessageContentWrapper = ({
   const [openMoreAction, setOpenMoreAction] = useState(false);
 
   const [openAlertDialog, setOpenAlertDialog] = useState(false);
+
+  const setOpen = useCustomSidebarStore((state) => state.setOpen);
+
   const { mutateAsync: deleteMessage, isPending } = useDeleteMessage();
   const { mutateAsync: pinMessage } = usePinMessage();
 
@@ -70,6 +74,7 @@ export const MessageContentWrapper = ({
       try {
         await pinMessage(message._id);
         setOpenMoreAction(false);
+        setOpen(true);
       } catch (error) {
         console.error(error);
       }

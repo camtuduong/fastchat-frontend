@@ -9,7 +9,8 @@ import {
 
 import { RightSidebarHeader } from "@/features/chat/components/SidebarRight/RightSidebarHeader";
 import { useConversationStore } from "@/stores/useConversationStore";
-import { useSidebarContentStatus } from "@/stores/useSidebarContentStatus";
+import { useCustomSidebarStore } from "@/stores/useCustomSidebarStore";
+import { SIDEBAR_CONTENT_STATUS } from "@/utils/constant";
 
 const data = {
   user: {
@@ -115,13 +116,14 @@ export function AppCustomSidebar({
   const conversationDataDetail = useConversationStore(
     (state) => state.conversationDataDetail,
   );
-  const status = useSidebarContentStatus((state) => state.status);
+  const status = useCustomSidebarStore((state) => state.status);
 
   // console.log("conversationDataDetail", conversationDataDetail);
   // console.log("status", status);
 
   const renderSidebarContent = () => {
     switch (status) {
+      case SIDEBAR_CONTENT_STATUS.DEFAULT:
       default:
         return (
           <div className="flex flex-col gap-2 p-4">
@@ -130,6 +132,30 @@ export function AppCustomSidebar({
             />
             <CustomSidebarContent>
               <NavMain items={data.navMain} />
+            </CustomSidebarContent>
+          </div>
+        );
+      case SIDEBAR_CONTENT_STATUS.PINNED:
+        return (
+          <div className="flex flex-col gap-2 p-4">
+            <CustomSidebarContent>
+              Pinned messages content goes here.
+            </CustomSidebarContent>
+          </div>
+        );
+      case SIDEBAR_CONTENT_STATUS.MEMBERS:
+        return (
+          <div className="flex flex-col gap-2 p-4">
+            <CustomSidebarContent>
+              Members content goes here.
+            </CustomSidebarContent>
+          </div>
+        );
+      case SIDEBAR_CONTENT_STATUS.SHARED:
+        return (
+          <div className="flex flex-col gap-2 p-4">
+            <CustomSidebarContent>
+              Shared content goes here.
             </CustomSidebarContent>
           </div>
         );
