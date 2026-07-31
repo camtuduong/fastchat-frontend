@@ -8,6 +8,12 @@ interface MessageItem {
   sender: Sender;
   content: string;
   conversationId: string;
+  system:
+    | {
+        action: string;
+      }
+    | null
+    | undefined;
   attachments: Attachment[] | [];
   replyTo: MessageItem | null | undefined;
   createdAt: string;

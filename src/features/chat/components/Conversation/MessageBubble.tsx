@@ -27,6 +27,7 @@ const Style = {
     "m-0 flex flex-col rounded-tr-sm rounded-br-sm rounded-bl-xl rounded-tl-xl bg-gray-100 p-2 mb-2",
 };
 export const MessageBubble = ({ message, isMyMessage }: Props) => {
+  console.log("MessageBubble message:", message);
   return (
     <div
       className={cn(
