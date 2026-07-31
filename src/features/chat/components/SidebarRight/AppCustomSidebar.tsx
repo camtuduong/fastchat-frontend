@@ -11,6 +11,8 @@ import { RightSidebarHeader } from "@/features/chat/components/SidebarRight/Righ
 import { useConversationStore } from "@/stores/useConversationStore";
 import { useCustomSidebarStore } from "@/stores/useCustomSidebarStore";
 import { SIDEBAR_CONTENT_STATUS } from "@/utils/constant";
+import { PinnedList } from "@/features/chat/components/SidebarRight/PinnedList";
+import { useUnpinMessageInConversation } from "@/features/chat/hooks/useUnpinMessageInConversation";
 
 const data = {
   user: {
@@ -116,10 +118,24 @@ export function AppCustomSidebar({
   const conversationDataDetail = useConversationStore(
     (state) => state.conversationDataDetail,
   );
-  const status = useCustomSidebarStore((state) => state.status);
 
-  // console.log("conversationDataDetail", conversationDataDetail);
-  // console.log("status", status);
+  const status = useCustomSidebarStore((state) => state.status);
+  const { mutateAsync: unpinMessage } = useUnpinMessageInConversation();
+
+  if (!conversationDataDetail) {
+    return null;
+  }
+
+  const handleUnpinMessage = async (messageId: string) => {
+    try {
+      await unpinMessage({
+        conversationId: conversationDataDetail._id,
+        messageId,
+      });
+    } catch (error) {
+      console.error("Error unpinning message:", error);
+    }
+  };
 
   const renderSidebarContent = () => {
     switch (status) {
@@ -137,11 +153,10 @@ export function AppCustomSidebar({
         );
       case SIDEBAR_CONTENT_STATUS.PINNED:
         return (
-          <div className="flex flex-col gap-2 p-4">
-            <CustomSidebarContent>
-              Pinned messages content goes here.
-            </CustomSidebarContent>
-          </div>
+          <PinnedList
+            pinnedMessages={conversationDataDetail.pinnedMessages || []}
+            onUnpinMessage={handleUnpinMessage}
+          />
         );
       case SIDEBAR_CONTENT_STATUS.MEMBERS:
         return (

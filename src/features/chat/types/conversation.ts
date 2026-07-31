@@ -12,6 +12,7 @@ interface Conversation {
   lastMessageAt: string;
   createdAt: string;
   updatedAt: string;
+  pinnedMessages: PinnedMessage[];
 }
 interface Participant {
   userId: string;
@@ -38,4 +39,20 @@ interface LastMessage {
 
 type ConversationType = "direct" | "group";
 
-export type { Conversation, Participant, LastMessage, Group, ConversationType };
+interface PinnedMessage {
+  messageId: string;
+  pinnedBy: string | null;
+  pinnedAt: string | null;
+  avatarUrl: string | null;
+  displayName: string | null;
+  content: string | null;
+}
+
+export type {
+  Conversation,
+  Participant,
+  LastMessage,
+  Group,
+  ConversationType,
+  PinnedMessage,
+};

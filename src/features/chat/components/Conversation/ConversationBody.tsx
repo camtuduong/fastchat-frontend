@@ -39,12 +39,6 @@ export const ConversationBody = ({
       ? format(conversationDate, DATE_FORMAT)
       : null;
 
-  // const { data: pinnedMessages } = useGetAllMessagesPinned(
-  //   conversationData?._id ?? "",
-  // );
-
-  // console.log("pinnedMessages", pinnedMessages);
-
   return (
     <>
       {isFetchingNextPage && (

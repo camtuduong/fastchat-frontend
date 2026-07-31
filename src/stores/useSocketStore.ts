@@ -117,12 +117,56 @@ export const useSocketStore = create<SocketState>((set, get) => ({
       },
     );
 
-    socket.on("pin-message", (message) => {
-      queryClient.invalidateQueries({
-        queryKey: ["messages", message.conversationId],
+    socket.on("pin-message", ({ message, conversation, unreadCount }) => {
+      const conversationId = conversation._id.toString();
+
+      // Append new message vào cache của conversation đang mở
+      queryClient.setQueryData<
+        InfiniteData<GetAllMessagesResponse, string | null>
+      >(["messages", conversationId], (oldData) => {
+        if (!oldData) return oldData;
+
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page, index) =>
+            index === 0
+              ? { ...page, messages: [message, ...page.messages] }
+              : page,
+          ),
+        };
       });
+
+      // Cập nhật lastMessage + unreadCount trong danh sách conversations
+      queryClient.setQueriesData<{ conversations: Conversation[] }>(
+        { queryKey: ["conversations"] },
+        (oldData) => {
+          if (!oldData) return oldData;
+          return {
+            ...oldData,
+            conversations: oldData.conversations.map((conv) =>
+              conv._id === conversationId
+                ? {
+                    ...conv,
+                    lastMessage: conversation.lastMessage,
+                    lastMessageAt: conversation.lastMessageAt,
+                    unreadCount,
+                  }
+                : conv,
+            ),
+          };
+        },
+      );
+
+      queryClient.invalidateQueries({ queryKey: ["conversations"] });
       queryClient.invalidateQueries({
-        queryKey: ["messages-Pinned", message.conversationId],
+        queryKey: ["conversation-by-id", conversationId],
+      });
+    });
+
+    socket.on("unpinned-message", (conversationId) => {
+      queryClient.invalidateQueries({ queryKey: ["conversations"] });
+      queryClient.invalidateQueries({
+        queryKey: ["conversation-by-id", conversationId],
       });
     });
   },

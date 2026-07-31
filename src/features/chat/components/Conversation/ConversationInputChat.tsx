@@ -77,7 +77,6 @@ export const ConversationInputChat = ({ conversationId }: Props) => {
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
   const { mutateAsync: sendMessage, isPending } = useSendMessage();
-  // const { mutateAsync: sendMessageGroup } = useSendMessageGroup(); // Placeholder for group message sending
 
   const wrapSelection = (prefix: string, suffix = prefix) => {
     const textarea = inputRef.current;

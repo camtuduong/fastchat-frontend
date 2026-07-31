@@ -15,6 +15,7 @@ import { useDeleteMessage } from "@/features/chat/hooks/useDeleteMessage";
 import { AlertDialog } from "@/features/chat/components/AlertDialog";
 import { usePinMessageInConversation } from "@/features/chat/hooks/usePinMessageInConversation";
 import { useCustomSidebarStore } from "@/stores/useCustomSidebarStore";
+import { SIDEBAR_CONTENT_STATUS } from "@/utils/constant";
 
 type Props = {
   isMyMessage?: boolean;
@@ -42,6 +43,7 @@ export const MessageContentWrapper = ({
   const [openAlertDialog, setOpenAlertDialog] = useState(false);
 
   const setOpen = useCustomSidebarStore((state) => state.setOpen);
+  const setStatus = useCustomSidebarStore((state) => state.setStatus);
 
   const { mutateAsync: deleteMessage, isPending } = useDeleteMessage();
   const { mutateAsync: pinMessage } = usePinMessageInConversation();
@@ -77,6 +79,7 @@ export const MessageContentWrapper = ({
           messageId: message._id,
         });
         setOpenMoreAction(false);
+        setStatus(SIDEBAR_CONTENT_STATUS.PINNED);
         setOpen(true);
       } catch (error) {
         console.error(error);
