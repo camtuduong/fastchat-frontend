@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { DATE_FORMAT } from "@/utils/constant";
 import type { Conversation } from "@/features/chat/types/conversation";
+import { Pin } from "lucide-react";
 
 type Props = {
   conversationMessages: Message;
@@ -84,27 +85,36 @@ export const ConversationBody = ({
 
           return (
             <div key={message._id} className="flex w-full gap-4 p-px">
-              <div className="flex w-full flex-col">
-                {(message.position === messagePositionToLabel.single ||
-                  message.position === messagePositionToLabel.last) && (
-                  <div
-                    className={cn(
-                      "mt-4 flex gap-2",
-                      isMyMessage ? "justify-end" : "justify-start",
-                    )}
-                  >
-                    {!isMyMessage && (
-                      <p className="mb-1 text-xs font-semibold text-gray-500">
-                        {message.sender.displayName}
-                      </p>
-                    )}
-                    <p className="mb-1 self-end text-xs text-gray-400">
-                      {messageTime}
-                    </p>
+              {message.system ? (
+                <div className="flex w-full items-center justify-center gap-1 p-2">
+                  <div className="flex items-center gap-2 rounded-full bg-gray-300 p-1 text-sm text-gray-800">
+                    <Pin className="h-4 w-4" />
                   </div>
-                )}
-                <MessageBubble message={message} isMyMessage={isMyMessage} />
-              </div>
+                  <p dangerouslySetInnerHTML={{ __html: message.content }} />
+                </div>
+              ) : (
+                <div className="flex w-full flex-col">
+                  {(message.position === messagePositionToLabel.single ||
+                    message.position === messagePositionToLabel.last) && (
+                    <div
+                      className={cn(
+                        "mt-4 flex gap-2",
+                        isMyMessage ? "justify-end" : "justify-start",
+                      )}
+                    >
+                      {!isMyMessage && (
+                        <p className="mb-1 text-xs font-semibold text-gray-500">
+                          {message.sender.displayName}
+                        </p>
+                      )}
+                      <p className="mb-1 self-end text-xs text-gray-400">
+                        {messageTime}
+                      </p>
+                    </div>
+                  )}
+                  <MessageBubble message={message} isMyMessage={isMyMessage} />
+                </div>
+              )}
             </div>
           );
         })}
