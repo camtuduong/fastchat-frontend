@@ -1,10 +1,12 @@
 import type {
   BubblePosition,
   MessageUI,
+  PinnedMessageUI,
 } from "@/features/chat/types/bubbleChat";
 import type {
   Conversation,
   ConversationType,
+  PinnedMessage,
 } from "@/features/chat/types/conversation";
 import type { MessageItem } from "@/features/chat/types/Message";
 
@@ -51,6 +53,47 @@ export const bubbleChat = (messageItem: MessageItem[]): MessageUI[] => {
       showAvatar: position === "single" || position === "last",
     };
   });
+};
+export const addPositionForPinnedMessages = (
+  pinnedMessages: PinnedMessage[],
+): PinnedMessageUI[] => {
+  return pinnedMessages.map((message, index) => {
+    const prevMessage = pinnedMessages[index - 1];
+    const nextMessage = pinnedMessages[index + 1];
+
+    let position: BubblePosition;
+
+    if (!prevMessage && !nextMessage) {
+      position = "single";
+    } else if (prevMessage && !nextMessage) {
+      position = "last";
+    } else if (prevMessage && nextMessage) {
+      position = "middle";
+    } else {
+      position = "first";
+    }
+
+    return {
+      ...message,
+      position,
+    };
+  });
+};
+
+export const pinnedClass = (position: BubblePosition) => {
+  switch (position) {
+    case messagePositionToLabel.single:
+      return "rounded-2xl";
+
+    case messagePositionToLabel.first:
+      return "rounded-t-2xl rounded-b-sm";
+
+    case messagePositionToLabel.middle:
+      return "rounded-sm";
+
+    case messagePositionToLabel.last:
+      return "rounded-b-2xl rounded-t-sm";
+  }
 };
 
 export const bubbleClass = (position: BubblePosition, isMyMessage: boolean) => {
@@ -123,5 +166,3 @@ export const messagePositionToLabel: Record<BubblePosition, string> = {
   middle: "middle",
   last: "last",
 };
-
-

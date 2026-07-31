@@ -51,7 +51,10 @@ export const SearchUser = ({
               className="bg-muted flex items-center gap-1.5 rounded-full py-0.5 pr-1.5 pl-1 text-sm"
             >
               <Avatar className="h-5 w-5">
-                <AvatarImage src={user?.avatarUrl} alt={user.displayName} />
+                <AvatarImage
+                  src={user?.avatarUrl || undefined}
+                  alt={user.displayName}
+                />
                 <AvatarFallback className="text-[10px]">
                   {user?.displayName[0]}
                 </AvatarFallback>
@@ -68,7 +71,6 @@ export const SearchUser = ({
           ))}
         </div>
       )}
-
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverAnchor asChild>
           <div className="relative">
@@ -111,7 +113,7 @@ export const SearchUser = ({
                 >
                   <Avatar className="h-7 w-7">
                     <AvatarImage
-                      src={user?.avatarUrl}
+                      src={user?.avatarUrl || undefined}
                       alt={user?.displayName}
                     />
                     <AvatarFallback>{user?.displayName?.[0]}</AvatarFallback>

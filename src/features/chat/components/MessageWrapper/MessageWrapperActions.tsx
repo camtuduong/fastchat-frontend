@@ -20,6 +20,7 @@ type Props = {
   onCopy: () => void;
   isMyMessage?: boolean;
   setOpenAlertDialog: (open: boolean) => void;
+  onPinMessage: () => void;
 };
 export const MessageWrapperActions = ({
   className,
@@ -28,6 +29,7 @@ export const MessageWrapperActions = ({
   isMyMessage,
   onCopy,
   setOpenAlertDialog,
+  onPinMessage,
 }: Props) => {
   return (
     <DropdownMenu open={open} onOpenChange={onOpenChange}>
@@ -53,7 +55,7 @@ export const MessageWrapperActions = ({
           <Copy />
           Copy
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={onPinMessage}>
           <Pin />
           Pin
         </DropdownMenuItem>

@@ -14,8 +14,8 @@ import { useEffect, useRef } from "react";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { useMessageStore } from "@/stores/useMessage";
 import { useConversationStore } from "@/stores/useConversationStore";
-import { useSidebarContentStatus } from "@/stores/useSidebarContentStatus";
 import { useSeenConversation } from "@/features/chat/hooks/useSeenConversation";
+import { useCustomSidebarStore } from "@/stores/useCustomSidebarStore";
 
 export const ConversationPage = () => {
   const navigate = useNavigate();
@@ -36,7 +36,8 @@ export const ConversationPage = () => {
     (state) => state.clearConversationDataDetail,
   );
 
-  const clearStatus = useSidebarContentStatus((state) => state.clearStatus);
+  const clearStatus = useCustomSidebarStore((state) => state.clearStatus);
+  const setOpen = useCustomSidebarStore((state) => state.setOpen);
 
   if (!conversationId || !myUserId) {
     return null;
@@ -59,13 +60,14 @@ export const ConversationPage = () => {
 
   const onScroll = async () => {
     const container = containerRef.current!;
-    const oldHeight = container.scrollHeight;
-
     if (!container) return;
 
     if (container.scrollTop < 100 && hasNextPage && !isFetchingNextPage) {
-      const newHeight = container.scrollHeight;
+      const oldHeight = container.scrollHeight;
+
       await fetchNextPage();
+
+      const newHeight = container.scrollHeight;
       container.scrollTop += newHeight - oldHeight;
     }
   };
@@ -89,45 +91,40 @@ export const ConversationPage = () => {
   }, [conversationError, messagesError, seenConversationError]);
 
   useEffect(() => {
-    return () => {
-      clearReplyMessage();
-    };
-  }, [
-    conversationId,
-    clearReplyMessage,
-    clearConversationDataDetail,
-    clearStatus,
-  ]);
+    clearReplyMessage();
+    clearConversationDataDetail();
+    clearStatus();
+    setOpen(false);
+  }, [conversationId]);
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
     container.scrollTop = container.scrollHeight;
-  }, [conversationMessages?.messages.length]);
-
-  if (isLoading) {
-    return (
-      <div className="flex h-full w-full items-center justify-center">
-        <Spinner className="size-6" />
-      </div>
-    );
-  }
+  }, [conversationId]);
 
   return (
     <CustomSidebarProvider>
       <AppCustomSidebar />
       <CustomSidebarInset className="min-h-0 flex-1 overflow-hidden">
-        <ConversationHeader conversationData={conversationData} />
-        <ConversationBody
-          conversationMessages={conversationMessages}
-          myUserId={myUserId}
-          containerRef={containerRef}
-          onScroll={onScroll}
-          isFetchingNextPage={isFetchingNextPage}
-          conversationType={conversationData?.type}
-          conversationAt={conversationData?.createdAt}
-        />
+        {isLoading ? (
+          <div className="flex h-full w-full items-center justify-center">
+            <Spinner className="size-6" />
+          </div>
+        ) : (
+          <>
+            <ConversationHeader conversationData={conversationData} />
+            <ConversationBody
+              conversationMessages={conversationMessages}
+              myUserId={myUserId}
+              containerRef={containerRef}
+              onScroll={onScroll}
+              isFetchingNextPage={isFetchingNextPage}
+              conversationData={conversationData}
+            />
+          </>
+        )}
 
         {/* Spacer for footer */}
         <ConversationInputChat

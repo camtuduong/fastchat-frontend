@@ -13,6 +13,9 @@ import type { ReactNode } from "react";
 import type { MessageUI } from "@/features/chat/types/bubbleChat";
 import { useDeleteMessage } from "@/features/chat/hooks/useDeleteMessage";
 import { AlertDialog } from "@/features/chat/components/AlertDialog";
+import { usePinMessageInConversation } from "@/features/chat/hooks/usePinMessageInConversation";
+import { useCustomSidebarStore } from "@/stores/useCustomSidebarStore";
+import { SIDEBAR_CONTENT_STATUS } from "@/utils/constant";
 
 type Props = {
   isMyMessage?: boolean;
@@ -38,7 +41,12 @@ export const MessageContentWrapper = ({
   const [openMoreAction, setOpenMoreAction] = useState(false);
 
   const [openAlertDialog, setOpenAlertDialog] = useState(false);
+
+  const setOpen = useCustomSidebarStore((state) => state.setOpen);
+  const setStatus = useCustomSidebarStore((state) => state.setStatus);
+
   const { mutateAsync: deleteMessage, isPending } = useDeleteMessage();
+  const { mutateAsync: pinMessage } = usePinMessageInConversation();
 
   const handleCopy = async () => {
     try {
@@ -57,6 +65,22 @@ export const MessageContentWrapper = ({
       try {
         await deleteMessage(message._id);
         setOpenAlertDialog(false);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  const handlePinMessage = async () => {
+    if (message?._id) {
+      try {
+        await pinMessage({
+          conversationId: message.conversationId,
+          messageId: message._id,
+        });
+        setOpenMoreAction(false);
+        setStatus(SIDEBAR_CONTENT_STATUS.PINNED);
+        setOpen(true);
       } catch (error) {
         console.error(error);
       }
@@ -109,6 +133,7 @@ export const MessageContentWrapper = ({
           isMyMessage={isMyMessage}
           onCopy={handleCopy}
           setOpenAlertDialog={setOpenAlertDialog}
+          onPinMessage={handlePinMessage}
         />
 
         <AlertDialog
