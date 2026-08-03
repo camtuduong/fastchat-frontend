@@ -1,116 +1,21 @@
 import * as React from "react";
+import { Separator } from "@/components/ui/separator";
 
-import { NavMain } from "@/components/sidebar/nav-main";
+import { CustomSidebar } from "@/components/ui/custom-sidebar";
 
-import {
-  CustomSidebar,
-  CustomSidebarContent,
-} from "@/components/ui/custom-sidebar";
-
-import { RightSidebarHeader } from "@/features/chat/components/SidebarRight/RightSidebarHeader";
 import { useConversationStore } from "@/stores/useConversationStore";
 import { useCustomSidebarStore } from "@/stores/useCustomSidebarStore";
 import { SIDEBAR_CONTENT_STATUS } from "@/utils/constant";
 import { PinnedList } from "@/features/chat/components/SidebarRight/PinnedList";
 import { useUnpinMessageInConversation } from "@/features/chat/hooks/useUnpinMessageInConversation";
-
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  navMain: [
-    {
-      title: "Chat Info",
-      url: "#",
-      isActive: true,
-      items: [
-        {
-          title: "View pinned messages",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Customise chat",
-      url: "#",
-      items: [
-        {
-          title: "Change theme",
-          url: "#",
-        },
-        {
-          title: "Change emoji",
-          url: "#",
-        },
-        {
-          title: "Edit nicknames",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Chat members",
-      url: "#",
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Media, files and links",
-      url: "#",
-
-      items: [
-        {
-          title: "Media",
-          url: "#",
-        },
-        {
-          title: "Files",
-          url: "#",
-        },
-        {
-          title: "Links",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Private & support",
-      url: "#",
-      items: [
-        {
-          title: "Chat notifications",
-          url: "#",
-        },
-        {
-          title: "Report",
-          url: "#",
-        },
-        {
-          title: "Leave group",
-          url: "#",
-        },
-      ],
-    },
-  ],
-};
+import { DefaultContent } from "@/features/chat/components/SidebarRight/DefaultContent";
+import { ChevronsLeft, X } from "lucide-react";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { conversationTypeToLabel } from "@/features/chat/constant";
+import type { Conversation } from "@/features/chat/types/conversation";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { MemberList } from "@/features/chat/components/SidebarRight/MemberList";
+import { SharedList } from "@/features/chat/components/SidebarRight/SharedList";
 
 export function AppCustomSidebar({
   ...props
@@ -119,12 +24,21 @@ export function AppCustomSidebar({
     (state) => state.conversationDataDetail,
   );
 
+  const myUserId = useAuthStore((state) => state.userId);
+
   const status = useCustomSidebarStore((state) => state.status);
+  const setStatus = useCustomSidebarStore((state) => state.setStatus);
+  const setOpen = useCustomSidebarStore((state) => state.setOpen);
+
   const { mutateAsync: unpinMessage } = useUnpinMessageInConversation();
 
   if (!conversationDataDetail) {
     return null;
   }
+
+  const members = conversationDataDetail?.participants
+    .map((participant) => participant)
+    .filter((participant) => participant.userId !== myUserId);
 
   const handleUnpinMessage = async (messageId: string) => {
     try {
@@ -137,41 +51,134 @@ export function AppCustomSidebar({
     }
   };
 
+  const Header = ({ title, name }: { title: string; name: string }) => {
+    return (
+      <header className="flex h-16 w-full shrink-0 items-center justify-between gap-2 border-b">
+        <div className="flex gap-2 truncate px-4">
+          <div className="flex items-center gap-2">
+            <div
+              className="flex cursor-pointer items-center gap-2 rounded-md p-1"
+              onClick={() => setStatus(SIDEBAR_CONTENT_STATUS.DEFAULT)}
+            >
+              <ChevronsLeft className="h-4 w-4" />
+              <div className="font-bold">{title}</div>
+            </div>
+            <Separator
+              orientation="vertical"
+              className="mr-2 data-[orientation=vertical]:h-6"
+            />
+            <div className="text-muted-foreground text-[13px] italic">
+              {name}
+            </div>
+          </div>
+        </div>
+        {/* Action buttons */}
+        <div
+          className="hover:bg-accent/5 mr-2 cursor-pointer rounded-md bg-transparent p-1"
+          onClick={() => setOpen(false)}
+        >
+          <X className="h-4 w-4" />
+        </div>
+      </header>
+    );
+  };
+
+  const renderAvatar = (conversationDataDetail: Conversation) => {
+    switch (conversationDataDetail?.type) {
+      case conversationTypeToLabel.direct:
+        return (
+          <>
+            <div className="flex items-center gap-2">
+              <Avatar className="h-14 w-14">
+                <AvatarImage
+                  src={
+                    conversationDataDetail?.participants?.[1]?.avatarUrl || ""
+                  }
+                />
+                <AvatarFallback>
+                  {conversationDataDetail?.participants?.[1]?.displayName?.[0].toUpperCase() ||
+                    "F"}
+                </AvatarFallback>
+              </Avatar>
+              <div className="text-lg font-bold text-gray-700">
+                {members?.[0]?.displayName || "No Name"}
+              </div>
+            </div>
+            <div className="text-sm text-gray-500">
+              "No description available"
+            </div>
+          </>
+        );
+      case conversationTypeToLabel.group:
+        return (
+          <>
+            <div className="flex items-center gap-2">
+              <Avatar className="h-14 w-14">
+                <AvatarImage
+                  src={conversationDataDetail?.group?.avatarUrl || ""}
+                />
+                <AvatarFallback>
+                  {members
+                    ?.map((member) => member.displayName?.[0].toUpperCase())
+                    .join("") || "F"}
+                </AvatarFallback>
+              </Avatar>
+              <div className="text-lg font-bold text-gray-700 dark:text-gray-300">
+                {conversationDataDetail?.group?.name ||
+                  members?.map((member) => member.displayName).join(", ") ||
+                  "No Name"}
+              </div>
+            </div>
+            <div className="text-sm text-gray-500">
+              "No description available"
+            </div>
+          </>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  const nameHeader =
+    conversationDataDetail?.type === conversationTypeToLabel.direct
+      ? members?.[0]?.displayName
+      : conversationDataDetail?.group?.name || "No Name";
+
   const renderSidebarContent = () => {
     switch (status) {
       case SIDEBAR_CONTENT_STATUS.DEFAULT:
       default:
         return (
-          <div className="flex flex-col gap-2 p-4">
-            <RightSidebarHeader
-              conversationDataDetail={conversationDataDetail}
-            />
-            <CustomSidebarContent>
-              <NavMain items={data.navMain} />
-            </CustomSidebarContent>
-          </div>
+          <DefaultContent
+            type={conversationDataDetail?.type}
+            renderAvatar={renderAvatar}
+            conversationDataDetail={conversationDataDetail}
+            nameHeader={nameHeader}
+          />
         );
       case SIDEBAR_CONTENT_STATUS.PINNED:
         return (
-          <PinnedList
-            pinnedMessages={conversationDataDetail.pinnedMessages || []}
-            onUnpinMessage={handleUnpinMessage}
-          />
+          <div className="flex flex-col gap-2">
+            <Header title="Pinned List" name={nameHeader} />
+            <PinnedList
+              pinnedMessages={conversationDataDetail.pinnedMessages || []}
+              onUnpinMessage={handleUnpinMessage}
+            />
+          </div>
         );
       case SIDEBAR_CONTENT_STATUS.MEMBERS:
         return (
-          <div className="flex flex-col gap-2 p-4">
-            <CustomSidebarContent>
-              Members content goes here.
-            </CustomSidebarContent>
+          <div className="flex flex-col gap-2">
+            <Header title="Members List" name={nameHeader} />
+            <MemberList />
           </div>
         );
       case SIDEBAR_CONTENT_STATUS.SHARED:
         return (
-          <div className="flex flex-col gap-2 p-4">
-            <CustomSidebarContent>
-              Shared content goes here.
-            </CustomSidebarContent>
+          <div className="flex flex-col gap-2">
+            <Header title="Shared List" name={nameHeader} />
+            <SharedList />
           </div>
         );
     }

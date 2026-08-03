@@ -31,14 +31,6 @@ export const ConversationBody = ({
   conversationData,
 }: Props) => {
   const layout = bubbleChat(conversationMessages.messages);
-  const conversationDate = conversationData?.createdAt
-    ? new Date(conversationData.createdAt)
-    : null;
-
-  const formattedConversationDate =
-    conversationDate && !Number.isNaN(conversationDate.getTime())
-      ? format(conversationDate, DATE_FORMAT)
-      : null;
 
   return (
     <>
@@ -66,8 +58,8 @@ export const ConversationBody = ({
           />
           <div className="flex flex-col items-center justify-center gap-1">
             <span className="text-sm">
-              You started the conversation
-              {formattedConversationDate && ` at ${formattedConversationDate}`}
+              You started the conversation at{" "}
+              {format(new Date(conversationData?.createdAt || ""), DATE_FORMAT)}
             </span>
             <span className="text-lg">
               Let's chat with your friend
@@ -86,7 +78,10 @@ export const ConversationBody = ({
           if (message.system) {
             const IconType = typeMessageIconAction[message.system.action];
             return (
-              <div className="flex w-full items-center justify-center gap-1 p-2 text-[13px]">
+              <div
+                key={message._id}
+                className="flex w-full items-center justify-center gap-1 p-2 text-[13px]"
+              >
                 <div className="flex items-center gap-2 rounded-full bg-gray-300 p-1 text-gray-800">
                   {IconType ? <IconType className="h-4 w-4" /> : null}
                 </div>

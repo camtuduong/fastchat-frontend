@@ -9,27 +9,16 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { conversationTypeToLabel } from "@/features/chat/constant";
 import type { Conversation } from "@/features/chat/types/conversation";
-import { useAuthStore } from "@/stores/useAuthStore";
-import { useSocketStore } from "@/stores/useSocketStore";
 
 type Props = {
-  conversationData: Conversation | undefined;
+  type: Conversation["type"] | undefined;
+  members: Conversation["participants"] | undefined;
+  isOnline: boolean | undefined;
 };
 
-export const ConversationHeader = ({ conversationData }: Props) => {
-  const myUserId = useAuthStore((state) => state.userId);
-
-  const members = conversationData?.participants
-    .map((participant) => participant)
-    .filter((participant) => participant.userId !== myUserId);
-
-  const onlineUsers = useSocketStore((state) => state.onlineUsers);
-  const isOnline = members?.some((member) =>
-    onlineUsers.includes(member.userId),
-  );
-
+export const ConversationHeader = ({ type, members, isOnline }: Props) => {
   const renderHeaderConversation = () => {
-    switch (conversationData?.type) {
+    switch (type) {
       case conversationTypeToLabel.direct:
         return (
           <div className="flex items-center gap-2">
@@ -57,7 +46,7 @@ export const ConversationHeader = ({ conversationData }: Props) => {
           <div className="flex items-center gap-2">
             <Avatar>
               <AvatarImage
-                src={conversationData?.group?.avatarUrl || ""}
+                src={members?.[0]?.avatarUrl || undefined}
                 alt="@shadcn"
               />
               <AvatarFallback>
@@ -65,10 +54,12 @@ export const ConversationHeader = ({ conversationData }: Props) => {
                   ?.map((member) => member.displayName?.[0]?.toUpperCase())
                   .join(", ")}
               </AvatarFallback>
+              <AvatarBadge
+                className={`${isOnline ? "bg-green-600 dark:bg-green-800" : "bg-gray-200 dark:bg-gray-600"}`}
+              />
             </Avatar>
             <span className="truncate">
-              {conversationData?.group?.name ??
-                members?.map((member) => member.displayName).join(", ")}
+              {members?.map((member) => member.displayName).join(", ")}
             </span>
           </div>
         );
