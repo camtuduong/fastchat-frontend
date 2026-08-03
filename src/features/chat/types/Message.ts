@@ -10,7 +10,7 @@ interface MessageItem {
   conversationId: string;
   system:
     | {
-        action: string;
+        action: ActionType;
       }
     | null
     | undefined;
@@ -33,7 +33,16 @@ interface Attachment {
   name: string;
 }
 
-export interface Emoji {
+type ActionType =
+  | "create_group"
+  | "rename_group"
+  | "add_member"
+  | "remove_member"
+  | "leave_group"
+  | "pin_message"
+  | "unpin_message";
+
+interface Emoji {
   id: string;
   name: string;
   emoticons: string[];
@@ -42,4 +51,4 @@ export interface Emoji {
   unified: string;
   native: string;
 }
-export type { Message, MessageItem, Attachment };
+export type { Message, MessageItem, Attachment, Sender, ActionType, Emoji };

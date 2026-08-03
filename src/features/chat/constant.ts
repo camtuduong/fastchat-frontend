@@ -8,7 +8,16 @@ import type {
   ConversationType,
   PinnedMessage,
 } from "@/features/chat/types/conversation";
-import type { MessageItem } from "@/features/chat/types/Message";
+import type { ActionType, MessageItem } from "@/features/chat/types/Message";
+import {
+  Pen,
+  UserPlus,
+  UserMinus,
+  Pin,
+  type LucideIcon,
+  UserRoundArrowLeft,
+  PinOff,
+} from "lucide-react";
 
 const TEN_MINUTES_IN_MINUTES = 20;
 
@@ -165,4 +174,14 @@ export const messagePositionToLabel: Record<BubblePosition, string> = {
   first: "first",
   middle: "middle",
   last: "last",
+};
+
+export const typeMessageIconAction: Record<ActionType, LucideIcon | null> = {
+  create_group: null,
+  rename_group: Pen,
+  add_member: UserPlus,
+  remove_member: UserMinus,
+  leave_group: UserRoundArrowLeft,
+  pin_message: Pin,
+  unpin_message: PinOff,
 };
