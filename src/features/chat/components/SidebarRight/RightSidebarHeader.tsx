@@ -1,39 +1,32 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import type { Conversation } from "@/features/chat/types/conversation";
-import { BellRing, Search } from "lucide-react";
+import { X } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
+import { useCustomSidebarStore } from "@/stores/useCustomSidebarStore";
 
 type Props = {
-  conversationDataDetail: Conversation | null;
+  name?: string;
 };
-export const RightSidebarHeader = ({}: Props) => {
+export const RightSidebarHeader = ({ name }: Props) => {
+  const setOpen = useCustomSidebarStore((state) => state.setOpen);
+
   return (
-    <div className="flex w-full shrink-0 flex-col items-center justify-center gap-2 px-4 py-4">
-      <Avatar className="mt-2 h-18 w-18">
-        <AvatarFallback>
-          {/* {members
-            ?.map((member) => member.username[0].toUpperCase())
-            .join(", ")} */}
-          Hú
-        </AvatarFallback>
-      </Avatar>
-      <div className="text-sm font-semibold">Group Name</div>
-
-      <div className="flex w-full items-center justify-center gap-8 py-4">
-        <div className="flex flex-col items-center justify-center gap-1">
-          <Button className="p-1" variant="icon" size="icon-lg">
-            <BellRing />
-          </Button>
-          <span className="text-xs">Mute</span>
-        </div>
-
-        <div className="flex flex-col items-center justify-center gap-1">
-          <Button className="p-1" variant="icon" size="icon-lg">
-            <Search />
-          </Button>
-          <span className="text-xs">Search</span>
+    <header className="flex h-16 w-full shrink-0 items-center justify-between gap-2 border-b">
+      <div className="flex gap-2 px-4">
+        <div className="flex items-center gap-2">
+          <div className="font-bold">Info</div>
+          <Separator
+            orientation="vertical"
+            className="mr-2 data-[orientation=vertical]:h-6"
+          />
+          <div className="text-muted-foreground text-[13px] italic">{name}</div>
         </div>
       </div>
-    </div>
+      {/* Action buttons */}
+      <div
+        className="hover:bg-accent/5 mr-2 cursor-pointer rounded-md bg-transparent p-1"
+        onClick={() => setOpen(false)}
+      >
+        <X className="h-4 w-4" />
+      </div>
+    </header>
   );
 };

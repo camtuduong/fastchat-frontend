@@ -274,7 +274,7 @@ function CustomSidebarTrigger({
       onClick={(event) => {
         onClick?.(event);
         toggleSidebar();
-        setStatus(SIDEBAR_CONTENT_STATUS.PINNED);
+        setStatus(SIDEBAR_CONTENT_STATUS.DEFAULT);
       }}
       {...props}
     >

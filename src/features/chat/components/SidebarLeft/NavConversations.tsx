@@ -1,5 +1,4 @@
 import { MenuItem } from "@/features/chat/components/SidebarLeft/MenuItem";
-import { conversationTypeToLabel } from "@/features/chat/constant";
 import { SidebarChildLayout } from "@/features/chat/layouts/SidebarChildLayout";
 import type { Conversation } from "@/features/chat/types/conversation";
 import { useAuthStore } from "@/stores/useAuthStore";
@@ -10,6 +9,7 @@ type Props = {
   conversations: Conversation[];
 };
 export const NavConversations = ({ conversations }: Props) => {
+  const myUserId = useAuthStore((state) => state.userId);
   const conversationId = useParams({
     strict: false,
     shouldThrow: false,
@@ -17,32 +17,30 @@ export const NavConversations = ({ conversations }: Props) => {
 
   const onlineUsers = useSocketStore((state) => state.onlineUsers);
 
-  const isOnline = (conversation: Conversation) => {
-    if (conversation.type === conversationTypeToLabel.direct) {
-      const otherParticipant = conversation.participants.find(
-        (participant) => participant.userId !== useAuthStore.getState().userId,
-      );
-      return otherParticipant
-        ? onlineUsers.includes(otherParticipant.userId)
-        : false;
-    }
-    return false;
-  };
-
   const isActive = (conversation: Conversation) => {
     return conversation._id === conversationId;
   };
 
   return (
     <SidebarChildLayout label="Conversations" className="flex flex-col gap-y-2">
-      {conversations.map((conversation) => (
-        <MenuItem
-          key={conversation._id}
-          conversation={conversation}
-          isOnline={isOnline(conversation)}
-          isActive={isActive(conversation)}
-        />
-      ))}
+      {conversations.map((conversation) => {
+        const members = conversation?.participants
+          .map((participant) => participant)
+          .filter((participant) => participant.userId !== myUserId);
+
+        const isOnline = members?.some((member) =>
+          onlineUsers.includes(member.userId),
+        );
+
+        return (
+          <MenuItem
+            key={conversation._id}
+            conversation={conversation}
+            isOnline={isOnline}
+            isActive={isActive(conversation)}
+          />
+        );
+      })}
     </SidebarChildLayout>
   );
 };

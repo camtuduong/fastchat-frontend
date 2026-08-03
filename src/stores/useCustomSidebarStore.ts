@@ -3,9 +3,9 @@ import { create } from "zustand";
 
 export const useCustomSidebarStore = create<CustomSidebarStore>((set) => ({
   open: false,
-  status: null,
+  status: "default",
 
   setOpen: (open) => set({ open }),
   setStatus: (status: SidebarStatusType) => set({ status }),
-  clearStatus: () => set({ status: null }),
+  clearStatus: () => set({ status: "default" }),
 }));

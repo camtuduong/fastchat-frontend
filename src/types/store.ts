@@ -47,7 +47,14 @@ export interface CustomSidebarStore {
   clearStatus: () => void;
 }
 
-export type SidebarStatusType = "default" | "pinned" | "members" | "shared";
+export type SidebarStatusType =
+  | "default"
+  | "pinned"
+  | "members"
+  | "shared"
+  | "settings"
+  | "notifications"
+  | null;
 
 export type UserState = {
   users: Record<string, Participant>;
