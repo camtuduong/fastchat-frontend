@@ -128,6 +128,7 @@ export const ConversationPage = () => {
               type={conversationData?.type}
               members={members}
               isOnline={isOnline}
+              groupAvatarUrl={conversationData?.group.groupAvatarUrl}
             />
             <ConversationBody
               conversationMessages={conversationMessages}

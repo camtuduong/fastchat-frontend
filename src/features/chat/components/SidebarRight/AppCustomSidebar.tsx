@@ -16,6 +16,7 @@ import type { Conversation } from "@/features/chat/types/conversation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MemberList } from "@/features/chat/components/SidebarRight/MemberList";
 import { SharedList } from "@/features/chat/components/SidebarRight/SharedList";
+import { useRemoveMemberInConversation } from "@/features/chat/hooks/removeMemberInConversation";
 
 export function AppCustomSidebar({
   ...props
@@ -31,6 +32,7 @@ export function AppCustomSidebar({
   const setOpen = useCustomSidebarStore((state) => state.setOpen);
 
   const { mutateAsync: unpinMessage } = useUnpinMessageInConversation();
+  const { mutateAsync: removeMember } = useRemoveMemberInConversation();
 
   if (!conversationDataDetail) {
     return null;
@@ -40,6 +42,7 @@ export function AppCustomSidebar({
     .map((participant) => participant)
     .filter((participant) => participant.userId !== myUserId);
 
+  //handle
   const handleUnpinMessage = async (messageId: string) => {
     try {
       await unpinMessage({
@@ -51,6 +54,18 @@ export function AppCustomSidebar({
     }
   };
 
+  const handleRemoveMember = async (userId: string) => {
+    try {
+      await removeMember({
+        conversationId: conversationDataDetail._id,
+        memberId: userId,
+      });
+    } catch (error) {
+      console.error("Error removing member:", error);
+    }
+  };
+
+  //ui
   const Header = ({ title, name }: { title: string; name: string }) => {
     return (
       <header className="flex h-16 w-full shrink-0 items-center justify-between gap-2 border-b">
@@ -175,7 +190,10 @@ export function AppCustomSidebar({
         return (
           <div className="flex flex-col gap-2">
             <Header title="Members List" name={nameHeader} />
-            <MemberList members={conversationDataDetail?.participants || []} />
+            <MemberList
+              members={conversationDataDetail?.participants || []}
+              onRemoveMember={handleRemoveMember}
+            />
           </div>
         );
       case SIDEBAR_CONTENT_STATUS.SHARED:

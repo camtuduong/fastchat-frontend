@@ -1,9 +1,8 @@
+import type { Participant } from "@/features/chat/types/conversation";
 import { api } from "@/services/api";
 
-import type { Friend } from "../type";
-
 interface FriendResponse {
-  friends: Friend[];
+  friends: Participant[];
 }
 
 export const getAllFriends = async (params: string) => {

@@ -4,7 +4,7 @@ import { useGetPath } from "@/features/friends/hooks/useGetPath";
 import { useGetAllFriend } from "@/features/friends/hooks/queries/useGetAllFriends";
 import { Style } from "@/style";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { removeVietnameseTones } from "@/utils/constant";
+import { grouped } from "@/utils/constant";
 import { Ellipsis, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -35,23 +35,7 @@ export const ListFriendsPage = () => {
 
   const { data: friends } = useGetAllFriend({ params: debouncedSearch });
 
-  const sortedFriends = [...friends].sort((a, b) =>
-    a.displayName.localeCompare(b.displayName),
-  );
-
-  const grouped = sortedFriends.reduce(
-    (acc, friend) => {
-      const firstLetter = removeVietnameseTones(friend.displayName)
-        .charAt(0)
-        .toUpperCase();
-      if (!acc[firstLetter]) {
-        acc[firstLetter] = [];
-      }
-      acc[firstLetter].push(friend);
-      return acc;
-    },
-    {} as Record<string, typeof friends>,
-  );
+  const groupedFriends = grouped(friends ?? []);
 
   const handleCreateGroup = async (userId: string[]) => {
     if (userId.length === 0 || isPending) {
@@ -108,15 +92,15 @@ export const ListFriendsPage = () => {
         </div>
       ) : (
         <div className={cn(Style.dashboardContainer, "mx-4 mb-2")}>
-          {Object.keys(grouped).map((letter) => (
+          {Object.keys(groupedFriends).map((letter) => (
             <div key={letter}>
               <div className="mb-2.5 text-xl font-bold">{letter}</div>
-              {grouped[letter].map((friend) => (
+              {groupedFriends[letter].map((friend) => (
                 <button
-                  key={friend._id}
+                  key={friend.userId}
                   className="hover:bg-accent/5 hover:text-accent-foreground relative flex w-full cursor-pointer items-center gap-2 rounded-md p-2"
                   onClick={() => {
-                    handleCreateGroup([friend._id]);
+                    handleCreateGroup([friend.userId]);
                   }}
                 >
                   <Avatar className="h-10 w-10">
@@ -131,7 +115,7 @@ export const ListFriendsPage = () => {
                       <button
                         className="text-muted-foreground hover:bg-accent-foreground/5 hover:text-accent absolute right-2 cursor-pointer rounded-md p-2 text-sm"
                         onClick={() => {
-                          console.log(`Remove friend: ${friend.username}`);
+                          console.log(`Remove friend: ${friend.userId}`);
                         }}
                       >
                         <Ellipsis />

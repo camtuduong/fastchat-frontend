@@ -169,6 +169,21 @@ export const useSocketStore = create<SocketState>((set, get) => ({
         queryKey: ["conversation-by-id", conversationId],
       });
     });
+
+    //member in group
+    socket.on("add-member", ({ conversationId }) => {
+      queryClient.invalidateQueries({ queryKey: ["conversations"] });
+      queryClient.invalidateQueries({
+        queryKey: ["conversation-by-id", conversationId],
+      });
+    });
+
+    socket.on("remove-member", ({ conversationId }) => {
+      queryClient.invalidateQueries({ queryKey: ["conversations"] });
+      queryClient.invalidateQueries({
+        queryKey: ["conversation-by-id", conversationId],
+      });
+    });
   },
   disconnectSocket: () => {
     const socket = get().socket;
