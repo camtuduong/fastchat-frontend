@@ -18,14 +18,14 @@ interface Participant {
   userId: string;
   displayName: string;
   joinedAt: string;
-  clearAt: boolean;
+  clearedAt: string | null;
   avatarUrl: string;
   hidden: boolean;
 }
 
 interface Group {
   name: string;
-  avatarUrl: string;
+  groupAvatarUrl: string;
   createdAt: string;
   createdBy: string;
 }

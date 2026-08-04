@@ -14,9 +14,15 @@ type Props = {
   type: Conversation["type"] | undefined;
   members: Conversation["participants"] | undefined;
   isOnline: boolean | undefined;
+  groupAvatarUrl?: string | undefined;
 };
 
-export const ConversationHeader = ({ type, members, isOnline }: Props) => {
+export const ConversationHeader = ({
+  type,
+  members,
+  isOnline,
+  groupAvatarUrl,
+}: Props) => {
   const renderHeaderConversation = () => {
     switch (type) {
       case conversationTypeToLabel.direct:
@@ -45,15 +51,8 @@ export const ConversationHeader = ({ type, members, isOnline }: Props) => {
         return (
           <div className="flex items-center gap-2">
             <Avatar>
-              <AvatarImage
-                src={members?.[0]?.avatarUrl || undefined}
-                alt="@shadcn"
-              />
-              <AvatarFallback>
-                {members
-                  ?.map((member) => member.displayName?.[0]?.toUpperCase())
-                  .join(", ")}
-              </AvatarFallback>
+              <AvatarImage src={groupAvatarUrl || undefined} alt="@group" />
+              <AvatarFallback>GR</AvatarFallback>
               <AvatarBadge
                 className={`${isOnline ? "bg-green-600 dark:bg-green-800" : "bg-gray-200 dark:bg-gray-600"}`}
               />

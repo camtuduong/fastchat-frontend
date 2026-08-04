@@ -13,22 +13,24 @@ import type { User } from "@/features/chat/types/searchUser";
 import { useGetUserBySearch } from "@/features/main/hooks/queries/useGetUserBySearch";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useState, type ReactNode } from "react";
-import { useCreateNewConversation } from "@/features/chat/hooks/useCreateNewConversation";
-import { useNavigate } from "@tanstack/react-router";
-import { conversationTypeToLabel } from "@/features/chat/constant";
 
 type Props = {
   buttonTrigger: ReactNode;
+  onSubmit: (userIdsSelected: string[]) => Promise<void>;
+  isPending: boolean;
+  title: string;
 };
-export const CreateConversationDialog = ({ buttonTrigger }: Props) => {
-  const navigate = useNavigate();
+export const SelectUsersDialog = ({
+  buttonTrigger,
+  onSubmit,
+  isPending,
+  title,
+}: Props) => {
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
   const debouncedSearch = useDebounce(searchValue, 500);
   const { data: users } = useGetUserBySearch({ params: debouncedSearch });
-  const { mutateAsync: createGroupMutation, isPending } =
-    useCreateNewConversation();
 
   const userIdsSelected = selectedUsers.map((user) => user._id);
 
@@ -45,38 +47,19 @@ export const CreateConversationDialog = ({ buttonTrigger }: Props) => {
     }
   };
 
-  const handleCreateGroup = async () => {
-    if (userIdsSelected.length === 0 || isPending) {
-      return;
-    }
-
-    try {
-      const result = await createGroupMutation({
-        type:
-          userIdsSelected.length === 1
-            ? conversationTypeToLabel.direct
-            : conversationTypeToLabel.group,
-        participants: userIdsSelected,
-      });
-      navigate({ to: `/chat/${result.conversation}` });
-    } catch (error) {
-      console.error("Failed to create group:", error);
-    }
-    handleOpenChange(false);
-  };
-
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>{buttonTrigger}</DialogTrigger>
       <DialogContent className="sm:max-w-sm">
         <form
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault();
-            handleCreateGroup();
+            await onSubmit(userIdsSelected);
+            handleOpenChange(false);
           }}
         >
           <DialogHeader>
-            <DialogTitle>Create Conversation</DialogTitle>
+            <DialogTitle>{title}</DialogTitle>
           </DialogHeader>
           <SearchUser
             searchValue={searchValue}
@@ -95,7 +78,7 @@ export const CreateConversationDialog = ({ buttonTrigger }: Props) => {
               type="submit"
               disabled={userIdsSelected.length === 0 || isPending}
             >
-              {isPending ? "Creating..." : "Create Conversation"}
+              {isPending ? "Confirming..." : "Confirm"}
             </Button>
           </DialogFooter>
         </form>

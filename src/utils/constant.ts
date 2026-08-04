@@ -1,3 +1,4 @@
+import type { Participant } from "@/features/chat/types/conversation";
 import type { SidebarStatusType } from "@/types/store";
 
 const GIF_DEFAULT_QUERY = "String"; // Giá trị mặc định cho truy vấn tìm kiếm GIF
@@ -26,3 +27,21 @@ export const SIDEBAR_CONTENT_STATUS: Record<string, SidebarStatusType> = {
   MEMBERS: "members",
   SHARED: "shared",
 };
+
+export const sortedUserName = (users: Participant[]) =>
+  [...users].sort((a, b) => a.displayName.localeCompare(b.displayName));
+
+export const grouped = (users: Participant[]) =>
+  sortedUserName(users).reduce(
+    (acc, friend) => {
+      const firstLetter = removeVietnameseTones(friend.displayName)
+        .charAt(0)
+        .toUpperCase();
+      if (!acc[firstLetter]) {
+        acc[firstLetter] = [];
+      }
+      acc[firstLetter].push(friend);
+      return acc;
+    },
+    {} as Record<string, Participant[]>,
+  );

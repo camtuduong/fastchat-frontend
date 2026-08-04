@@ -3,6 +3,7 @@ import { Camera } from "lucide-react";
 
 export const UploadAvatar = () => {
   const { mutateAsync: uploadAvatar } = useUploadAvatar();
+
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
