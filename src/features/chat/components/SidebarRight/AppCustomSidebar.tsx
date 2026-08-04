@@ -130,7 +130,7 @@ export function AppCustomSidebar({
             <div className="flex items-center gap-2">
               <Avatar className="h-14 w-14">
                 <AvatarImage
-                  src={conversationDataDetail?.group?.avatarUrl || ""}
+                  src={conversationDataDetail?.group?.groupAvatarUrl || ""}
                 />
                 <AvatarFallback>
                   {members

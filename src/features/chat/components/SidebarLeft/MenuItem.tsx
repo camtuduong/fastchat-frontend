@@ -89,7 +89,7 @@ export const MenuItem = ({ conversation, isOnline, isActive }: Props) => {
           <div className={Style.containerItem}>
             <Avatar className={Style.avatar}>
               <AvatarImage
-                src={conversation?.group?.avatarUrl || ""}
+                src={conversation?.group?.groupAvatarUrl || ""}
                 alt={conversation?.group?.name || "Group Avatar"}
               />
               <AvatarFallback>GR</AvatarFallback>
