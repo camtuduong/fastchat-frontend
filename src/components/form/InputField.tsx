@@ -19,6 +19,7 @@ export const InputField = forwardRef<HTMLInputElement, Props>(
           </label>
         )}
         <input
+          autoComplete="one-time-code"
           ref={ref}
           {...props}
           className={cn(

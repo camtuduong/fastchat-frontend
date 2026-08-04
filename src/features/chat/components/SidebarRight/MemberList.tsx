@@ -7,9 +7,10 @@ import { X } from "lucide-react";
 type Prop = {
   members: Conversation["participants"];
   onRemoveMember?: (userId: string) => void;
+  ownerId?: string;
 };
 
-export const MemberList = ({ members, onRemoveMember }: Prop) => {
+export const MemberList = ({ members, onRemoveMember, ownerId }: Prop) => {
   const userId = useAuthStore((state) => state.userId);
   const groupedMembers = grouped(members ?? []);
 
@@ -44,7 +45,7 @@ export const MemberList = ({ members, onRemoveMember }: Prop) => {
                     </div>
                   </div>
 
-                  {member.userId !== userId && (
+                  {member.userId !== userId && member.userId !== ownerId && (
                     <button
                       type="button"
                       className="bg-accent-foreground hover:bg-destructive absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer rounded-full p-1 text-white opacity-0 transition-colors duration-100 group-hover/members-item:opacity-100"

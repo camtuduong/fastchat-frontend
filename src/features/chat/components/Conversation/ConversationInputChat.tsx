@@ -29,7 +29,8 @@ const Style = {
   actionButton:
     "cursor-pointer items-center hover:bg-accent-foreground/10 rounded-md p-2 transition-colors duration-100 bg-transparent text-muted-foreground hover:text-accent-foreground [&_svg]:size-4",
   inputContainer: "relative flex min-w-0 flex-1",
-  input: "max-h-48 min-h-14 resize-none border-none py-4 text-base leading-6",
+  input:
+    "max-h-48 min-h-14 resize-none border-none rounded-xl bg-transparent py-4 text-base leading-6",
   eyeIcon:
     "text-muted-foreground hover:text-accent-foreground hover:bg-accent/5 absolute top-1 right-2.5 cursor-pointer rounded-lg p-2 transition-colors duration-100",
   formatterContainer: "relative flex min-w-0 flex-1",
