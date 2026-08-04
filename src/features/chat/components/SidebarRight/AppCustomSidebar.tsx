@@ -133,9 +133,7 @@ export function AppCustomSidebar({
                   src={conversationDataDetail?.group?.groupAvatarUrl || ""}
                 />
                 <AvatarFallback>
-                  {members
-                    ?.map((member) => member.displayName?.[0].toUpperCase())
-                    .join("") || "F"}
+                 GR
                 </AvatarFallback>
               </Avatar>
               <div className="text-panel-foreground text-lg font-bold">
@@ -191,6 +189,7 @@ export function AppCustomSidebar({
           <div className="flex flex-col gap-2">
             <Header title="Members List" name={nameHeader} />
             <MemberList
+              ownerId={conversationDataDetail?.group?.createdBy}
               members={conversationDataDetail?.participants || []}
               onRemoveMember={handleRemoveMember}
             />
