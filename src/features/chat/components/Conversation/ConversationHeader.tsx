@@ -39,7 +39,7 @@ export const ConversationHeader = ({
                   .join(", ")}
               </AvatarFallback>
               <AvatarBadge
-                className={`${isOnline ? "bg-green-600 dark:bg-green-800" : "bg-gray-200 dark:bg-gray-600"}`}
+                className={`${isOnline ? "bg-status-online" : "bg-status-offline"}`}
               />
             </Avatar>
             <span className="truncate">
@@ -54,7 +54,7 @@ export const ConversationHeader = ({
               <AvatarImage src={groupAvatarUrl || undefined} alt="@group" />
               <AvatarFallback>GR</AvatarFallback>
               <AvatarBadge
-                className={`${isOnline ? "bg-green-600 dark:bg-green-800" : "bg-gray-200 dark:bg-gray-600"}`}
+                className={`${isOnline ? "bg-status-online" : "bg-status-offline"}`}
               />
             </Avatar>
             <span className="truncate">

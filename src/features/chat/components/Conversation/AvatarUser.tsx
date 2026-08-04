@@ -10,7 +10,7 @@ export const AvatarUser = ({ participantsName }: Props) => {
     <div>
       <Avatar>
         <AvatarFallback>{participantsName?.[0]?.toUpperCase()}</AvatarFallback>
-        <AvatarBadge className="bg-green-600 dark:bg-green-800" />
+        <AvatarBadge className="bg-status-online" />
       </Avatar>
       <div className="truncate">
         <div className="truncate">{participantsName}</div>

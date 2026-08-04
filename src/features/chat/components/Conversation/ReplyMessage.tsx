@@ -34,7 +34,7 @@ export const ReplyMessage = ({
         bubbleReplyClass(messagePosition!, isMyMessage),
         isMyMessage
           ? "bg-chart-5"
-          : "dark:bg-background bg-white dark:text-white",
+          : "bg-reply-other text-reply-other-foreground",
 
         className,
         hasAttachment && "p-3",

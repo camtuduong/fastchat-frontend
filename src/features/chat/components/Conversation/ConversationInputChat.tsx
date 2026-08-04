@@ -345,7 +345,7 @@ export const ConversationInputChat = ({ conversationId }: Props) => {
               avatarUrl={replyMessage.sender.avatarUrl}
               displayName={replyMessage.sender.displayName}
               content={replyMessage.content}
-              className="bg-accent/10 dark:bg-accent m-2 rounded-lg p-2"
+              className="bg-reply-preview m-2 rounded-lg p-2"
               description={<span className="shrink-0">Replying to:</span>}
               hasAttachment={(replyMessage.attachments?.length ?? 0) > 0}
             />

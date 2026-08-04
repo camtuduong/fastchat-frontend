@@ -29,7 +29,7 @@ const Style = {
   lastMessage: "text-muted-foreground text-sm truncate",
   lastMessageTimeAgo: "text-muted-foreground text-xs",
   buttonAction:
-    "cursor-pointer hover:bg-gray-5 absolute top-1/2 right-2 z-10 -translate-y-1/2 transform items-center rounded-full p-2 opacity-0 dark:bg-primary dark:hover:bg-accent bg-background group-hover/menu-item:opacity-100 shadow-md transition-opacity",
+    "bg-menu-action hover:bg-menu-action-hover absolute top-1/2 right-2 z-10 -translate-y-1/2 transform cursor-pointer items-center rounded-full p-2 opacity-0 shadow-md transition-opacity group-hover/menu-item:opacity-100",
 };
 
 export const MenuItem = ({ conversation, isOnline, isActive }: Props) => {
@@ -64,7 +64,7 @@ export const MenuItem = ({ conversation, isOnline, isActive }: Props) => {
                 {friends?.displayName?.[0]?.toUpperCase()}
               </AvatarFallback>
               <AvatarBadge
-                className={`${isOnline ? "bg-green-600 dark:bg-green-800" : "bg-gray-200 dark:bg-gray-600"}`}
+                className={`${isOnline ? "bg-status-online" : "bg-status-offline"}`}
               />
             </Avatar>
             <div className="flex-1 truncate">
@@ -94,7 +94,7 @@ export const MenuItem = ({ conversation, isOnline, isActive }: Props) => {
               />
               <AvatarFallback>GR</AvatarFallback>
               <AvatarBadge
-                className={`${isOnline ? "bg-green-600 dark:bg-green-800" : "bg-gray-200 dark:bg-gray-600"}`}
+                className={`${isOnline ? "bg-status-online" : "bg-status-offline"}`}
               />
             </Avatar>
             <div className="flex-1 truncate">
@@ -125,7 +125,7 @@ export const MenuItem = ({ conversation, isOnline, isActive }: Props) => {
       <SidebarMenuButton
         className={cn(
           Style.container,
-          isActive && "bg-primary/5 dark:bg-accent",
+          isActive && "bg-nav-active",
         )}
         onClick={() => navigate({ to: `/chat/${conversation._id}` })}
         asChild

@@ -18,7 +18,7 @@ const Style = {
   bubble: "py-2 text-sm wrap-anywhere",
   myMessage: "bg-primary markdown-me text-white p-0.5",
   otherMessage:
-    "markdown-other bg-gray-100 dark:bg-accent p-0.5 text-gray-700 dark:text-gray-200",
+    "markdown-other bg-bubble-other p-0.5 text-bubble-other-foreground",
   attachmentContainer:
     "mb-2 flex w-fit flex-wrap gap-2 bg-transparent p-2 hover:bg-accent/5",
   attachmentVideo: "h-auto w-32 rounded-md object-cover",
