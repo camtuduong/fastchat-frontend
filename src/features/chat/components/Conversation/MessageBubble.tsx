@@ -16,7 +16,7 @@ type Props = {
 
 const Style = {
   bubble: "py-2 text-sm wrap-anywhere",
-  myMessage: "bg-primary markdown-me text-white p-0.5",
+  myMessage: "bg-primary-bubble-chat markdown-me text-white p-0.5",
   otherMessage:
     "markdown-other bg-bubble-other p-0.5 text-bubble-other-foreground",
   attachmentContainer:

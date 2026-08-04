@@ -58,11 +58,34 @@
   --reply-other-bg: #ffffff;
   --reply-other-foreground: inherit;
   --reply-preview-bg: color-mix(in oklch, var(--accent) 10%, transparent);
+  --sticker-picker-bg: #ffffff;
+  --sticker-picker-border: var(--border);
+  --sticker-picker-input-bg: #f8fafc;
+  --sticker-picker-list-bg: color-mix(in oklch, var(--muted) 28%, transparent);
+  --sticker-picker-tile-bg: color-mix(
+    in oklch,
+    var(--accent-foreground) 5%,
+    transparent
+  );
+  --sticker-picker-tile-border: transparent;
+  --sticker-picker-tile-hover-bg: color-mix(
+    in oklch,
+    var(--accent) 8%,
+    transparent
+  );
+  --sticker-picker-tile-hover-border: var(--accent);
+  --sticker-picker-shadow:
+    rgba(15, 23, 42, 0.16) 0 20px 42px -24px,
+    rgba(15, 23, 42, 0.12) 0 8px 20px -16px;
 
   --field-bg: transparent;
   --field-disabled-bg: color-mix(in oklch, var(--input) 50%, transparent);
   --field-invalid-border: var(--destructive);
-  --field-invalid-ring: color-mix(in oklch, var(--destructive) 20%, transparent);
+  --field-invalid-ring: color-mix(
+    in oklch,
+    var(--destructive) 20%,
+    transparent
+  );
   --input-field-foreground: inherit;
 
   --button-default-hover: color-mix(in oklch, var(--primary) 80%, transparent);
@@ -70,15 +93,35 @@
   --button-outline-bg: var(--background);
   --button-outline-hover: var(--muted);
   --button-ghost-hover: var(--muted);
-  --button-destructive-bg: color-mix(in oklch, var(--destructive) 10%, transparent);
-  --button-destructive-hover: color-mix(in oklch, var(--destructive) 20%, transparent);
-  --button-destructive-focus-border: color-mix(in oklch, var(--destructive) 40%, transparent);
-  --button-destructive-focus-ring: color-mix(in oklch, var(--destructive) 20%, transparent);
+  --button-destructive-bg: color-mix(
+    in oklch,
+    var(--destructive) 10%,
+    transparent
+  );
+  --button-destructive-hover: color-mix(
+    in oklch,
+    var(--destructive) 20%,
+    transparent
+  );
+  --button-destructive-focus-border: color-mix(
+    in oklch,
+    var(--destructive) 40%,
+    transparent
+  );
+  --button-destructive-focus-ring: color-mix(
+    in oklch,
+    var(--destructive) 20%,
+    transparent
+  );
   --button-icon-bg: var(--primary);
   --button-icon-foreground: var(--secondary);
   --button-icon-hover: color-mix(in oklch, var(--primary) 80%, transparent);
 
-  --dropdown-destructive-focus: color-mix(in oklch, var(--destructive) 10%, transparent);
+  --dropdown-destructive-focus: color-mix(
+    in oklch,
+    var(--destructive) 10%,
+    transparent
+  );
   --field-checked-border: color-mix(in oklch, var(--primary) 30%, transparent);
   --field-checked-bg: color-mix(in oklch, var(--primary) 5%, transparent);
 
@@ -116,6 +159,7 @@
   --popover-accent: #f5f5f5;
 
   --primary: #000000;
+  --primary-bubble-chat: #000000;
   --primary-foreground: oklch(0.985 0 0);
 
   --secondary: #ffffff;
@@ -207,6 +251,7 @@
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
+  --color-primary-bubble-chat: var(--primary-bubble-chat);
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
   --color-popover-accent: var(--popover-accent);
@@ -239,6 +284,16 @@
   --color-reply-other: var(--reply-other-bg);
   --color-reply-other-foreground: var(--reply-other-foreground);
   --color-reply-preview: var(--reply-preview-bg);
+  --color-sticker-picker: var(--sticker-picker-bg);
+  --color-sticker-picker-border: var(--sticker-picker-border);
+  --color-sticker-picker-input: var(--sticker-picker-input-bg);
+  --color-sticker-picker-list: var(--sticker-picker-list-bg);
+  --color-sticker-picker-tile: var(--sticker-picker-tile-bg);
+  --color-sticker-picker-tile-border: var(--sticker-picker-tile-border);
+  --color-sticker-picker-tile-hover: var(--sticker-picker-tile-hover-bg);
+  --color-sticker-picker-tile-hover-border: var(
+    --sticker-picker-tile-hover-border
+  );
   --color-field: var(--field-bg);
   --color-field-disabled: var(--field-disabled-bg);
   --color-field-invalid-border: var(--field-invalid-border);
@@ -251,7 +306,9 @@
   --color-button-ghost-hover: var(--button-ghost-hover);
   --color-button-destructive: var(--button-destructive-bg);
   --color-button-destructive-hover: var(--button-destructive-hover);
-  --color-button-destructive-focus-border: var(--button-destructive-focus-border);
+  --color-button-destructive-focus-border: var(
+    --button-destructive-focus-border
+  );
   --color-button-destructive-focus-ring: var(--button-destructive-focus-ring);
   --color-button-icon: var(--button-icon-bg);
   --color-button-icon-foreground: var(--button-icon-foreground);
@@ -325,11 +382,29 @@
   --reply-other-bg: #191f2b;
   --reply-other-foreground: #eef2f7;
   --reply-preview-bg: #252c3a;
+  --sticker-picker-bg: #151a23;
+  --sticker-picker-border: #384052;
+  --sticker-picker-input-bg: #171c26;
+  --sticker-picker-list-bg: #171c26;
+  --sticker-picker-tile-bg: #232936;
+  --sticker-picker-tile-border: #2d3545;
+  --sticker-picker-tile-hover-bg: #2c3444;
+  --sticker-picker-tile-hover-border: #596274;
+  --sticker-picker-shadow:
+    rgba(0, 0, 0, 0.48) 0 24px 54px -28px, rgba(0, 0, 0, 0.32) 0 12px 26px -18px;
 
   --field-bg: #1b202b;
   --field-disabled-bg: #262d3a;
-  --field-invalid-border: color-mix(in oklch, var(--destructive) 58%, var(--border));
-  --field-invalid-ring: color-mix(in oklch, var(--destructive) 34%, transparent);
+  --field-invalid-border: color-mix(
+    in oklch,
+    var(--destructive) 58%,
+    var(--border)
+  );
+  --field-invalid-ring: color-mix(
+    in oklch,
+    var(--destructive) 34%,
+    transparent
+  );
   --input-field-foreground: var(--gray-3);
 
   --button-default-hover: #444c5d;
@@ -337,15 +412,35 @@
   --button-outline-bg: #1a202b;
   --button-outline-hover: #252d3a;
   --button-ghost-hover: #252c38;
-  --button-destructive-bg: color-mix(in oklch, var(--destructive) 20%, transparent);
-  --button-destructive-hover: color-mix(in oklch, var(--destructive) 30%, transparent);
-  --button-destructive-focus-border: color-mix(in oklch, var(--destructive) 55%, var(--border));
-  --button-destructive-focus-ring: color-mix(in oklch, var(--destructive) 40%, transparent);
+  --button-destructive-bg: color-mix(
+    in oklch,
+    var(--destructive) 20%,
+    transparent
+  );
+  --button-destructive-hover: color-mix(
+    in oklch,
+    var(--destructive) 30%,
+    transparent
+  );
+  --button-destructive-focus-border: color-mix(
+    in oklch,
+    var(--destructive) 55%,
+    var(--border)
+  );
+  --button-destructive-focus-ring: color-mix(
+    in oklch,
+    var(--destructive) 40%,
+    transparent
+  );
   --button-icon-bg: var(--primary);
   --button-icon-foreground: #ffffff;
   --button-icon-hover: #414b5c;
 
-  --dropdown-destructive-focus: color-mix(in oklch, var(--destructive) 20%, transparent);
+  --dropdown-destructive-focus: color-mix(
+    in oklch,
+    var(--destructive) 20%,
+    transparent
+  );
   --field-checked-border: #4b5566;
   --field-checked-bg: #242b37;
 
@@ -369,8 +464,8 @@
   --popover-foreground: #eef2f7;
   --popover-accent: #2c3444;
   /* Neutral primary */
-  --primary: #2d3748;
-  --primary-foreground: #ffffff;
+  --primary: #1c222c;
+  --primary-bubble-chat: #3157ab;
 
   --secondary: #252c38;
   --secondary-foreground: #e7ebf3;

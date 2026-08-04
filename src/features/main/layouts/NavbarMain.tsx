@@ -25,10 +25,10 @@ export const NavbarHeader = () => {
   const isFriends = pathname.startsWith("/friends");
 
   return (
-    <div className="bg-primary z-10 flex w-16 flex-col items-center px-2 py-4">
+    <div className="bg-primary z-50 flex w-12 flex-col items-center px-2 py-4">
       <div className="flex flex-col items-center gap-4">
         <Avatar
-          size="lg"
+          size="default"
           className="cursor-pointer"
           onClick={() => setProfileOpen(true)}
         >
