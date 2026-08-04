@@ -100,7 +100,7 @@ export function AppCustomSidebar({
                     "F"}
                 </AvatarFallback>
               </Avatar>
-              <div className="text-lg font-bold text-gray-700">
+              <div className="text-lg font-bold text-gray-700 dark:text-gray-300">
                 {members?.[0]?.displayName || "No Name"}
               </div>
             </div>
@@ -155,6 +155,10 @@ export function AppCustomSidebar({
             renderAvatar={renderAvatar}
             conversationDataDetail={conversationDataDetail}
             nameHeader={nameHeader}
+            memberLength={conversationDataDetail?.participants?.length || 0}
+            pinnedMessagesLength={
+              conversationDataDetail?.pinnedMessages?.length || 0
+            }
           />
         );
       case SIDEBAR_CONTENT_STATUS.PINNED:
@@ -171,7 +175,7 @@ export function AppCustomSidebar({
         return (
           <div className="flex flex-col gap-2">
             <Header title="Members List" name={nameHeader} />
-            <MemberList />
+            <MemberList members={conversationDataDetail?.participants || []} />
           </div>
         );
       case SIDEBAR_CONTENT_STATUS.SHARED:
