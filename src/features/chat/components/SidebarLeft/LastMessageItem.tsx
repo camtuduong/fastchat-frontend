@@ -17,7 +17,7 @@ export const LastMessageItem = ({
       {unreadCount > 0 ? (
         <>
           {`${unreadCount} new message${unreadCount > 1 ? "s" : ""}`}
-          <AvatarBadge className="border-0.5 border-gray-1 absolute top-1/2 right-2 h-3 w-3 -translate-y-1/2 bg-blue-600 dark:border-black dark:bg-blue-900" />
+          <AvatarBadge className="border-0.5 border-status-unread-border absolute top-1/2 right-2 h-3 w-3 -translate-y-1/2 bg-status-unread" />
         </>
       ) : (
         `${isLastMessageFromMe ? "You: " : ""}${LastMessage?.content ?? ""}`

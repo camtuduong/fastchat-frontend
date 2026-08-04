@@ -27,7 +27,7 @@ export function App() {
     <ThemeProvider defaultTheme="system" storageKey="theme">
       <div id="app" className="flex min-h-full flex-col">
         <div
-          className={`${accessToken ? "flex h-full w-full flex-1 overflow-hidden bg-[#F9F9F9]" : ""}`}
+          className={`${accessToken ? "bg-app-shell flex h-full w-full flex-1 overflow-hidden" : ""}`}
         >
           {accessToken ? (
             <>

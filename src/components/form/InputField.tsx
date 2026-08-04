@@ -22,7 +22,7 @@ export const InputField = forwardRef<HTMLInputElement, Props>(
           ref={ref}
           {...props}
           className={cn(
-            "border-gray-3 focus:border-plum dark:text-gray-3 mt-1 w-full rounded-md border px-3 py-2 focus:outline-none",
+            "border-gray-3 focus:border-plum text-input-field-foreground mt-1 w-full rounded-md border px-3 py-2 focus:outline-none",
             className,
           )}
         />

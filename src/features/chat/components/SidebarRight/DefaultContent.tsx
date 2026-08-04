@@ -24,7 +24,7 @@ import { Fragment } from "react";
 import { useAddNewMembers } from "@/features/chat/hooks/useAddNewMember";
 
 const Style = {
-  icon: "flex h-4 w-4 items-center justify-center text-sm font-medium text-gray-700 transition-all duration-200 dark:text-gray-300",
+  icon: "text-panel-foreground flex h-4 w-4 items-center justify-center text-sm font-medium transition-all duration-200",
   iconSize: "h-4 w-4",
 };
 
@@ -160,11 +160,11 @@ export const DefaultContent = ({
               .map((action, index) => {
                 const triggerDiv = (
                   <div
-                    className="bg-accent/5 hover:bg-accent/10 dark:bg-accent dark:hover:bg-accent/10 flex w-full cursor-pointer flex-col items-center gap-2 rounded-md p-2 transition-all duration-200"
+                    className="bg-panel-action hover:bg-panel-action-hover flex w-full cursor-pointer flex-col items-center gap-2 rounded-md p-2 transition-all duration-200"
                     onClick={action.action}
                   >
                     <span className={Style.icon}>{action.icon}</span>
-                    <span className="text-[12px] font-medium text-gray-700 dark:text-gray-300">
+                    <span className="text-panel-foreground text-[12px] font-medium">
                       {action.value}
                     </span>
                   </div>
@@ -204,7 +204,7 @@ export const DefaultContent = ({
             .map((action, index) => (
               <div
                 key={index}
-                className="hover:bg-accent/10 dark:hover:bg-accent flex cursor-pointer items-center gap-2 rounded-md p-2 text-sm text-gray-700 transition-all duration-200 dark:text-gray-300"
+                className="hover:bg-panel-row-hover text-panel-foreground flex cursor-pointer items-center gap-2 rounded-md p-2 text-sm transition-all duration-200"
                 onClick={() => {
                   setStatus(action.status);
                 }}
@@ -213,7 +213,7 @@ export const DefaultContent = ({
                 {action.value}
 
                 {action.length !== undefined && (
-                  <div className="ml-auto text-[12px] text-gray-500 dark:text-gray-400">
+                  <div className="text-panel-muted ml-auto text-[12px]">
                     {action.length}
                   </div>
                 )}

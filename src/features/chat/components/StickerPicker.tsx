@@ -77,13 +77,13 @@ export const StickerPicker = ({ pickerRef, onStickerClick }: Props) => {
   return (
     <div
       ref={pickerRef}
-      className="absolute right-20 bottom-15 z-10 flex max-h-100 min-h-100 w-100 flex-col overflow-hidden rounded-xl border bg-white p-4 shadow-lg"
+      className="bg-sticker-picker border-sticker-picker-border absolute right-20 bottom-15 z-10 flex max-h-100 min-h-100 w-100 flex-col overflow-hidden rounded-xl border p-4 text-foreground shadow-[var(--sticker-picker-shadow)]"
     >
       <div className="relative mb-4 shrink-0">
         <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
         <Input
           ref={searchInputRef}
-          className="bg-background pl-9"
+          className="bg-sticker-picker-input pl-9"
           id="search-input"
           placeholder="Search by name or email..."
           type="search"
@@ -95,7 +95,7 @@ export const StickerPicker = ({ pickerRef, onStickerClick }: Props) => {
 
       <div
         ref={listRef}
-        className="grid flex-1 grid-cols-4 gap-2 overflow-y-auto rounded-md p-2"
+        className="bg-sticker-picker-list grid flex-1 grid-cols-4 gap-2 overflow-y-auto rounded-md p-2"
       >
         {stickerItems.length > 0 ? (
           stickerItems.map((sticker) => {
@@ -113,7 +113,7 @@ export const StickerPicker = ({ pickerRef, onStickerClick }: Props) => {
                 playsInline
                 key={sticker.id}
                 src={imageUrl}
-                className="hover:border-accent bg-accent-foreground/5 h-22 w-22 cursor-pointer rounded-md object-contain shadow-sm transition-all duration-200 hover:scale-105 hover:shadow-md"
+                className="border-sticker-picker-tile-border bg-sticker-picker-tile hover:border-sticker-picker-tile-hover-border hover:bg-sticker-picker-tile-hover h-22 w-22 cursor-pointer rounded-md border object-contain shadow-sm transition-all duration-200 hover:scale-105 hover:shadow-md"
                 onClick={() => onStickerClick?.(sticker, imageUrl)}
               />
             );

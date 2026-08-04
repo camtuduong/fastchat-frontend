@@ -115,7 +115,7 @@ export function AppCustomSidebar({
                     "F"}
                 </AvatarFallback>
               </Avatar>
-              <div className="text-lg font-bold text-gray-700 dark:text-gray-300">
+              <div className="text-panel-foreground text-lg font-bold">
                 {members?.[0]?.displayName || "No Name"}
               </div>
             </div>
@@ -138,7 +138,7 @@ export function AppCustomSidebar({
                     .join("") || "F"}
                 </AvatarFallback>
               </Avatar>
-              <div className="text-lg font-bold text-gray-700 dark:text-gray-300">
+              <div className="text-panel-foreground text-lg font-bold">
                 {conversationDataDetail?.group?.name ||
                   members?.map((member) => member.displayName).join(", ") ||
                   "No Name"}

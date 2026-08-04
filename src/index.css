@@ -34,6 +34,105 @@
   --color-plum-dark: #6b1f4d;
 
   --color-cream: #ffe6c9;
+  --app-shell-bg: #f9f9f9;
+  --status-online: oklch(62.7% 0.194 149.214);
+  --status-offline: oklch(92.8% 0.006 264.531);
+  --status-unread: oklch(54.6% 0.245 262.881);
+  --status-unread-border: var(--gray-1);
+
+  --panel-foreground: oklch(37.3% 0.034 259.733);
+  --panel-muted: oklch(55.1% 0.027 264.364);
+
+  --bubble-other-bg: oklch(96.7% 0.003 264.542);
+  --bubble-other-foreground: oklch(37.3% 0.034 259.733);
+  --bubble-other-heading: oklch(21% 0.034 264.665);
+  --bubble-other-link: oklch(54.6% 0.245 262.881);
+  --bubble-other-link-hover: oklch(48.8% 0.243 264.376);
+  --bubble-other-quote-border: oklch(87.2% 0.01 258.338);
+  --bubble-other-quote-foreground: oklch(44.6% 0.03 256.802);
+  --bubble-other-code-bg: oklch(92.8% 0.006 264.531);
+  --bubble-other-code-foreground: oklch(57.7% 0.245 27.325);
+  --bubble-other-pre-bg: oklch(27.8% 0.033 256.848);
+  --bubble-other-pre-foreground: oklch(96.7% 0.003 264.542);
+
+  --reply-other-bg: #ffffff;
+  --reply-other-foreground: inherit;
+  --reply-preview-bg: color-mix(in oklch, var(--accent) 10%, transparent);
+  --sticker-picker-bg: #ffffff;
+  --sticker-picker-border: var(--border);
+  --sticker-picker-input-bg: #f8fafc;
+  --sticker-picker-list-bg: color-mix(in oklch, var(--muted) 28%, transparent);
+  --sticker-picker-tile-bg: color-mix(
+    in oklch,
+    var(--accent-foreground) 5%,
+    transparent
+  );
+  --sticker-picker-tile-border: transparent;
+  --sticker-picker-tile-hover-bg: color-mix(
+    in oklch,
+    var(--accent) 8%,
+    transparent
+  );
+  --sticker-picker-tile-hover-border: var(--accent);
+  --sticker-picker-shadow:
+    rgba(15, 23, 42, 0.16) 0 20px 42px -24px,
+    rgba(15, 23, 42, 0.12) 0 8px 20px -16px;
+
+  --field-bg: transparent;
+  --field-disabled-bg: color-mix(in oklch, var(--input) 50%, transparent);
+  --field-invalid-border: var(--destructive);
+  --field-invalid-ring: color-mix(
+    in oklch,
+    var(--destructive) 20%,
+    transparent
+  );
+  --input-field-foreground: inherit;
+
+  --button-default-hover: color-mix(in oklch, var(--primary) 80%, transparent);
+  --button-outline-border: var(--border);
+  --button-outline-bg: var(--background);
+  --button-outline-hover: var(--muted);
+  --button-ghost-hover: var(--muted);
+  --button-destructive-bg: color-mix(
+    in oklch,
+    var(--destructive) 10%,
+    transparent
+  );
+  --button-destructive-hover: color-mix(
+    in oklch,
+    var(--destructive) 20%,
+    transparent
+  );
+  --button-destructive-focus-border: color-mix(
+    in oklch,
+    var(--destructive) 40%,
+    transparent
+  );
+  --button-destructive-focus-ring: color-mix(
+    in oklch,
+    var(--destructive) 20%,
+    transparent
+  );
+  --button-icon-bg: var(--primary);
+  --button-icon-foreground: var(--secondary);
+  --button-icon-hover: color-mix(in oklch, var(--primary) 80%, transparent);
+
+  --dropdown-destructive-focus: color-mix(
+    in oklch,
+    var(--destructive) 10%,
+    transparent
+  );
+  --field-checked-border: color-mix(in oklch, var(--primary) 30%, transparent);
+  --field-checked-bg: color-mix(in oklch, var(--primary) 5%, transparent);
+
+  --panel-action-bg: color-mix(in oklch, var(--accent) 5%, transparent);
+  --panel-action-hover-bg: color-mix(in oklch, var(--accent) 10%, transparent);
+  --panel-row-hover-bg: color-mix(in oklch, var(--accent) 10%, transparent);
+  --menu-action-bg: var(--background);
+  --menu-action-hover-bg: var(--gray-5);
+  --nav-active-bg: color-mix(in oklch, var(--primary) 5%, transparent);
+
+  --avatar-frame-blend: darken;
 
   font: 18px / 145% var(--sans);
   letter-spacing: 0.18px;
@@ -60,6 +159,7 @@
   --popover-accent: #f5f5f5;
 
   --primary: #000000;
+  --primary-bubble-chat: #000000;
   --primary-foreground: oklch(0.985 0 0);
 
   --secondary: #ffffff;
@@ -100,9 +200,9 @@
     --bg: #16171d;
     --border: #2e303a;
     --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
+    --accent: #64748b;
+    --accent-bg: rgba(100, 116, 139, 0.18);
+    --accent-border: rgba(148, 163, 184, 0.42);
     --social-bg: rgba(47, 48, 58, 0.5);
     --shadow:
       rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
@@ -151,6 +251,7 @@
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
+  --color-primary-bubble-chat: var(--primary-bubble-chat);
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
   --color-popover-accent: var(--popover-accent);
@@ -171,92 +272,234 @@
   --color-gray-3: var(--gray-3);
   --color-gray-4: var(--gray-4);
   --color-gray-5: var(--gray-5);
+  --color-app-shell: var(--app-shell-bg);
+  --color-status-online: var(--status-online);
+  --color-status-offline: var(--status-offline);
+  --color-status-unread: var(--status-unread);
+  --color-status-unread-border: var(--status-unread-border);
+  --color-panel-foreground: var(--panel-foreground);
+  --color-panel-muted: var(--panel-muted);
+  --color-bubble-other: var(--bubble-other-bg);
+  --color-bubble-other-foreground: var(--bubble-other-foreground);
+  --color-reply-other: var(--reply-other-bg);
+  --color-reply-other-foreground: var(--reply-other-foreground);
+  --color-reply-preview: var(--reply-preview-bg);
+  --color-sticker-picker: var(--sticker-picker-bg);
+  --color-sticker-picker-border: var(--sticker-picker-border);
+  --color-sticker-picker-input: var(--sticker-picker-input-bg);
+  --color-sticker-picker-list: var(--sticker-picker-list-bg);
+  --color-sticker-picker-tile: var(--sticker-picker-tile-bg);
+  --color-sticker-picker-tile-border: var(--sticker-picker-tile-border);
+  --color-sticker-picker-tile-hover: var(--sticker-picker-tile-hover-bg);
+  --color-sticker-picker-tile-hover-border: var(
+    --sticker-picker-tile-hover-border
+  );
+  --color-field: var(--field-bg);
+  --color-field-disabled: var(--field-disabled-bg);
+  --color-field-invalid-border: var(--field-invalid-border);
+  --color-field-invalid-ring: var(--field-invalid-ring);
+  --color-input-field-foreground: var(--input-field-foreground);
+  --color-button-default-hover: var(--button-default-hover);
+  --color-button-outline-border: var(--button-outline-border);
+  --color-button-outline: var(--button-outline-bg);
+  --color-button-outline-hover: var(--button-outline-hover);
+  --color-button-ghost-hover: var(--button-ghost-hover);
+  --color-button-destructive: var(--button-destructive-bg);
+  --color-button-destructive-hover: var(--button-destructive-hover);
+  --color-button-destructive-focus-border: var(
+    --button-destructive-focus-border
+  );
+  --color-button-destructive-focus-ring: var(--button-destructive-focus-ring);
+  --color-button-icon: var(--button-icon-bg);
+  --color-button-icon-foreground: var(--button-icon-foreground);
+  --color-button-icon-hover: var(--button-icon-hover);
+  --color-dropdown-destructive-focus: var(--dropdown-destructive-focus);
+  --color-field-checked-border: var(--field-checked-border);
+  --color-field-checked: var(--field-checked-bg);
+  --color-panel-action: var(--panel-action-bg);
+  --color-panel-action-hover: var(--panel-action-hover-bg);
+  --color-panel-row-hover: var(--panel-row-hover-bg);
+  --color-menu-action: var(--menu-action-bg);
+  --color-menu-action-hover: var(--menu-action-hover-bg);
+  --color-nav-active: var(--nav-active-bg);
 }
 
 .dark {
   /* Base */
-  --text: rgb(244 245 247);
-  /* --text-h: #f8f5fa; */
-  --bg: #121014;
-  --border: #333638;
-  --code-bg: #1c191f;
+  --text: #edf1f7;
+  --text-h: #f8fafc;
+  --bg: #151821;
+  --border: #2c3342;
+  --code-bg: #202532;
 
   /* Accent */
-  --accent: #2a2a2a;
-  --accent-bg: rgba(170, 59, 255, 0.14);
-  --accent-border: rgba(190, 100, 255, 0.45);
+  --accent: #343b49;
+  --accent-bg: color-mix(in oklch, var(--accent) 38%, transparent);
+  --accent-border: color-mix(in oklch, var(--gray-2) 42%, transparent);
 
-  --social-bg: rgba(35, 31, 38, 0.6);
+  --social-bg: color-mix(in oklch, var(--popover) 70%, transparent);
 
   --shadow:
-    rgba(0, 0, 0, 0.35) 0 10px 15px -3px, rgba(0, 0, 0, 0.2) 0 4px 6px -2px;
+    rgba(0, 0, 0, 0.45) 0 18px 32px -18px, rgba(6, 8, 14, 0.32) 0 8px 18px -10px;
 
   /* Gray */
-  --gray-1: #343036;
-  --gray-2: #8d858f;
-  --gray-3: #aaa2ac;
-  --gray-5: #2a272c;
+  --gray-1: #303746;
+  --gray-2: #778195;
+  --gray-3: #a6afc0;
+  --gray-5: #262c38;
   --gray-6: #374151;
 
   /* Inputs / Buttons */
-  --border-button: #332e35;
-  --border-input: #453a42;
+  --border-button: #384052;
+  --border-input: #3a4355;
 
   /* Brand */
-  --color-plum: #b84b8c;
-  --color-plum-dark: #96386f;
+  --color-plum: #64748b;
+  --color-plum-dark: #94a3b8;
 
-  --color-cream: #ffd8aa;
-  --bubble-other-bg: #1c191f;
-  --bubble-other-text: #979ba4;
+  --color-cream: #1f2530;
+  --app-shell-bg: var(--background);
+  --status-online: #2fd07a;
+  --status-offline: #596274;
+  --status-unread: #6ea8ff;
+  --status-unread-border: #11131a;
+
+  --panel-foreground: #e7ebf3;
+  --panel-muted: #9ba6b8;
+
+  --bubble-other-bg: #232936;
+  --bubble-other-foreground: #e2e8f2;
+  --bubble-other-heading: #f5f7fb;
+  --bubble-other-link: #8ab4ff;
+  --bubble-other-link-hover: #b8cdff;
+  --bubble-other-quote-border: #465166;
+  --bubble-other-quote-foreground: #c0c8d6;
+  --bubble-other-code-bg: #1b2430;
+  --bubble-other-code-foreground: #f8c76f;
+  --bubble-other-pre-bg: #131722;
+  --bubble-other-pre-foreground: #eef2f7;
+
+  --reply-other-bg: #191f2b;
+  --reply-other-foreground: #eef2f7;
+  --reply-preview-bg: #252c3a;
+  --sticker-picker-bg: #151a23;
+  --sticker-picker-border: #384052;
+  --sticker-picker-input-bg: #171c26;
+  --sticker-picker-list-bg: #171c26;
+  --sticker-picker-tile-bg: #232936;
+  --sticker-picker-tile-border: #2d3545;
+  --sticker-picker-tile-hover-bg: #2c3444;
+  --sticker-picker-tile-hover-border: #596274;
+  --sticker-picker-shadow:
+    rgba(0, 0, 0, 0.48) 0 24px 54px -28px, rgba(0, 0, 0, 0.32) 0 12px 26px -18px;
+
+  --field-bg: #1b202b;
+  --field-disabled-bg: #262d3a;
+  --field-invalid-border: color-mix(
+    in oklch,
+    var(--destructive) 58%,
+    var(--border)
+  );
+  --field-invalid-ring: color-mix(
+    in oklch,
+    var(--destructive) 34%,
+    transparent
+  );
+  --input-field-foreground: var(--gray-3);
+
+  --button-default-hover: #444c5d;
+  --button-outline-border: var(--input);
+  --button-outline-bg: #1a202b;
+  --button-outline-hover: #252d3a;
+  --button-ghost-hover: #252c38;
+  --button-destructive-bg: color-mix(
+    in oklch,
+    var(--destructive) 20%,
+    transparent
+  );
+  --button-destructive-hover: color-mix(
+    in oklch,
+    var(--destructive) 30%,
+    transparent
+  );
+  --button-destructive-focus-border: color-mix(
+    in oklch,
+    var(--destructive) 55%,
+    var(--border)
+  );
+  --button-destructive-focus-ring: color-mix(
+    in oklch,
+    var(--destructive) 40%,
+    transparent
+  );
+  --button-icon-bg: var(--primary);
+  --button-icon-foreground: #ffffff;
+  --button-icon-hover: #414b5c;
+
+  --dropdown-destructive-focus: color-mix(
+    in oklch,
+    var(--destructive) 20%,
+    transparent
+  );
+  --field-checked-border: #4b5566;
+  --field-checked-bg: #242b37;
+
+  --panel-action-bg: #202633;
+  --panel-action-hover-bg: #2c3444;
+  --panel-row-hover-bg: #252d3c;
+  --menu-action-bg: #1b202b;
+  --menu-action-hover-bg: #2d3545;
+  --nav-active-bg: #242b37;
+
+  --avatar-frame-blend: lighten;
   /* Shadcn / Tailwind semantic colors */
 
-  --background: #181818;
-  --foreground: #ffffff;
+  --background: #151821;
+  --foreground: #f4f7fb;
 
-  --card: oklch(80.462% 0.16333 153.367);
-  --card-foreground: oklch(63.812% 0.00756 325.217);
+  --card: #1b202b;
+  --card-foreground: #eef2f7;
 
-  --popover: #262626;
-  --popover-foreground: #fffffff;
-  --popover-accent: #2f2f2f;
-  /* Plum primary */
-  --primary: #0a0a0a;
-  --primary-foreground: oklch(63.812% 0.00756 325.217);
+  --popover: #202633;
+  --popover-foreground: #eef2f7;
+  --popover-accent: #2c3444;
+  /* Neutral primary */
+  --primary: #1c222c;
+  --primary-bubble-chat: #3157ab;
 
-  --secondary: oklch(86.285% 0.17172 94.639);
-  --secondary-foreground: oklch(63.812% 0.00756 325.217);
+  --secondary: #252c38;
+  --secondary-foreground: #e7ebf3;
 
-  --muted: oklch(76.224% 0.05567 326.034);
-  --muted-foreground: oklch(0.68 0.015 325);
+  --muted: #242b37;
+  --muted-foreground: #9ba6b8;
 
-  --accent-foreground: oklch(63.812% 0.00756 325.217);
+  --accent-foreground: #f4f7fb;
 
-  --destructive: oklch(65% 0.22 25);
+  --destructive: #f87171;
 
-  --input: oklch(25% 0.012 325);
+  --input: #384052;
 
-  --ring: oklch(58% 0.16 335);
+  --ring: #64748b;
 
   /* Charts */
-  --chart-1: oklch(68% 0.16 335);
-  --chart-2: oklch(70% 0.12 50);
-  --chart-3: oklch(65% 0.12 290);
-  --chart-4: oklch(72% 0.1 80);
-  --chart-5: oklch(0.269 0 0);
+  --chart-1: #2d3748;
+  --chart-2: #6ea8ff;
+  --chart-3: #94a3b8;
+  --chart-4: #f8c76f;
+  --chart-5: #1f2937;
 
   /* Sidebar */
-  --sidebar: #0a0a0a;
-  --sidebar-foreground: #ffffff;
+  --sidebar: #11131a;
+  --sidebar-foreground: #edf1f7;
 
-  --sidebar-primary: oklch(59.823% 0.25264 338.061);
-  --sidebar-primary-foreground: oklch(63.812% 0.00756 325.217);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: #ffffff;
 
-  --sidebar-accent: #2f2f2f94;
-  --sidebar-accent-foreground: oklch(63.812% 0.00756 325.217);
+  --sidebar-accent: #232936;
+  --sidebar-accent-foreground: #f4f7fb;
 
-  --sidebar-border: oklch(0.27 0.012 325);
-  --sidebar-ring: oklch(33.201% 0.06214 334.007);
+  --sidebar-border: #262d3a;
+  --sidebar-ring: #64748b;
 
   color-scheme: dark;
 
@@ -337,23 +580,32 @@
 /* ===== Bubble của người khác (bg-gray-100 text-gray-700) ===== */
 
 .markdown-other h1 {
-  @apply mb-4 text-3xl font-bold text-gray-900;
+  @apply mb-4 text-3xl font-bold;
+  color: var(--bubble-other-heading);
 }
 
 .markdown-other h2 {
-  @apply mb-3 text-2xl font-bold text-gray-900;
+  @apply mb-3 text-2xl font-bold;
+  color: var(--bubble-other-heading);
 }
 
 .markdown-other h3 {
-  @apply mb-2 text-xl font-semibold text-gray-900;
+  @apply mb-2 text-xl font-semibold;
+  color: var(--bubble-other-heading);
 }
 
 .markdown-other a {
-  @apply text-blue-600 underline hover:text-blue-700;
+  @apply underline;
+  color: var(--bubble-other-link);
+}
+
+.markdown-other a:hover {
+  color: var(--bubble-other-link-hover);
 }
 
 .markdown-other strong {
-  @apply font-bold text-gray-900;
+  @apply font-bold;
+  color: var(--bubble-other-heading);
 }
 
 .markdown-other em {
@@ -361,7 +613,9 @@
 }
 
 .markdown-other blockquote {
-  @apply border-l-4 border-gray-300 pl-4 text-gray-600 italic;
+  @apply border-l-4 pl-4 italic;
+  border-color: var(--bubble-other-quote-border);
+  color: var(--bubble-other-quote-foreground);
 }
 
 .markdown-other ul {
@@ -373,15 +627,23 @@
 }
 
 .markdown-other :not(pre) > code {
-  @apply rounded bg-gray-200 px-1 py-0.5 font-mono text-red-600;
+  @apply rounded px-1 py-0.5 font-mono;
+  background: var(--bubble-other-code-bg);
+  color: var(--bubble-other-code-foreground);
 }
 
 .markdown-other pre {
-  @apply my-3 overflow-x-auto rounded-lg bg-gray-800 p-4;
+  @apply my-3 overflow-x-auto rounded-lg p-4;
+  background: var(--bubble-other-pre-bg);
 }
 
 .markdown-other pre code {
-  @apply rounded bg-transparent p-0 text-gray-100;
+  @apply rounded bg-transparent p-0;
+  color: var(--bubble-other-pre-foreground);
+}
+
+.avatar-frame::after {
+  mix-blend-mode: var(--avatar-frame-blend);
 }
 
 @layer base {
