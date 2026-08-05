@@ -20,7 +20,7 @@ const Style = {
   otherMessage:
     "markdown-other bg-bubble-other p-0.5 text-bubble-other-foreground",
   attachmentContainer:
-    "mb-2 flex w-fit flex-wrap gap-2 bg-transparent p-2 hover:bg-accent/5",
+    "mb-2 flex w-fit flex-wrap gap-2 bg-transparent p-2 hover:bg-attachment-bg/5",
   attachmentVideo: "h-auto w-32 rounded-md object-cover",
 
   replyMessageContainer:
