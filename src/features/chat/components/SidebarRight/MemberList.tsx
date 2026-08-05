@@ -1,8 +1,8 @@
+import { ButtonX } from "@/components/base/button-x";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { Conversation } from "@/features/chat/types/conversation";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { grouped } from "@/utils/constant";
-import { X } from "lucide-react";
 
 type Prop = {
   members: Conversation["participants"];
@@ -46,13 +46,10 @@ export const MemberList = ({ members, onRemoveMember, ownerId }: Prop) => {
                   </div>
 
                   {member.userId !== userId && member.userId !== ownerId && (
-                    <button
-                      type="button"
-                      className="bg-accent-foreground hover:bg-destructive absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer rounded-full p-1 text-white opacity-0 transition-colors duration-100 group-hover/members-item:opacity-100"
+                    <ButtonX
+                      showOnGroupHover
                       onClick={() => onRemoveMember?.(member.userId)}
-                    >
-                      <X size={12} />
-                    </button>
+                    />
                   )}
                 </div>
               ))}

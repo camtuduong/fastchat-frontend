@@ -17,6 +17,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MemberList } from "@/features/chat/components/SidebarRight/MemberList";
 import { SharedList } from "@/features/chat/components/SidebarRight/SharedList";
 import { useRemoveMemberInConversation } from "@/features/chat/hooks/removeMemberInConversation";
+import { UploadAvatar } from "@/features/main/components/UploadAvatar";
+import { useUploadGroupAvatar } from "@/features/chat/hooks/useUploadGroupAvatar";
 
 export function AppCustomSidebar({
   ...props
@@ -33,6 +35,8 @@ export function AppCustomSidebar({
 
   const { mutateAsync: unpinMessage } = useUnpinMessageInConversation();
   const { mutateAsync: removeMember } = useRemoveMemberInConversation();
+
+  const { mutateAsync: uploadAvatar } = useUploadGroupAvatar();
 
   if (!conversationDataDetail) {
     return null;
@@ -62,6 +66,24 @@ export function AppCustomSidebar({
       });
     } catch (error) {
       console.error("Error removing member:", error);
+    }
+  };
+
+  const handleUploadAvatar = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    try {
+      const file = event.target.files?.[0];
+      if (file) {
+        const formData = new FormData();
+        formData.append("file", file);
+        await uploadAvatar({
+          conversationId: conversationDataDetail._id,
+          formData,
+        });
+      }
+    } catch (error) {
+      console.error("Error uploading group avatar:", error);
     }
   };
 
@@ -128,14 +150,15 @@ export function AppCustomSidebar({
         return (
           <>
             <div className="flex items-center gap-2">
-              <Avatar className="h-14 w-14">
-                <AvatarImage
-                  src={conversationDataDetail?.group?.groupAvatarUrl || ""}
-                />
-                <AvatarFallback>
-                 GR
-                </AvatarFallback>
-              </Avatar>
+              <div className="relative h-14 w-14">
+                <Avatar className="h-14 w-14">
+                  <AvatarImage
+                    src={conversationDataDetail?.group?.groupAvatarUrl || ""}
+                  />
+                  <AvatarFallback>GR</AvatarFallback>
+                </Avatar>
+                <UploadAvatar handleFileChange={handleUploadAvatar} />
+              </div>
               <div className="text-panel-foreground text-lg font-bold">
                 {conversationDataDetail?.group?.name ||
                   members?.map((member) => member.displayName).join(", ") ||

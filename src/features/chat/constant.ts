@@ -17,6 +17,7 @@ import {
   type LucideIcon,
   UserRoundArrowLeft,
   PinOff,
+  FileImage,
 } from "lucide-react";
 
 const TEN_MINUTES_IN_MINUTES = 20;
@@ -181,6 +182,7 @@ export const typeMessageIconAction: Record<ActionType, LucideIcon | null> = {
   rename_group: Pen,
   add_member: UserPlus,
   remove_member: UserMinus,
+  change_group_avatar: FileImage,
   leave_group: UserRoundArrowLeft,
   pin_message: Pin,
   unpin_message: PinOff,
