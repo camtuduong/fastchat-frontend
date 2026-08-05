@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Separator } from "@/components/ui/separator";
 
 import { CustomSidebar } from "@/components/ui/custom-sidebar";
@@ -17,6 +16,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MemberList } from "@/features/chat/components/SidebarRight/MemberList";
 import { SharedList } from "@/features/chat/components/SidebarRight/SharedList";
 import { useRemoveMemberInConversation } from "@/features/chat/hooks/removeMemberInConversation";
+import { UploadAvatar } from "@/features/main/components/UploadAvatar";
+import { useUploadGroupAvatar } from "@/features/chat/hooks/useUploadGroupAvatar";
+import { GroupName } from "@/features/chat/components/SidebarRight/GroupName";
+import { RenameDialog } from "@/features/chat/components/SidebarRight/RenameDialog";
+import { useState } from "react";
+import { useRenameGroup } from "@/features/chat/hooks/useRenameGroup";
 
 export function AppCustomSidebar({
   ...props
@@ -24,15 +29,20 @@ export function AppCustomSidebar({
   const conversationDataDetail = useConversationStore(
     (state) => state.conversationDataDetail,
   );
-
   const myUserId = useAuthStore((state) => state.userId);
 
   const status = useCustomSidebarStore((state) => state.status);
   const setStatus = useCustomSidebarStore((state) => state.setStatus);
   const setOpen = useCustomSidebarStore((state) => state.setOpen);
 
+  const [isRenameDialogOpen, setIsRenameDialogOpen] = useState(false);
+
   const { mutateAsync: unpinMessage } = useUnpinMessageInConversation();
   const { mutateAsync: removeMember } = useRemoveMemberInConversation();
+
+  const { mutateAsync: uploadAvatar } = useUploadGroupAvatar();
+
+  const { mutateAsync: renameGroup, isPending: isRenaming } = useRenameGroup();
 
   if (!conversationDataDetail) {
     return null;
@@ -62,6 +72,36 @@ export function AppCustomSidebar({
       });
     } catch (error) {
       console.error("Error removing member:", error);
+    }
+  };
+
+  const handleUploadAvatar = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    try {
+      const file = event.target.files?.[0];
+      if (file) {
+        const formData = new FormData();
+        formData.append("file", file);
+        await uploadAvatar({
+          conversationId: conversationDataDetail._id,
+          formData,
+        });
+      }
+    } catch (error) {
+      console.error("Error uploading group avatar:", error);
+    }
+  };
+
+  const handleRenameGroup = async (groupName: string) => {
+    try {
+      await renameGroup({
+        conversationId: conversationDataDetail._id,
+        groupName,
+      });
+      setIsRenameDialogOpen(false);
+    } catch (error) {
+      console.error("Error renaming group:", error);
     }
   };
 
@@ -128,19 +168,31 @@ export function AppCustomSidebar({
         return (
           <>
             <div className="flex items-center gap-2">
-              <Avatar className="h-14 w-14">
-                <AvatarImage
-                  src={conversationDataDetail?.group?.groupAvatarUrl || ""}
-                />
-                <AvatarFallback>
-                 GR
-                </AvatarFallback>
-              </Avatar>
-              <div className="text-panel-foreground text-lg font-bold">
-                {conversationDataDetail?.group?.name ||
-                  members?.map((member) => member.displayName).join(", ") ||
-                  "No Name"}
+              <div className="relative h-14 w-14">
+                <Avatar className="h-14 w-14">
+                  <AvatarImage
+                    src={conversationDataDetail?.group?.groupAvatarUrl || ""}
+                  />
+                  <AvatarFallback>GR</AvatarFallback>
+                </Avatar>
+                <UploadAvatar handleFileChange={handleUploadAvatar} />
               </div>
+
+              <GroupName
+                groupName={
+                  conversationDataDetail?.group?.name ||
+                  members?.map((member) => member.displayName).join(", ") ||
+                  null
+                }
+                setIsRenameDialogOpen={setIsRenameDialogOpen}
+              />
+              <RenameDialog
+                open={isRenameDialogOpen}
+                onOpenChange={setIsRenameDialogOpen}
+                onSubmit={handleRenameGroup}
+                title="Rename Group"
+                isPending={isRenaming}
+              />
             </div>
             <div className="text-sm text-gray-500">
               "No description available"

@@ -123,10 +123,7 @@ export const MenuItem = ({ conversation, isOnline, isActive }: Props) => {
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
-        className={cn(
-          Style.container,
-          isActive && "bg-nav-active",
-        )}
+        className={cn(Style.container, isActive && "bg-nav-active")}
         onClick={() => navigate({ to: `/chat/${conversation._id}` })}
         asChild
       >

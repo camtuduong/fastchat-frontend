@@ -168,6 +168,9 @@
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
 
+  --button-x: oklch(0.205 0 0);
+  --button-x-text: oklch(0.97 0 0);
+
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(65% 0.22 25);
   --input: oklch(0.922 0 0);
@@ -309,6 +312,9 @@
   --color-button-destructive-focus-border: var(
     --button-destructive-focus-border
   );
+  --color-button-x: var(--button-x);
+  --color-button-x-text: var(--button-x-text);
+
   --color-button-destructive-focus-ring: var(--button-destructive-focus-ring);
   --color-button-icon: var(--button-icon-bg);
   --color-button-icon-foreground: var(--button-icon-foreground);
@@ -361,7 +367,7 @@
   --app-shell-bg: var(--background);
   --status-online: #2fd07a;
   --status-offline: #596274;
-  --status-unread: #6ea8ff;
+  --status-unread: #1f6adb;
   --status-unread-border: #11131a;
 
   --panel-foreground: #e7ebf3;
@@ -406,6 +412,9 @@
     transparent
   );
   --input-field-foreground: var(--gray-3);
+
+  --button-x: #ffffff;
+  --button-x-text: #242b37;
 
   --button-default-hover: #444c5d;
   --button-outline-border: var(--input);

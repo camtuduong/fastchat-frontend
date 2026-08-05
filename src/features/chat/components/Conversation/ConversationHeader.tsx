@@ -15,6 +15,7 @@ type Props = {
   members: Conversation["participants"] | undefined;
   isOnline: boolean | undefined;
   groupAvatarUrl?: string | undefined;
+  groupName?: string | undefined;
 };
 
 export const ConversationHeader = ({
@@ -22,6 +23,7 @@ export const ConversationHeader = ({
   members,
   isOnline,
   groupAvatarUrl,
+  groupName,
 }: Props) => {
   const renderHeaderConversation = () => {
     switch (type) {
@@ -58,7 +60,9 @@ export const ConversationHeader = ({
               />
             </Avatar>
             <span className="truncate">
-              {members?.map((member) => member.displayName).join(", ")}
+              {groupName ||
+                members?.map((member) => member.displayName).join(", ") ||
+                "No Name"}
             </span>
           </div>
         );
