@@ -1,5 +1,10 @@
 import { ButtonX } from "@/components/base/button-x";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Avatar,
+  AvatarBadge,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar";
 import type { Conversation } from "@/features/chat/types/conversation";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { grouped } from "@/utils/constant";
@@ -42,6 +47,9 @@ export const MemberList = ({ members, onRemoveMember, ownerId }: Prop) => {
                   <div>
                     <div className="text-sm font-semibold">
                       {member?.displayName}
+                      {ownerId && member.userId === ownerId && (
+                        <AvatarBadge className="border-0.5 border-status-unread-border bg-status-unread absolute top-1/2 right-2 h-3 w-3 -translate-y-1/2" />
+                      )}
                     </div>
                   </div>
 
