@@ -184,63 +184,7 @@ export const useSocketStore = create<SocketState>((set, get) => ({
         queryKey: ["conversation-by-id", conversationId],
       });
     });
-
-    //update group avatar
-    socket.on("change-group-avatar", ({ conversationId, groupAvatarUrl }) => {
-      queryClient.setQueriesData<{ conversations: Conversation[] }>(
-        { queryKey: ["conversations"] },
-        (oldData) => {
-          if (!oldData) return oldData;
-          return {
-            ...oldData,
-            conversations: oldData.conversations.map((conv) =>
-              conv._id === conversationId
-                ? {
-                    ...conv,
-                    group: {
-                      ...conv.group,
-                      groupAvatarUrl,
-                    },
-                  }
-                : conv,
-            ),
-          };
-        },
-      );
-
-      queryClient.invalidateQueries({
-        queryKey: ["conversation-by-id", conversationId],
-      });
-    });
-
-    socket.on("rename_group", ({ conversationId, newName }) => {
-      queryClient.setQueriesData<{ conversations: Conversation[] }>(
-        { queryKey: ["conversations"] },
-        (oldData) => {
-          if (!oldData) return oldData;
-          return {
-            ...oldData,
-            conversations: oldData.conversations.map((conv) =>
-              conv._id === conversationId
-                ? {
-                    ...conv,
-                    group: {
-                      ...conv.group,
-                      name: newName,
-                    },
-                  }
-                : conv,
-            ),
-          };
-        },
-      );
-
-      queryClient.invalidateQueries({
-        queryKey: ["conversation-by-id", conversationId],
-      });
-    });
   },
-
   disconnectSocket: () => {
     const socket = get().socket;
     if (socket) {
