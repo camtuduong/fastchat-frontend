@@ -28,8 +28,7 @@ export const NavbarHeader = () => {
     <div className="bg-primary z-50 flex w-12 flex-col items-center px-2 py-4">
       <div className="flex flex-col items-center gap-4">
         <Avatar
-          size="default"
-          className="cursor-pointer"
+          className="h-10 w-10 cursor-pointer"
           onClick={() => setProfileOpen(true)}
         >
           <AvatarImage src={me?.avatarUrl} alt="@shadcn" />

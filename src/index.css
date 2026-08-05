@@ -12,6 +12,9 @@
   --border: oklch(0.922 0 0);
   --code-bg: #f4f3ec;
   --accent: #2a2a2a;
+
+  --bg-attachment: #2a2a2a;
+
   --accent-bg: rgba(170, 59, 255, 0.1);
   --accent-border: rgba(170, 59, 255, 0.5);
   --social-bg: rgba(244, 243, 236, 0.5);
@@ -248,6 +251,8 @@
   --color-destructive: var(--destructive);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
+  --color-attachment-bg: var(--bg-attachment);
+
   --color-muted-foreground: var(--muted-foreground);
   --color-muted: var(--muted);
   --color-secondary-foreground: var(--secondary-foreground);
@@ -342,6 +347,8 @@
   --accent: #343b49;
   --accent-bg: color-mix(in oklch, var(--accent) 38%, transparent);
   --accent-border: color-mix(in oklch, var(--gray-2) 42%, transparent);
+
+  --bg-attachment: #c8cedc;
 
   --social-bg: color-mix(in oklch, var(--popover) 70%, transparent);
 
