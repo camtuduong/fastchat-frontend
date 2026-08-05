@@ -13,7 +13,6 @@ import { useGetMe } from "@/features/auth/hooks/queries/useGetMe";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { UploadAvatar } from "@/features/main/components/UploadAvatar";
-import { useUploadAvatar } from "@/features/main/hooks/useUploadAvatar";
 type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -23,19 +22,6 @@ export const ProfileDialog = ({ open, onOpenChange }: Props) => {
 
   const firstName = me?.displayName?.split(" ")[0] || "";
   const lastName = me?.displayName?.split(" ").slice(1).join(" ") || "";
-
-  const { mutateAsync: uploadAvatar } = useUploadAvatar();
-
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append("file", file);
-      await uploadAvatar(formData);
-    }
-  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -47,7 +33,7 @@ export const ProfileDialog = ({ open, onOpenChange }: Props) => {
                 <AvatarImage src={me?.avatarUrl} alt="@shadcn" />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
-              <UploadAvatar handleFileChange={handleFileChange} />
+              <UploadAvatar />
             </div>
 
             <div className="flex flex-col">

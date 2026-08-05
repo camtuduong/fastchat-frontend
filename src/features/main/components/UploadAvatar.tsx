@@ -1,20 +1,23 @@
-import { cn } from "@/lib/utils";
+import { useUploadAvatar } from "@/features/main/hooks/useUploadAvatar";
 import { Camera } from "lucide-react";
-import type { ChangeEvent } from "react";
 
-type Props = {
-  handleFileChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  className?: string;
-};
-export const UploadAvatar = ({ handleFileChange, className }: Props) => {
+export const UploadAvatar = () => {
+  const { mutateAsync: uploadAvatar } = useUploadAvatar();
+
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      await uploadAvatar(formData);
+    }
+  };
+
   return (
-    <label
-      className={cn(
-        "bg-background text-muted-foreground hover:bg-menu-action-hover border-border absolute right-0 bottom-0 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full border text-sm transition-colors",
-        className,
-      )}
-    >
-      <Camera size={16} className="pointer-events-none" />
+    <label className="absolute right-0 bottom-0 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full border border-gray-300 bg-white hover:bg-gray-300">
+      <Camera size={20} className="pointer-events-none" />
       <input
         type="file"
         className="hidden"
