@@ -129,7 +129,6 @@ export const ConversationPage = () => {
               members={members}
               isOnline={isOnline}
               groupAvatarUrl={conversationData?.group.groupAvatarUrl}
-              groupName={conversationData?.group.name}
             />
             <ConversationBody
               conversationMessages={conversationMessages}

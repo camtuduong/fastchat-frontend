@@ -352,7 +352,7 @@ export const ConversationInputChat = ({ conversationId }: Props) => {
             />
             <button
               type="button"
-              className="bg-button-x hover:bg-destructive text-button-x-text absolute top-6 right-8 cursor-pointer rounded-full p-1 transition-colors duration-100"
+              className="bg-accent-foreground hover:bg-destructive absolute top-6 right-8 cursor-pointer rounded-full p-1 text-white transition-colors duration-100"
               onClick={() => clearReplyMessage()}
             >
               <X size={12} />
