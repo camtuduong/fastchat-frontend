@@ -28,6 +28,10 @@ const ThemeProviderContext = createContext<ThemeProviderState>({
 
 function applyTheme(theme: Theme) {
   const root = document.documentElement;
+
+  // Disable transitions to prevent flash when switching theme
+  root.classList.add("no-transitions");
+
   root.classList.remove("light", "dark", "ocean");
 
   const resolved =
@@ -39,6 +43,11 @@ function applyTheme(theme: Theme) {
 
   root.classList.add(resolved);
   root.style.colorScheme = resolved;
+
+  // Re-enable transitions after browser has repainted
+  requestAnimationFrame(() =>
+    requestAnimationFrame(() => root.classList.remove("no-transitions")),
+  );
 }
 
 export function ThemeProvider({
@@ -52,7 +61,10 @@ export function ThemeProvider({
   useEffect(() => {
     const stored = localStorage.getItem(storageKey);
     setThemeState(
-      stored === "light" || stored === "dark" || stored === "system" || stored === "ocean"
+      stored === "light" ||
+        stored === "dark" ||
+        stored === "system" ||
+        stored === "ocean"
         ? stored
         : defaultTheme,
     );

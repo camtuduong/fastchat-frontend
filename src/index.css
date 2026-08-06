@@ -663,6 +663,11 @@
 }
 
 @layer base {
+  .no-transitions,
+  .no-transitions * {
+    transition: none !important;
+  }
+
   html,
   body,
   #root {

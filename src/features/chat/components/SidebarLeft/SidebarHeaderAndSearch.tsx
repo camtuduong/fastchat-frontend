@@ -7,11 +7,11 @@ import { useCreateNewConversation } from "@/features/chat/hooks/useCreateNewConv
 import { useNavigate } from "@tanstack/react-router";
 import { Search, SquarePen } from "lucide-react";
 
-const sortValue = [
-  { value: "all", label: "All" },
-  { value: "unread", label: "Unread" },
-  { value: "group", label: "Group" },
-];
+// const sortValue = [
+//   { value: "all", label: "All" },
+//   { value: "unread", label: "Unread" },
+//   { value: "group", label: "Group" },
+// ];
 export const SidebarHeaderAndSearch = () => {
   const navigate = useNavigate();
   const { mutateAsync: createGroupMutation, isPending } =
@@ -64,13 +64,13 @@ export const SidebarHeaderAndSearch = () => {
         />
       </div>
 
-      <div className="mt-2 flex items-center gap-2">
+      {/* <div className="mt-2 flex items-center gap-2">
         {sortValue.map((item) => (
           <Button key={item.value} className="p-2" variant="outline" size="sm">
             {item.label}
           </Button>
         ))}
-      </div>
+      </div> */}
     </SidebarHeader>
   );
 };
