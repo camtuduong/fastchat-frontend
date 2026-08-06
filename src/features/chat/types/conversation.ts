@@ -13,6 +13,8 @@ interface Conversation {
   createdAt: string;
   updatedAt: string;
   pinnedMessages: PinnedMessage[];
+  favoriteBy: string[];
+  isFavorite: boolean;
 }
 interface Participant {
   userId: string;

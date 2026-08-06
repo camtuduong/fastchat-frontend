@@ -4,6 +4,7 @@ import { SelectUsersDialog } from "@/features/chat/components/SelectUsersDialog"
 import { RightSidebarHeader } from "@/features/chat/components/SidebarRight/RightSidebarHeader";
 import { conversationTypeToLabel } from "@/features/chat/constant";
 import type { Conversation } from "@/features/chat/types/conversation";
+import { cn } from "@/lib/utils";
 import { useCustomSidebarStore } from "@/stores/useCustomSidebarStore";
 import type { SidebarStatusType } from "@/types/store";
 import { DATE_FORMAT, SIDEBAR_CONTENT_STATUS } from "@/utils/constant";
@@ -21,8 +22,6 @@ import {
 } from "lucide-react";
 import type { JSX, ReactNode } from "react";
 import { Fragment } from "react";
-import { useAddNewMembers } from "@/features/chat/hooks/useAddNewMember";
-
 const Style = {
   icon: "text-panel-foreground flex h-4 w-4 items-center justify-center text-sm font-medium transition-all duration-200",
   iconSize: "h-4 w-4",
@@ -30,34 +29,31 @@ const Style = {
 
 type Props = {
   type: Conversation["type"];
-  renderAvatar: (conversationDataDetail: Conversation) => JSX.Element | null;
-  conversationDataDetail: Conversation;
+  renderAvatar: () => JSX.Element | null;
   nameHeader: string;
   memberLength: number;
   pinnedMessagesLength: number;
+  onAddNewMembers: (userIdsSelected: string[]) => Promise<void>;
+  isFavorite: boolean | undefined;
+  isPending: boolean;
+  onAddFavoriteConversation: () => Promise<void>;
+  groupAt: string;
+  groupBy: string;
 };
 export const DefaultContent = ({
   type,
   renderAvatar,
-  conversationDataDetail,
   nameHeader,
   memberLength,
   pinnedMessagesLength,
+  onAddNewMembers,
+  isPending,
+  onAddFavoriteConversation,
+  groupAt,
+  groupBy,
+  isFavorite,
 }: Props) => {
   const setStatus = useCustomSidebarStore((state) => state.setStatus);
-
-  const { mutateAsync: addNewMembers, isPending } = useAddNewMembers();
-
-  const handleAddNewMembers = async (userIdsSelected: string[]) => {
-    if (userIdsSelected.length === 0 || isPending || !conversationDataDetail) {
-      return;
-    }
-
-    await addNewMembers({
-      conversationId: conversationDataDetail._id,
-      memberIds: userIdsSelected,
-    });
-  };
 
   const fastAction: {
     value: string;
@@ -67,10 +63,18 @@ export const DefaultContent = ({
     dialog?: (trigger: ReactNode) => ReactNode;
   }[] = [
     {
-      value: "Like",
-      icon: <Star className={Style.iconSize} />,
+      value: isFavorite ? "Unlike" : "Like",
+      icon: (
+        <Star
+          fill={isFavorite ? "#ecc94b" : "none"}
+          stroke={isFavorite ? "#ecc94b" : "currentColor"}
+          className={cn(Style.iconSize)}
+        />
+      ),
       type: [conversationTypeToLabel.direct, conversationTypeToLabel.group],
-      action: () => {},
+      action: () => {
+        onAddFavoriteConversation();
+      },
     },
     {
       value: "Notification",
@@ -85,7 +89,7 @@ export const DefaultContent = ({
       dialog: (trigger) => (
         <SelectUsersDialog
           title="Add New Members"
-          onSubmit={handleAddNewMembers}
+          onSubmit={onAddNewMembers}
           isPending={isPending}
           buttonTrigger={trigger}
         />
@@ -178,29 +182,22 @@ export const DefaultContent = ({
           </div>
           <div className="flex flex-col gap-2 p-2">
             <div className="flex flex-col gap-2">
-              {renderAvatar(conversationDataDetail)}
+              {renderAvatar()}
 
               <div className="flex items-center gap-1 text-[13px] text-gray-500">
                 Created at :
                 <div className="text-[13px] text-gray-500 italic">
-                  {format(
-                    new Date(conversationDataDetail?.group?.createdAt || ""),
-                    DATE_FORMAT,
-                  )}
+                  {format(new Date(groupAt), DATE_FORMAT)}
                 </div>
               </div>
-              <div className="text-[13px] text-gray-500 italic">
-                {conversationDataDetail?.group?.createdBy}
-              </div>
+              <div className="text-[13px] text-gray-500 italic">{groupBy}</div>
             </div>
           </div>
         </div>
         <Separator className="my-2" />
         <div className="flex flex-col gap-2 p-2">
           {moreAction
-            .filter((action) =>
-              action.type.includes(conversationDataDetail?.type),
-            )
+            .filter((action) => action.type.includes(type))
             .map((action, index) => (
               <div
                 key={index}

@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 
 import { MenuActions } from "@/features/chat/components/SidebarLeft/MenuActions";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { Star } from "lucide-react";
 
 type Props = {
   conversation: Conversation;
@@ -69,12 +70,22 @@ export const MenuItem = ({ conversation, isOnline, isActive }: Props) => {
             </Avatar>
             <div className="flex-1 truncate">
               <div className="flex items-center justify-between">
-                <div className="truncate">{friends?.displayName}</div>
-                {conversation.lastMessageAt && (
-                  <span className={Style.lastMessageTimeAgo}>
-                    {lastMessageTimeAgo}
-                  </span>
-                )}
+                <div
+                  className="truncate"
+                  title={conversation?.group?.name || participantsName}
+                >
+                  {friends?.displayName}
+                </div>
+                <div className="flex items-center gap-1">
+                  {conversation?.isFavorite && (
+                    <Star fill="#ecc94b" color="#ecc94b" />
+                  )}
+                  {conversation.lastMessageAt && (
+                    <span className={Style.lastMessageTimeAgo}>
+                      {lastMessageTimeAgo}
+                    </span>
+                  )}
+                </div>
               </div>
               <LastMessageItem
                 unreadCount={unreadCount}
@@ -99,14 +110,22 @@ export const MenuItem = ({ conversation, isOnline, isActive }: Props) => {
             </Avatar>
             <div className="flex-1 truncate">
               <div className="flex items-center justify-between">
-                <div className="truncate">
+                <div
+                  className="truncate"
+                  title={conversation?.group?.name || participantsName}
+                >
                   {conversation?.group?.name || participantsName}
                 </div>
-                {conversation.lastMessageAt && (
-                  <span className={Style.lastMessageTimeAgo}>
-                    {lastMessageTimeAgo}
-                  </span>
-                )}
+                <div className="flex items-center gap-0.5">
+                  {conversation?.isFavorite && (
+                    <Star fill="#ecc94b" color="#ecc94b" />
+                  )}
+                  {conversation.lastMessageAt && (
+                    <span className={Style.lastMessageTimeAgo}>
+                      {lastMessageTimeAgo}
+                    </span>
+                  )}
+                </div>
               </div>
               <LastMessageItem
                 unreadCount={unreadCount}
@@ -132,6 +151,7 @@ export const MenuItem = ({ conversation, isOnline, isActive }: Props) => {
 
       {/* menu action */}
       <MenuActions
+        isFavorite={conversation?.isFavorite}
         style={Style.buttonAction}
         conversationId={conversation._id}
       />
