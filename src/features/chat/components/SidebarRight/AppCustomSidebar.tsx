@@ -11,7 +11,6 @@ import { DefaultContent } from "@/features/chat/components/SidebarRight/DefaultC
 import { ChevronsLeft, X } from "lucide-react";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { conversationTypeToLabel } from "@/features/chat/constant";
-import type { Conversation } from "@/features/chat/types/conversation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MemberList } from "@/features/chat/components/SidebarRight/MemberList";
 import { SharedList } from "@/features/chat/components/SidebarRight/SharedList";
@@ -22,6 +21,8 @@ import { GroupName } from "@/features/chat/components/SidebarRight/GroupName";
 import { RenameDialog } from "@/features/chat/components/SidebarRight/RenameDialog";
 import { useState } from "react";
 import { useRenameGroup } from "@/features/chat/hooks/useRenameGroup";
+import { useFavoriteConversation } from "@/features/chat/hooks/useFavoriteConversation";
+import { useAddNewMembers } from "@/features/chat/hooks/useAddNewMember";
 
 export function AppCustomSidebar({
   ...props
@@ -29,6 +30,7 @@ export function AppCustomSidebar({
   const conversationDataDetail = useConversationStore(
     (state) => state.conversationDataDetail,
   );
+
   const myUserId = useAuthStore((state) => state.userId);
 
   const status = useCustomSidebarStore((state) => state.status);
@@ -44,6 +46,11 @@ export function AppCustomSidebar({
 
   const { mutateAsync: renameGroup, isPending: isRenaming } = useRenameGroup();
 
+  const { mutateAsync: addNewMembers, isPending: isAddingNewMembers } =
+    useAddNewMembers();
+
+  const { mutateAsync: addFavoriteConversation } = useFavoriteConversation();
+
   if (!conversationDataDetail) {
     return null;
   }
@@ -51,6 +58,11 @@ export function AppCustomSidebar({
   const members = conversationDataDetail?.participants
     .map((participant) => participant)
     .filter((participant) => participant.userId !== myUserId);
+
+  const nameHeader =
+    conversationDataDetail?.type === conversationTypeToLabel.direct
+      ? members?.[0]?.displayName
+      : conversationDataDetail?.group?.name || "No Name";
 
   //handle
   const handleUnpinMessage = async (messageId: string) => {
@@ -105,6 +117,33 @@ export function AppCustomSidebar({
     }
   };
 
+  const handleAddNewMembers = async (userIdsSelected: string[]) => {
+    if (
+      userIdsSelected.length === 0 ||
+      isAddingNewMembers ||
+      !conversationDataDetail
+    ) {
+      return;
+    }
+
+    await addNewMembers({
+      conversationId: conversationDataDetail._id,
+      memberIds: userIdsSelected,
+    });
+  };
+
+  const handleFavoriteConversation = async () => {
+    try {
+      if (!conversationDataDetail) {
+        return;
+      }
+
+      await addFavoriteConversation(conversationDataDetail._id);
+    } catch (error) {
+      console.error("Error adding favorite conversation:", error);
+    }
+  };
+
   //ui
   const Header = ({ title, name }: { title: string; name: string }) => {
     return (
@@ -138,7 +177,7 @@ export function AppCustomSidebar({
     );
   };
 
-  const renderAvatar = (conversationDataDetail: Conversation) => {
+  const renderAvatar = () => {
     switch (conversationDataDetail?.type) {
       case conversationTypeToLabel.direct:
         return (
@@ -205,25 +244,25 @@ export function AppCustomSidebar({
     }
   };
 
-  const nameHeader =
-    conversationDataDetail?.type === conversationTypeToLabel.direct
-      ? members?.[0]?.displayName
-      : conversationDataDetail?.group?.name || "No Name";
-
   const renderSidebarContent = () => {
     switch (status) {
       case SIDEBAR_CONTENT_STATUS.DEFAULT:
       default:
         return (
           <DefaultContent
+            isFavorite={conversationDataDetail?.isFavorite || false}
             type={conversationDataDetail?.type}
             renderAvatar={renderAvatar}
-            conversationDataDetail={conversationDataDetail}
             nameHeader={nameHeader}
             memberLength={conversationDataDetail?.participants?.length || 0}
             pinnedMessagesLength={
               conversationDataDetail?.pinnedMessages?.length || 0
             }
+            onAddNewMembers={handleAddNewMembers}
+            isPending={isAddingNewMembers}
+            onAddFavoriteConversation={handleFavoriteConversation}
+            groupAt={conversationDataDetail?.group?.createdAt || ""}
+            groupBy={conversationDataDetail?.group?.createdBy || ""}
           />
         );
       case SIDEBAR_CONTENT_STATUS.PINNED:
