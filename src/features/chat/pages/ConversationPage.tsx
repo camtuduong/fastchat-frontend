@@ -112,7 +112,7 @@ export const ConversationPage = () => {
     if (!container) return;
 
     container.scrollTop = container.scrollHeight;
-  }, [conversationId]);
+  }, [conversationId, conversationMessages]);
 
   return (
     <CustomSidebarProvider>
