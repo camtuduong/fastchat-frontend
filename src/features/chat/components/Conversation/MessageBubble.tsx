@@ -3,11 +3,17 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-import { bubbleClass } from "@/features/chat/constant";
+import {
+  bubbleClass,
+  typeMessageAttachmentTypeToLabel,
+} from "@/features/chat/constant";
 import type { MessageUI } from "@/features/chat/types/bubbleChat";
 import { cn } from "@/lib/utils";
 import { MessageContentWrapper } from "@/features/chat/layouts/MessageContentWrapper";
 import { ReplyMessage } from "@/features/chat/components/Conversation/ReplyMessage";
+import type { Attachment, AttachmentType } from "@/features/chat/types/Message";
+import { RenderImgs } from "@/features/chat/components/Conversation/MessageTypeRender/RenderImgs";
+import { RenderSticker } from "@/features/chat/components/Conversation/MessageTypeRender/RenderSticker";
 
 type Props = {
   message: MessageUI;
@@ -15,22 +21,44 @@ type Props = {
 };
 
 const Style = {
+  container: "flex w-full items-end gap-4 p-px",
   bubble: "py-2 text-sm wrap-anywhere",
   myMessage: "bg-primary-bubble-chat markdown-me text-white p-0.5",
   otherMessage:
     "markdown-other bg-bubble-other p-0.5 text-bubble-other-foreground",
-  attachmentContainer:
-    "mb-2 flex w-fit flex-wrap gap-2 bg-transparent p-2 hover:bg-attachment-bg/5",
-  attachmentVideo: "h-auto w-32 rounded-md object-cover",
-
+  attachmentContainer: (type: AttachmentType) =>
+    cn(
+      "flex w-fit flex-wrap gap-2 bg-transparent p-2 text-bubble-other-foreground",
+      type === typeMessageAttachmentTypeToLabel.sticker &&
+        "hover:bg-attachment-bg/5",
+    ),
+  attachmentSticker: "h-auto w-32 rounded-md object-cover",
   replyMessageContainer:
     "m-0 flex flex-col rounded-tr-sm rounded-br-sm rounded-bl-xl rounded-tl-xl bg-gray-100 p-2 mb-2",
 };
+
 export const MessageBubble = ({ message, isMyMessage }: Props) => {
+  const renderAttachmentByType = (attachments: Attachment[]) => {
+    const attachmentType = attachments[0].type;
+    switch (attachmentType) {
+      case typeMessageAttachmentTypeToLabel.image:
+        return <RenderImgs attachments={attachments} />;
+      case typeMessageAttachmentTypeToLabel.sticker:
+        return (
+          <RenderSticker
+            url={attachments[0].url}
+            style={Style.attachmentSticker}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <div
       className={cn(
-        "flex w-full items-end gap-4 p-px",
+        Style.container,
         isMyMessage ? "justify-end" : "justify-start",
       )}
     >
@@ -55,7 +83,7 @@ export const MessageBubble = ({ message, isMyMessage }: Props) => {
             bubbleClass(message.position, isMyMessage),
             isMyMessage ? Style.myMessage : Style.otherMessage,
             message?.attachments?.length > 0 && !message?.replyTo
-              ? cn(Style.attachmentContainer)
+              ? cn(Style.attachmentContainer(message.attachments[0].type))
               : "",
           )}
         >
@@ -70,17 +98,8 @@ export const MessageBubble = ({ message, isMyMessage }: Props) => {
           )}
           {message?.attachments?.length > 0 ? (
             <div className={message?.replyTo ? "mt-2" : ""}>
-              {message.attachments.map((attachment) => (
-                <div key={attachment.id}>
-                  <video
-                    autoPlay
-                    loop
-                    muted
-                    src={attachment.url}
-                    className={Style.attachmentVideo}
-                  />
-                </div>
-              ))}
+              {renderAttachmentByType(message.attachments)}
+              {/* 1 message chỉ có 1 cái type attachment nên dù có list attachment thì chỉ cần check cái attachment đầu tiên */}
             </div>
           ) : (
             <div className="px-2 py-1">

@@ -21,6 +21,7 @@ import { AlertDialog } from "@/features/chat/components/AlertDialog";
 import { AttachmentsReview } from "@/features/chat/components/Conversation/AttachmentsReview";
 import { useMessageStore } from "@/stores/useMessage";
 import { ReplyMessage } from "@/features/chat/components/Conversation/ReplyMessage";
+import { useUploadAttachments } from "@/features/chat/hooks/useUploadAttachments";
 
 const Style = {
   container: "relative mb-3 flex items-end gap-2 px-4 py-2",
@@ -78,6 +79,8 @@ export const ConversationInputChat = ({ conversationId }: Props) => {
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
   const { mutateAsync: sendMessage, isPending } = useSendMessage();
+  const { mutateAsync: uploadAttachments, isPending: isUploading } =
+    useUploadAttachments();
 
   const wrapSelection = (prefix: string, suffix = prefix) => {
     const textarea = inputRef.current;
@@ -105,25 +108,33 @@ export const ConversationInputChat = ({ conversationId }: Props) => {
     let attachments: Attachment[] = [];
     const replyTo = replyMessage?._id;
 
-    if ((content === "" && !preview) || isPending || isSendingRef.current) {
+    if (
+      (content === "" && !preview) ||
+      isPending ||
+      isUploading ||
+      isSendingRef.current
+    ) {
       return;
     }
 
     if (preview) {
       if (preview?.type === "image" && preview.data.length > 0) {
-        attachments = preview.data.map((file) => ({
-          id: file.id,
-          type: "image" as const,
-          url: file.url,
-          name: file?.file?.name,
-        }));
+        const res = await handleUploadAttachment(preview);
+        if (res) {
+          attachments = res.urls.map((url) => ({
+            id: url,
+            type: "image" as const,
+            url: url,
+            name: url.split("/").pop() || "image",
+          }));
+        }
       }
 
       if (preview?.type === "sticker") {
         attachments = [
           {
             id: preview.data.id,
-            type: "video" as const,
+            type: "sticker" as const,
             url: preview.data.url,
             name: preview.data.title,
           },
@@ -293,6 +304,22 @@ export const ConversationInputChat = ({ conversationId }: Props) => {
     setOpenAlertDialog(false);
   };
 
+  const handleUploadAttachment = async (attachment: PendingPreview) => {
+    if (attachment.type === "image") {
+      const files = attachment.data
+        .map((file) => file.file)
+        .filter(Boolean) as File[];
+      const res = await uploadAttachments({
+        conversationId,
+        formData: files.reduce((formData, file) => {
+          formData.append("files", file);
+          return formData;
+        }, new FormData()),
+      });
+      return res;
+    }
+  };
+
   useEffect(() => {
     if (!showPicker && !showStickerPicker) return;
     const handlePointerDown = (event: PointerEvent) => {
@@ -329,7 +356,9 @@ export const ConversationInputChat = ({ conversationId }: Props) => {
 
   return (
     <form className={Style.container} onSubmit={handleSubmit}>
-      {isPending && <div className={Style.textPending}>sending...</div>}
+      {(isPending || isUploading) && (
+        <div className={Style.textPending}>sending...</div>
+      )}
 
       <div
         className={cn(
@@ -437,6 +466,7 @@ export const ConversationInputChat = ({ conversationId }: Props) => {
             showStickerPicker={showStickerPicker}
             showPicker={showPicker}
             onChange={handleImgChange}
+            isUploading={isUploading}
           />
         </div>
       </div>

@@ -8,7 +8,11 @@ import type {
   ConversationType,
   PinnedMessage,
 } from "@/features/chat/types/conversation";
-import type { ActionType, MessageItem } from "@/features/chat/types/Message";
+import type {
+  ActionType,
+  AttachmentType,
+  MessageItem,
+} from "@/features/chat/types/Message";
 import {
   Pen,
   UserPlus,
@@ -187,3 +191,11 @@ export const typeMessageIconAction: Record<ActionType, LucideIcon | null> = {
   pin_message: Pin,
   unpin_message: PinOff,
 };
+
+export const typeMessageAttachmentTypeToLabel: Record<AttachmentType, string> =
+  {
+    image: "image",
+    video: "video",
+    file: "file",
+    sticker: "sticker",
+  };

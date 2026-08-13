@@ -10,6 +10,7 @@ import {
   ChevronUp,
   Sticker,
 } from "lucide-react";
+import { Spinner } from "@/components/ui/spinner";
 
 const Style = {
   container: "flex items-center gap-1",
@@ -31,6 +32,7 @@ type Props = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   showStickerPicker?: boolean;
   showPicker?: boolean;
+  isUploading?: boolean;
 };
 
 export const InputActions = ({
@@ -44,6 +46,7 @@ export const InputActions = ({
   setShowStickerPicker,
   showStickerPicker,
   showPicker,
+  isUploading,
 }: Props) => {
   return (
     <div className={Style.container}>
@@ -93,8 +96,15 @@ export const InputActions = ({
           <Sticker size={20} />
         </Button>
 
-        <Button disabled={showMarkDown || isPending} type="submit">
-          <SendHorizontal size={20} />
+        <Button
+          disabled={showMarkDown || isPending || isUploading}
+          type="submit"
+        >
+          {isPending || isUploading ? (
+            <Spinner className="size-4 animate-spin" />
+          ) : (
+            <SendHorizontal size={20} />
+          )}
         </Button>
       </div>
     </div>

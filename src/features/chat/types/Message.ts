@@ -28,10 +28,12 @@ interface Sender {
 
 interface Attachment {
   id: string;
-  type: "image" | "video" | "file";
+  type: AttachmentType;
   url: string;
   name: string;
 }
+
+type AttachmentType = "image" | "video" | "file" | "sticker";
 
 type ActionType =
   | "create_group"
@@ -52,4 +54,12 @@ interface Emoji {
   unified: string;
   native: string;
 }
-export type { Message, MessageItem, Attachment, Sender, ActionType, Emoji };
+export type {
+  Message,
+  MessageItem,
+  Attachment,
+  Sender,
+  ActionType,
+  Emoji,
+  AttachmentType,
+};

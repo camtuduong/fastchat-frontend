@@ -16,6 +16,7 @@ export const useSearchSticker = ({
   format_filter,
   content_filter,
 }: Omit<StickerParams, "page"> & { query: string }) => {
+  const randomInitialPage = Math.floor(Math.random() * 9) + 1;
   const {
     data,
     fetchNextPage,
@@ -32,7 +33,7 @@ export const useSearchSticker = ({
   >({
     queryKey: ["search-sticker", query],
 
-    initialPageParam: 1,
+    initialPageParam: randomInitialPage,
     queryFn: ({ pageParam }) =>
       searchSticker({
         query,
@@ -45,8 +46,10 @@ export const useSearchSticker = ({
       if (!lastPage.data.has_next) {
         return undefined;
       }
+      let count = 0;
       const nextPage = lastPage.data.current_page + 1;
-      if (nextPage > 3) {
+      count = count + 1;
+      if (count > 3) {
         return undefined;
       }
       return nextPage;
