@@ -77,7 +77,7 @@ export const StickerPicker = ({ pickerRef, onStickerClick }: Props) => {
   return (
     <div
       ref={pickerRef}
-      className="bg-sticker-picker border-sticker-picker-border absolute right-20 bottom-15 z-10 flex max-h-100 min-h-100 w-100 flex-col overflow-hidden rounded-xl border p-4 text-foreground shadow-[var(--sticker-picker-shadow)]"
+      className="bg-sticker-picker border-sticker-picker-border text-foreground absolute right-20 bottom-15 z-10 flex max-h-100 min-h-100 w-100 flex-col overflow-hidden rounded-xl border p-4 shadow-(--sticker-picker-shadow)"
     >
       <div className="relative mb-4 shrink-0">
         <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />

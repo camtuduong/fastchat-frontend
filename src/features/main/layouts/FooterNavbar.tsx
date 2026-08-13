@@ -61,14 +61,14 @@ export const FooterNavbar = ({ setProfileOpen }: Props) => {
               }}
             >
               <SparklesIcon />
-              Thông tin tài khoản
+              Profile
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
             <DropdownMenuItem>
               <BadgeCheckIcon />
-              Ngôn ngữ
+              Language: English
             </DropdownMenuItem>
             <DropdownMenuItem
               onSelect={() => {
@@ -80,13 +80,13 @@ export const FooterNavbar = ({ setProfileOpen }: Props) => {
             </DropdownMenuItem>
             <DropdownMenuItem>
               <BellIcon />
-              thông báo
+              Notifications
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleLogout}>
             <LogOutIcon />
-            Đăng xuất
+            Logout
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

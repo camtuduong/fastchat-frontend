@@ -8,7 +8,11 @@ import type {
   ConversationType,
   PinnedMessage,
 } from "@/features/chat/types/conversation";
-import type { ActionType, MessageItem } from "@/features/chat/types/Message";
+import type {
+  ActionType,
+  AttachmentType,
+  MessageItem,
+} from "@/features/chat/types/Message";
 import {
   Pen,
   UserPlus,
@@ -162,7 +166,7 @@ export const timeAgo = (date: string) => {
   const hours = Math.floor(diffMs / 3600000);
   const days = Math.floor(diffMs / 86400000);
 
-  if (diffMs < 60000) return "just now";
+  if (diffMs < 60000) return "Just now";
   if (minutes < 60) return `${minutes} minutes ago`;
   if (hours < 24) return `${hours} hours ago`;
   if (days < 7) return `${days} days ago`;
@@ -187,3 +191,11 @@ export const typeMessageIconAction: Record<ActionType, LucideIcon | null> = {
   pin_message: Pin,
   unpin_message: PinOff,
 };
+
+export const typeMessageAttachmentTypeToLabel: Record<AttachmentType, string> =
+  {
+    image: "image",
+    video: "video",
+    file: "file",
+    sticker: "sticker",
+  };
