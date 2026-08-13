@@ -6,6 +6,8 @@ import { queryClient } from "@/lib/queryClient";
 import type { GetAllMessagesResponse } from "@/features/chat/api/getAllMessages";
 import type { Conversation } from "@/features/chat/types/conversation";
 import type { InfiniteData } from "@tanstack/react-query";
+import { messageNotificationSound } from "@/lib/notificationSound";
+import { useConversationStore } from "@/stores/useConversationStore";
 
 const baseUrl = import.meta.env.VITE_SOCKET_URL;
 
@@ -85,6 +87,19 @@ export const useSocketStore = create<SocketState>((set, get) => ({
       );
 
       queryClient.invalidateQueries({ queryKey: ["conversations"] });
+
+      // notification sound
+      const conversationDetail =
+        useConversationStore.getState().conversationDataDetail;
+
+      const isCurrentConversation =
+        message.conversationId === conversationDetail?._id;
+
+      const isWindowFocused = document.hasFocus();
+
+      if (!isCurrentConversation || !isWindowFocused) {
+        messageNotificationSound();
+      }
     });
 
     socket.on(

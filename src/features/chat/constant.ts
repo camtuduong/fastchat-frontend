@@ -166,7 +166,7 @@ export const timeAgo = (date: string) => {
   const hours = Math.floor(diffMs / 3600000);
   const days = Math.floor(diffMs / 86400000);
 
-  if (diffMs < 60000) return "just now";
+  if (diffMs < 60000) return "Just now";
   if (minutes < 60) return `${minutes} minutes ago`;
   if (hours < 24) return `${hours} hours ago`;
   if (days < 7) return `${days} days ago`;

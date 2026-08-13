@@ -357,7 +357,7 @@ export const ConversationInputChat = ({ conversationId }: Props) => {
   return (
     <form className={Style.container} onSubmit={handleSubmit}>
       {(isPending || isUploading) && (
-        <div className={Style.textPending}>sending...</div>
+        <div className={Style.textPending}>Sending...</div>
       )}
 
       <div
