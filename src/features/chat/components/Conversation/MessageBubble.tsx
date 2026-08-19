@@ -14,6 +14,8 @@ import { ReplyMessage } from "@/features/chat/components/Conversation/ReplyMessa
 import type { Attachment, AttachmentType } from "@/features/chat/types/Message";
 import { RenderImgs } from "@/features/chat/components/Conversation/MessageTypeRender/RenderImgs";
 import { RenderSticker } from "@/features/chat/components/Conversation/MessageTypeRender/RenderSticker";
+import { DATE_FORMAT } from "@/utils/constant";
+import { format } from "date-fns/format";
 
 type Props = {
   message: MessageUI;
@@ -40,14 +42,20 @@ const Style = {
 export const MessageBubble = ({ message, isMyMessage }: Props) => {
   const renderAttachmentByType = (attachments: Attachment[]) => {
     const attachmentType = attachments[0].type;
+    const transferDate = format(
+      new Date(message?.createdAt || ""),
+      DATE_FORMAT,
+    );
+
     switch (attachmentType) {
       case typeMessageAttachmentTypeToLabel.image:
-        return <RenderImgs attachments={attachments} />;
+        return <RenderImgs attachments={attachments} date={transferDate} />;
       case typeMessageAttachmentTypeToLabel.sticker:
         return (
           <RenderSticker
             url={attachments[0].url}
             style={Style.attachmentSticker}
+            date={transferDate}
           />
         );
       default:

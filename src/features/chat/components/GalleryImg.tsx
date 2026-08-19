@@ -8,7 +8,7 @@ const STYLE = {
   dialogContentContainer:
     "z-inset !top-1/2 !left-1/2 !h-[calc(100vh-128px)] !w-[calc(100vw-256px)] !max-w-none -translate-x-1/2 -translate-y-1/2 rounded-xl border-0 p-0 bg-accent text-white",
   container: "flex h-full w-full items-center justify-center",
-  img: "h-full max-w-full object-contain absolute",
+  img: "h-full w-full object-contain absolute",
   button:
     "bg-accent absolute top-1/2 -translate-y-1/2 rounded-full p-2 text-white cursor-pointer hover:bg-accent/80 transition-colors",
 };

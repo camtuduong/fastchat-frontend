@@ -48,11 +48,14 @@ export type PendingPreview =
     };
 
 type Props = {
-  conversationId: string;
+  conversationId: string | undefined;
   conversationType?: "direct" | "group";
 };
 
 export const ConversationInputChat = ({ conversationId }: Props) => {
+  if (!conversationId) {
+    return null;
+  }
   const [message, setMessage] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -395,6 +398,8 @@ export const ConversationInputChat = ({ conversationId }: Props) => {
             preview={preview}
             removeImage={removeImage}
             removeSticker={removeSticker}
+            isUploading={isUploading}
+            isPending={isPending}
           />
         )}
 

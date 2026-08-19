@@ -41,10 +41,6 @@ export const ConversationPage = () => {
   const clearStatus = useCustomSidebarStore((state) => state.clearStatus);
   const setOpen = useCustomSidebarStore((state) => state.setOpen);
 
-  if (!conversationId || !myUserId) {
-    return null;
-  }
-
   const { data: conversationData, error: conversationError } =
     useGetConversationById(conversationId ?? "");
 

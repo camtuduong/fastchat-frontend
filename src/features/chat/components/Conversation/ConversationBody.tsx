@@ -15,7 +15,7 @@ import type { Conversation } from "@/features/chat/types/conversation";
 
 type Props = {
   conversationMessages: Message;
-  myUserId: string;
+  myUserId: string | undefined | null;
   containerRef: React.RefObject<HTMLDivElement | null>;
   onScroll: () => void;
   isFetchingNextPage: boolean;
