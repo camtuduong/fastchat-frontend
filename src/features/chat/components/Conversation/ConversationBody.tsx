@@ -32,7 +32,7 @@ export const ConversationBody = ({
   isFetchingNextPage,
   conversationData,
 }: Props) => {
-  // const virtualItems = virtualizer.getVirtualItems();
+  const virtualItems = virtualizer.getVirtualItems();
   const conversationCreatedAt = conversationData?.createdAt
     ? format(new Date(conversationData.createdAt), DATE_FORMAT)
     : "";
@@ -51,7 +51,7 @@ export const ConversationBody = ({
         onScroll={onScroll}
       >
         <div ref={virtualizer.containerRef} className="relative w-full">
-          {virtualizer.getVirtualItems().map((virtualItem) => {
+          {virtualItems.map((virtualItem) => {
             if (virtualItem.index === 0) {
               return (
                 <div

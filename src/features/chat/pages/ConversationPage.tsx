@@ -103,7 +103,7 @@ export const ConversationPage = () => {
     followOnAppend: true,
     scrollEndThreshold: BOTTOM_SCROLL_THRESHOLD,
     overscan: 6,
-    // @ts-expect-error -- property exists in the JS impl but is absent from the type definition in v3.14.10
+    // @ts-ignore -- directDomUpdates may be absent from type definition
     directDomUpdates: true,
   });
 
