@@ -9,7 +9,7 @@ type Props = {
 
 const STYLE = {
   container:
-    "relative my-12 flex h-42 w-42 cursor-pointer items-center justify-center",
+    "relative mt-10 flex h-42 w-42 cursor-pointer items-center justify-center",
   img: "absolute h-42 w-42 rounded-2xl border object-cover",
   imgSingle: "h-42 w-42 cursor-pointer rounded-md object-cover",
 };

@@ -199,3 +199,5 @@ export const typeMessageAttachmentTypeToLabel: Record<AttachmentType, string> =
     file: "file",
     sticker: "sticker",
   };
+
+export const BOTTOM_SCROLL_THRESHOLD = 80;

@@ -22,10 +22,11 @@ import { AttachmentsReview } from "@/features/chat/components/Conversation/Attac
 import { useMessageStore } from "@/stores/useMessage";
 import { ReplyMessage } from "@/features/chat/components/Conversation/ReplyMessage";
 import { useUploadAttachments } from "@/features/chat/hooks/useUploadAttachments";
+import type { ReactVirtualizer } from "@tanstack/react-virtual";
 
 const Style = {
   container: "relative mb-3 flex items-end gap-2 px-4 py-2",
-  textPending: "text-muted-foreground absolute -top-5 right-10 text-sm italic",
+  textPending: "text-muted-foreground text-sm italic flex justify-end pr-6",
   actionButtonContainer: "flex min-w-0 flex-1 rounded-2xl border-2",
   actionButton:
     "cursor-pointer items-center hover:bg-accent-foreground/10 rounded-md p-2 transition-colors duration-100 bg-transparent text-muted-foreground hover:text-accent-foreground [&_svg]:size-4",
@@ -49,10 +50,15 @@ export type PendingPreview =
 
 type Props = {
   conversationId: string | undefined;
-  conversationType?: "direct" | "group";
+  virtualizer: ReactVirtualizer<HTMLDivElement, HTMLDivElement>;
+  setHasNewMessage: React.Dispatch<React.SetStateAction<number>>;
 };
 
-export const ConversationInputChat = ({ conversationId }: Props) => {
+export const ConversationInputChat = ({
+  conversationId,
+  virtualizer,
+  setHasNewMessage,
+}: Props) => {
   if (!conversationId) {
     return null;
   }
@@ -175,10 +181,11 @@ export const ConversationInputChat = ({ conversationId }: Props) => {
         },
       );
     }
-
     setPreview(null); // Clear the preview after sending
     setMessage("");
     clearReplyMessage(); // Clear the reply message after sending
+    virtualizer.scrollToEnd(); // Scroll to the end after sending a message
+    setHasNewMessage(0); // Reset the new message count after sending a message
   };
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.nativeEvent.isComposing) {
@@ -358,148 +365,150 @@ export const ConversationInputChat = ({ conversationId }: Props) => {
   ]);
 
   return (
-    <form className={Style.container} onSubmit={handleSubmit}>
+    <>
       {(isPending || isUploading) && (
         <div className={Style.textPending}>Sending...</div>
       )}
 
-      <div
-        className={cn(
-          Style.actionButtonContainer,
-          isExpanded || textFormatter || preview || replyMessage
-            ? "flex-col"
-            : "flex-row",
-        )}
-      >
-        {/* reply message review */}
-        {replyMessage && (
-          <>
-            <ReplyMessage
-              avatarUrl={replyMessage.sender.avatarUrl}
-              displayName={replyMessage.sender.displayName}
-              content={replyMessage.content}
-              className="bg-reply-preview m-2 rounded-lg p-2"
-              description={<span className="shrink-0">Replying to:</span>}
-              hasAttachment={(replyMessage.attachments?.length ?? 0) > 0}
-            />
-            <button
-              type="button"
-              className="bg-button-x hover:bg-destructive text-button-x-text absolute top-6 right-8 cursor-pointer rounded-full p-1 transition-colors duration-100"
-              onClick={() => clearReplyMessage()}
-            >
-              <X size={12} />
-            </button>
-          </>
-        )}
-
-        {/*  preview img or sticker   */}
-        {preview && (
-          <AttachmentsReview
-            preview={preview}
-            removeImage={removeImage}
-            removeSticker={removeSticker}
-            isUploading={isUploading}
-            isPending={isPending}
-          />
-        )}
-
-        {/* input content message  */}
-        <div className={Style.inputContainer}>
-          {!showMarkDown ? (
-            <Textarea
-              value={message}
-              ref={inputRef}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="Type a message..."
-              onInput={(e) => {
-                const scrollHeight = e.currentTarget.scrollHeight;
-                setIsExpanded((prev) => {
-                  if (!prev && scrollHeight > 90) return true; // expand khi vượt 90px
-                  if (prev && scrollHeight <= 63) return false; // collapse khi về 1 dòng
-                  return prev;
-                });
-              }}
-              className={cn(Style.input, textFormatter ? "pr-10" : "")}
-            />
-          ) : (
-            <div className={cn(Style.input, "markdown-other p-4 text-sm")}>
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {message}
-              </ReactMarkdown>
-            </div>
-          )}
-          {/* nút xem formatted message */}
-          {textFormatter && (
-            <button
-              type="button"
-              className={cn(
-                Style.eyeIcon,
-                showMarkDown ? "bg-accent/5 text-accent-foreground" : "",
-              )}
-              onClick={() => setShowMarkDown((prev) => !prev)}
-            >
-              <Eye
-                className={cn(showMarkDown ? "text-destructive" : "")}
-                size={20}
-              />
-            </button>
-          )}
-        </div>
-
-        {/* button actions */}
+      <form className={Style.container} onSubmit={handleSubmit}>
         <div
           className={cn(
-            "text-muted-foreground flex h-full gap-1 p-3",
-            textFormatter ? "justify-between" : "justify-end self-end",
+            Style.actionButtonContainer,
+            isExpanded || textFormatter || preview || replyMessage
+              ? "flex-col"
+              : "flex-row",
           )}
         >
-          {textFormatter && (
-            <FormatterActions
-              showMarkDown={showMarkDown}
-              wrapSelection={wrapSelection}
+          {/* reply message review */}
+          {replyMessage && (
+            <>
+              <ReplyMessage
+                avatarUrl={replyMessage.sender.avatarUrl}
+                displayName={replyMessage.sender.displayName}
+                content={replyMessage.content}
+                className="bg-reply-preview m-2 rounded-lg p-2"
+                description={<span className="shrink-0">Replying to:</span>}
+                hasAttachment={(replyMessage.attachments?.length ?? 0) > 0}
+              />
+              <button
+                type="button"
+                className="bg-button-x hover:bg-destructive text-button-x-text absolute top-6 right-8 cursor-pointer rounded-full p-1 transition-colors duration-100"
+                onClick={() => clearReplyMessage()}
+              >
+                <X size={12} />
+              </button>
+            </>
+          )}
+
+          {/*  preview img or sticker   */}
+          {preview && (
+            <AttachmentsReview
+              preview={preview}
+              removeImage={removeImage}
+              removeSticker={removeSticker}
+              isUploading={isUploading}
+              isPending={isPending}
             />
           )}
-          <InputActions
-            setTextFormatter={setTextFormatter}
-            triggerPickerRef={triggerPickerRef}
-            showMarkDown={showMarkDown}
-            setShowPicker={setShowPicker}
-            setShowStickerPicker={setShowStickerPicker}
-            isPending={isPending}
-            isTextFormatter={textFormatter}
-            showStickerPicker={showStickerPicker}
-            showPicker={showPicker}
-            onChange={handleImgChange}
-            isUploading={isUploading}
-          />
-        </div>
-      </div>
-      {showPicker && (
-        <div ref={pickerRef} className="absolute right-20 bottom-15 z-10">
-          <Picker
-            data={data}
-            onEmojiSelect={(emoji: Emoji) =>
-              setMessage((prev) => prev + emoji.native)
-            }
-          />
-        </div>
-      )}
 
-      {showStickerPicker && (
-        <StickerPicker
-          pickerRef={pickerRef}
-          onStickerClick={handleStickerClick}
+          {/* input content message  */}
+          <div className={Style.inputContainer}>
+            {!showMarkDown ? (
+              <Textarea
+                value={message}
+                ref={inputRef}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Type a message..."
+                onInput={(e) => {
+                  const scrollHeight = e.currentTarget.scrollHeight;
+                  setIsExpanded((prev) => {
+                    if (!prev && scrollHeight > 90) return true; // expand khi vượt 90px
+                    if (prev && scrollHeight <= 63) return false; // collapse khi về 1 dòng
+                    return prev;
+                  });
+                }}
+                className={cn(Style.input, textFormatter ? "pr-10" : "")}
+              />
+            ) : (
+              <div className={cn(Style.input, "markdown-other p-4 text-sm")}>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {message}
+                </ReactMarkdown>
+              </div>
+            )}
+            {/* nút xem formatted message */}
+            {textFormatter && (
+              <button
+                type="button"
+                className={cn(
+                  Style.eyeIcon,
+                  showMarkDown ? "bg-accent/5 text-accent-foreground" : "",
+                )}
+                onClick={() => setShowMarkDown((prev) => !prev)}
+              >
+                <Eye
+                  className={cn(showMarkDown ? "text-destructive" : "")}
+                  size={20}
+                />
+              </button>
+            )}
+          </div>
+
+          {/* button actions */}
+          <div
+            className={cn(
+              "text-muted-foreground flex h-full gap-1 p-3",
+              textFormatter ? "justify-between" : "justify-end self-end",
+            )}
+          >
+            {textFormatter && (
+              <FormatterActions
+                showMarkDown={showMarkDown}
+                wrapSelection={wrapSelection}
+              />
+            )}
+            <InputActions
+              setTextFormatter={setTextFormatter}
+              triggerPickerRef={triggerPickerRef}
+              showMarkDown={showMarkDown}
+              setShowPicker={setShowPicker}
+              setShowStickerPicker={setShowStickerPicker}
+              isPending={isPending}
+              isTextFormatter={textFormatter}
+              showStickerPicker={showStickerPicker}
+              showPicker={showPicker}
+              onChange={handleImgChange}
+              isUploading={isUploading}
+            />
+          </div>
+        </div>
+        {showPicker && (
+          <div ref={pickerRef} className="absolute right-20 bottom-15 z-10">
+            <Picker
+              data={data}
+              onEmojiSelect={(emoji: Emoji) =>
+                setMessage((prev) => prev + emoji.native)
+              }
+            />
+          </div>
+        )}
+
+        {showStickerPicker && (
+          <StickerPicker
+            pickerRef={pickerRef}
+            onStickerClick={handleStickerClick}
+          />
+        )}
+
+        <AlertDialog
+          open={openAlertDialog}
+          onOpenChange={handleOpenChange}
+          onConfirm={handleConfirmReplacePreview}
+          title="Do you want to replace the attachment?"
+          description="Replacing the attachment cannot be undone."
         />
-      )}
-
-      <AlertDialog
-        open={openAlertDialog}
-        onOpenChange={handleOpenChange}
-        onConfirm={handleConfirmReplacePreview}
-        title="Do you want to replace the attachment?"
-        description="Replacing the attachment cannot be undone."
-      />
-    </form>
+      </form>
+    </>
   );
 };
