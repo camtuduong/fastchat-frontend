@@ -50,6 +50,17 @@ interface PinnedMessage {
   content: string | null;
 }
 
+interface Attachment {
+  type: "img" | "file";
+  url: string;
+  createAt: string;
+  sender: {
+    userId: string;
+    displayName: string;
+    avatarUrl: string;
+  };
+}
+
 export type {
   Conversation,
   Participant,
@@ -57,4 +68,5 @@ export type {
   Group,
   ConversationType,
   PinnedMessage,
+  Attachment,
 };
