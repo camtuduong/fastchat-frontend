@@ -23,6 +23,7 @@ import { useState } from "react";
 import { useRenameGroup } from "@/features/chat/hooks/useRenameGroup";
 import { useFavoriteConversation } from "@/features/chat/hooks/useFavoriteConversation";
 import { useAddNewMembers } from "@/features/chat/hooks/useAddNewMember";
+import { useGetAllAttachmentInConversation } from "@/features/chat/hooks/queries/useGetAllAttachmentInConversation";
 
 export function AppCustomSidebar({
   ...props
@@ -50,6 +51,10 @@ export function AppCustomSidebar({
     useAddNewMembers();
 
   const { mutateAsync: addFavoriteConversation } = useFavoriteConversation();
+
+  const { data: attachments } = useGetAllAttachmentInConversation(
+    conversationDataDetail?._id,
+  );
 
   if (!conversationDataDetail) {
     return null;
@@ -258,6 +263,7 @@ export function AppCustomSidebar({
             pinnedMessagesLength={
               conversationDataDetail?.pinnedMessages?.length || 0
             }
+            attachmentsLength={attachments?.length || 0}
             onAddNewMembers={handleAddNewMembers}
             isPending={isAddingNewMembers}
             onAddFavoriteConversation={handleFavoriteConversation}
@@ -288,9 +294,9 @@ export function AppCustomSidebar({
         );
       case SIDEBAR_CONTENT_STATUS.SHARED:
         return (
-          <div className="flex flex-col gap-2">
+          <div className="flex h-full flex-col gap-2">
             <Header title="Shared List" name={nameHeader} />
-            <SharedList />
+            <SharedList attachments={attachments || []} />
           </div>
         );
     }

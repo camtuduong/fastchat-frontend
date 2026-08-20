@@ -198,4 +198,6 @@ export const typeMessageAttachmentTypeToLabel: Record<AttachmentType, string> =
     video: "video",
     file: "file",
     sticker: "sticker",
-  };
+  } as const;
+
+export const BOTTOM_SCROLL_THRESHOLD = 80;

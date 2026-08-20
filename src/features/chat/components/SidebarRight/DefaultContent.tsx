@@ -39,6 +39,7 @@ type Props = {
   onAddFavoriteConversation: () => Promise<void>;
   groupAt: string;
   groupBy: string;
+  attachmentsLength: number;
 };
 export const DefaultContent = ({
   type,
@@ -52,6 +53,7 @@ export const DefaultContent = ({
   groupAt,
   groupBy,
   isFavorite,
+  attachmentsLength,
 }: Props) => {
   const setStatus = useCustomSidebarStore((state) => state.setStatus);
 
@@ -148,7 +150,7 @@ export const DefaultContent = ({
       icon: <Paperclip className={Style.iconSize} />,
       type: [conversationTypeToLabel.direct, conversationTypeToLabel.group],
       status: SIDEBAR_CONTENT_STATUS.SHARED,
-      length: 0,
+      length: attachmentsLength,
       action: () => {},
     },
   ];
