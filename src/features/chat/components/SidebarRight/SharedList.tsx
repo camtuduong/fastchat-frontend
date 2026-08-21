@@ -1,3 +1,4 @@
+import { Spinner } from "@/components/ui/spinner";
 import { typeMessageAttachmentTypeToLabel } from "@/features/chat/constant";
 import type { Attachment } from "@/features/chat/types/conversation";
 import { cn } from "@/lib/utils";
@@ -5,6 +6,7 @@ import { useMemo, useState } from "react";
 
 type Props = {
   attachments: Attachment[];
+  isLoading: boolean;
 };
 
 const STYLE = {
@@ -24,7 +26,7 @@ function NoItemsFound() {
   );
 }
 
-export const SharedList = ({ attachments }: Props) => {
+export const SharedList = ({ attachments, isLoading }: Props) => {
   const [type, setType] = useState<
     | typeof typeMessageAttachmentTypeToLabel.image
     | typeof typeMessageAttachmentTypeToLabel.file
@@ -93,7 +95,12 @@ export const SharedList = ({ attachments }: Props) => {
 
   return (
     <div className="flex flex-1 flex-col gap-2 overflow-y-auto p-2">
-      {attachments.length === 0 ? (
+      {isLoading ? (
+        <div className="flex w-full items-center justify-center py-2">
+          <Spinner className="size-4" />
+          <span className="ml-2">Loading attachments...</span>
+        </div>
+      ) : attachments.length === 0 ? (
         <NoItemsFound />
       ) : (
         <div className="flex h-full flex-col gap-2">

@@ -101,7 +101,7 @@ export const InputActions = ({
           type="submit"
         >
           {isPending || isUploading ? (
-            <Spinner className="size-4 animate-spin" />
+            <Spinner className="size-4" />
           ) : (
             <SendHorizontal size={20} />
           )}

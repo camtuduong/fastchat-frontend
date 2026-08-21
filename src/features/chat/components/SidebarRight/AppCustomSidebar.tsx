@@ -52,9 +52,8 @@ export function AppCustomSidebar({
 
   const { mutateAsync: addFavoriteConversation } = useFavoriteConversation();
 
-  const { data: attachments } = useGetAllAttachmentInConversation(
-    conversationDataDetail?._id,
-  );
+  const { data: attachments, isLoading: isAttachmentsLoading } =
+    useGetAllAttachmentInConversation(conversationDataDetail?._id);
 
   if (!conversationDataDetail) {
     return null;
@@ -296,7 +295,10 @@ export function AppCustomSidebar({
         return (
           <div className="flex h-full flex-col gap-2">
             <Header title="Shared List" name={nameHeader} />
-            <SharedList attachments={attachments || []} />
+            <SharedList
+              attachments={attachments || []}
+              isLoading={isAttachmentsLoading}
+            />
           </div>
         );
     }
