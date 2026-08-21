@@ -14,11 +14,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { UploadAvatar } from "@/features/main/components/UploadAvatar";
 import { useUploadAvatar } from "@/features/main/hooks/useUploadAvatar";
+import { useTranslation } from "react-i18next";
 type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 };
 export const ProfileDialog = ({ open, onOpenChange }: Props) => {
+  const { t } = useTranslation();
   const { data: me } = useGetMe();
 
   const firstName = me?.displayName?.split(" ")[0] || "";
@@ -59,16 +61,16 @@ export const ProfileDialog = ({ open, onOpenChange }: Props) => {
           <FieldGroup>
             <div className="grid grid-cols-2 gap-4">
               <Field>
-                <Label htmlFor="name-1">First Name</Label>
+                <Label htmlFor="name-1">{t("profile.firstName")}</Label>
                 <Input id="name-1" name="name" defaultValue={firstName} />
               </Field>
               <Field>
-                <Label htmlFor="name-2">Last Name</Label>
+                <Label htmlFor="name-2">{t("profile.lastName")}</Label>
                 <Input id="name-2" name="name" defaultValue={lastName} />
               </Field>
             </div>
             <Field>
-              <Label htmlFor="username-1">Username</Label>
+              <Label htmlFor="username-1">{t("profile.username")}</Label>
               <Input
                 id="username-1"
                 name="username"
@@ -76,15 +78,15 @@ export const ProfileDialog = ({ open, onOpenChange }: Props) => {
               />
             </Field>
             <Field>
-              <Label htmlFor="email-1">Email</Label>
+              <Label htmlFor="email-1">{t("profile.email")}</Label>
               <Input id="email-1" name="email" defaultValue={me?.email} />
             </Field>
           </FieldGroup>
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="outline">{t("profile.cancel")}</Button>
             </DialogClose>
-            <Button type="submit">Save changes</Button>
+            <Button type="submit">{t("profile.saveChanges")}</Button>
           </DialogFooter>
         </DialogContent>
       </form>

@@ -12,6 +12,7 @@ import { DATE_FORMAT } from "@/utils/constant";
 import type { Conversation } from "@/features/chat/types/conversation";
 import type { MessageUI } from "@/features/chat/types/bubbleChat";
 import type { ReactVirtualizer } from "@tanstack/react-virtual";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   messages: MessageUI[];
@@ -32,6 +33,7 @@ export const ConversationBody = ({
   isFetchingNextPage,
   conversationData,
 }: Props) => {
+  const { t } = useTranslation();
   const virtualItems = virtualizer.getVirtualItems();
   const conversationCreatedAt = conversationData?.createdAt
     ? format(new Date(conversationData.createdAt), DATE_FORMAT)
@@ -42,7 +44,7 @@ export const ConversationBody = ({
       {isFetchingNextPage && (
         <div className="flex w-full items-center justify-center py-2">
           <Spinner className="size-4" />
-          <span className="ml-2">Loading more messages...</span>
+          <span className="ml-2">{t("chat.loadingMore")}</span>
         </div>
       )}
       <div

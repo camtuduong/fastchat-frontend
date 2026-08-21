@@ -12,6 +12,7 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/components/ui/tooltip";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   className?: string;
@@ -31,6 +32,7 @@ export const MessageWrapperActions = ({
   setOpenAlertDialog,
   onPinMessage,
 }: Props) => {
+  const { t } = useTranslation();
   return (
     <DropdownMenu open={open} onOpenChange={onOpenChange}>
       <Tooltip delayDuration={500}>
@@ -42,7 +44,7 @@ export const MessageWrapperActions = ({
           </DropdownMenuTrigger>
         </TooltipTrigger>
         <TooltipContent>
-          <p className="text-xs">More</p>
+          <p className="text-xs">{t("common.more")}</p>
         </TooltipContent>
       </Tooltip>
       <DropdownMenuContent
@@ -53,11 +55,11 @@ export const MessageWrapperActions = ({
       >
         <DropdownMenuItem onClick={onCopy}>
           <Copy />
-          Copy
+          {t("common.copy")}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={onPinMessage}>
           <Pin />
-          Pin
+          {t("common.pin")}
         </DropdownMenuItem>
         {isMyMessage && (
           <>
@@ -68,7 +70,7 @@ export const MessageWrapperActions = ({
             </DropdownMenuItem> */}
             <DropdownMenuItem onClick={() => setOpenAlertDialog(true)}>
               <Trash2 />
-              Delete
+              {t("common.delete")}
             </DropdownMenuItem>
           </>
         )}

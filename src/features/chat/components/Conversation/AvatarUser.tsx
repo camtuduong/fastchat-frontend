@@ -1,4 +1,5 @@
 import { Avatar, AvatarBadge, AvatarFallback } from "@/components/ui/avatar";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   varian?: "default" | "nav";
@@ -6,6 +7,7 @@ type Props = {
 };
 
 export const AvatarUser = ({ participantsName }: Props) => {
+  const { t } = useTranslation();
   return (
     <div>
       <Avatar>
@@ -14,7 +16,9 @@ export const AvatarUser = ({ participantsName }: Props) => {
       </Avatar>
       <div className="truncate">
         <div className="truncate">{participantsName}</div>
-        <div className="text-muted-foreground text-xs">Last message</div>
+        <div className="text-muted-foreground text-xs">
+          {t("chat.lastMessage")}
+        </div>
       </div>
     </div>
   );

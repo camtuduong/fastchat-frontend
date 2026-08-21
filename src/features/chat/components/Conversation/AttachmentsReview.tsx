@@ -16,7 +16,7 @@ const STYLE = {
   imgContainer: "relative p-1",
   spinnerOverlay:
     "bg-accent/85 absolute inset-1 z-10 rounded-2xl flex items-center justify-center",
-  spinner: "size-4 animate-spin text-white",
+  spinner: "size-4 text-white",
   removeButton:
     "bg-button-x text-button-x-text hover:bg-destructive absolute top-3 right-2 cursor-pointer rounded-full p-1 transition-colors duration-100",
   sticker: "h-32 w-32 rounded-2xl object-cover shadow-md",

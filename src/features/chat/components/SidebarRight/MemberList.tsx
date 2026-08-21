@@ -8,6 +8,7 @@ import {
 import type { Conversation } from "@/features/chat/types/conversation";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { grouped } from "@/utils/constant";
+import { useTranslation } from "react-i18next";
 
 type Prop = {
   members: Conversation["participants"];
@@ -16,6 +17,7 @@ type Prop = {
 };
 
 export const MemberList = ({ members, onRemoveMember, ownerId }: Prop) => {
+  const { t } = useTranslation();
   const userId = useAuthStore((state) => state.userId);
   const groupedMembers = grouped(members ?? []);
 
@@ -23,7 +25,7 @@ export const MemberList = ({ members, onRemoveMember, ownerId }: Prop) => {
     <div className="flex flex-1 flex-col gap-2 overflow-y-auto p-2">
       {members.length === 0 ? (
         <div className="flex h-full items-center justify-center text-gray-500">
-          No members found.
+          {t("common.noMembers")}
         </div>
       ) : (
         <div className="flex flex-col gap-1">

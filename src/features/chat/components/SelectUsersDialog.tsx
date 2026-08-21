@@ -13,6 +13,7 @@ import type { User } from "@/features/chat/types/searchUser";
 import { useGetUserBySearch } from "@/features/main/hooks/queries/useGetUserBySearch";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useState, type ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   buttonTrigger: ReactNode;
@@ -26,6 +27,7 @@ export const SelectUsersDialog = ({
   isPending,
   title,
 }: Props) => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
@@ -71,14 +73,14 @@ export const SelectUsersDialog = ({
           <DialogFooter>
             <DialogClose asChild>
               <Button type="button" variant="outline">
-                Cancel
+                {t("common.cancel")}
               </Button>
             </DialogClose>
             <Button
               type="submit"
               disabled={userIdsSelected.length === 0 || isPending}
             >
-              {isPending ? "Confirming..." : "Confirm"}
+              {isPending ? t("common.confirming") : t("common.confirm")}
             </Button>
           </DialogFooter>
         </form>

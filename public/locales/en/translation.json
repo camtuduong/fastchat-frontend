@@ -1,0 +1,157 @@
+{
+  "login": {
+    "title": "Login to your Account",
+    "subtitle": "See what is going on with your friends",
+    "withGoogle": "Continue with Google",
+    "withEmail": "or Sign in with Email",
+    "username": "Username",
+    "password": "Password",
+    "rememberMe": "Remember",
+    "loginButton": "Login",
+    "registerButton": "Register",
+    "forgotPassword": "Forgot Password?",
+    "loggingIn": "Logging in...",
+    "invalidCredentials": "Invalid username or password.",
+    "requiredField": "This field is required.",
+    "noAccount": "Don't have an account?",
+    "passwordMismatch": "Passwords do not match.",
+    "passwordMinLength": "Password must be at least 8 characters.",
+    "usernamePlaceholder": "Enter your username",
+    "passwordLabel": "Password",
+    "errorMessage": "Failed to sign in. Please check your credentials and try again."
+  },
+  "signup": {
+    "title": "Sign Up to Your Account",
+    "subtitle": "Join us and start managing your business effectively",
+    "username": "Username",
+    "usernamePlaceholder": "Your username",
+    "firstName": "First Name",
+    "firstNamePlaceholder": "Your first name",
+    "lastName": "Last Name",
+    "lastNamePlaceholder": "Your last name",
+    "email": "Email",
+    "emailPlaceholder": "mail@abc.com",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "signingUp": "Signing Up...",
+    "signUpButton": "Sign Up",
+    "alreadyAccount": "Already have an account?",
+    "signInLink": "Sign In",
+    "errorMessage": "Failed to sign up. Please try again."
+  },
+  "chat": {
+    "inputPlaceholder": "Type a message...",
+    "sending": "Sending...",
+    "replaceAttachment": {
+      "title": "Do you want to replace the attachment?",
+      "description": "Replacing the attachment cannot be undone."
+    },
+    "noName": "No Name",
+    "loadingMore": "Loading more messages...",
+    "noConversation": {
+      "title": "No conversation selected",
+      "description": "Please select a conversation from the sidebar or start a new one."
+    },
+    "sidebarTitle": "Chats with Friends",
+    "createConversation": "Create Conversation",
+    "conversations": "Conversations",
+    "lastMessage": "Last message",
+    "reply": "Reply",
+    "removeMessage": {
+      "title": "Remove message",
+      "description": "Once you delete this message, it cannot be undone."
+    }
+  },
+  "friends": {
+    "label": "Friends",
+    "noFriends": {
+      "title": "Cannot find any friends",
+      "description": "Try searching for friends using the search bar above."
+    },
+    "noBlocked": {
+      "title": "No blocked users",
+      "description": "You have not blocked any users yet."
+    },
+    "noRequests": {
+      "title": "No friend selected",
+      "description": "Please select a friend from the sidebar or add a new one."
+    },
+    "noGroups": {
+      "title": "No groups",
+      "description": "You have not added any groups yet."
+    }
+  },
+  "profile": {
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "username": "Username",
+    "email": "Email",
+    "cancel": "Cancel",
+    "saveChanges": "Save changes"
+  },
+  "common": {
+    "search": "Search...",
+    "searchByName": "Search by name or email...",
+    "searchSticker": "Search sticker",
+    "loading": "Loading...",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "confirming": "Confirming...",
+    "noItems": "No items found.",
+    "loadingAttachments": "Loading attachments...",
+    "noMembers": "No members found.",
+    "noPinned": "No pinned messages.",
+    "more": "More",
+    "copy": "Copy",
+    "pin": "Pin",
+    "delete": "Delete",
+    "rename": "Rename",
+    "renaming": "Renaming..."
+  },
+  "sidebar": {
+    "like": "Like",
+    "unlike": "Unlike",
+    "notification": "Notification",
+    "add": "Add",
+    "copyLink": "Copy link",
+    "groupSetting": "Group Setting",
+    "notificationOptions": "Notifications Options",
+    "members": "Members",
+    "pinnedMessages": "Pinned Messages",
+    "attachments": "Attachments",
+    "addNewMembers": "Add New Members",
+    "info": "Info",
+    "images": "Images",
+    "files": "Files",
+    "pinnedList": "Pinned List",
+    "membersList": "Members List",
+    "sharedList": "Shared List",
+    "renameGroup": "Rename Group",
+    "noDescription": "No description available"
+  },
+  "menuActions": {
+    "like": "Like",
+    "unlike": "Unlike",
+    "remove": "Remove",
+    "removeConversation": {
+      "title": "Remove Conversation",
+      "description": "Once you delete your copy of this conversation, it cannot be undone."
+    }
+  },
+  "sticker": {
+    "loading": "Loading...",
+    "noResults": "No stickers found",
+    "error": "Error: "
+  },
+  "footer": {
+    "profile": "Profile",
+    "language": "Language",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "notifications": "Notifications",
+    "logout": "Logout",
+    "vietnamese": "Vietnamese",
+    "english": "English"
+  }
+}

@@ -3,7 +3,11 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuPortal,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useLogout } from "@/features/auth/hooks/useLogout";
@@ -13,23 +17,28 @@ import { useUserStore } from "@/stores/useUser";
 import { useNavigate } from "@tanstack/react-router";
 import {
   SettingsIcon,
-  SparklesIcon,
-  BadgeCheckIcon,
+  User,
   BellIcon,
   LogOutIcon,
   Sun,
   Moon,
+  Languages,
+  Check,
 } from "lucide-react";
 
 import { type Dispatch } from "react";
+import { useTranslation } from "react-i18next";
 type Props = {
   setProfileOpen: Dispatch<React.SetStateAction<boolean>>;
 };
+
 export const FooterNavbar = ({ setProfileOpen }: Props) => {
+  const { t, i18n } = useTranslation();
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
-  const { mutateAsync: logout } = useLogout();
+
   const clear = useUserStore((state) => state.clear);
+  const { mutateAsync: logout } = useLogout();
 
   const handleLogout = async () => {
     try {
@@ -40,6 +49,13 @@ export const FooterNavbar = ({ setProfileOpen }: Props) => {
       console.error("Error logging out:", error);
     }
   };
+
+  const handleLanguageChange = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
+  console.log(t("footer", { returnObjects: true }));
+
+  const isLanguageActive = (lng: string) => i18n.language === lng;
   return (
     <div className="mt-auto flex flex-col gap-2">
       <DropdownMenu>
@@ -60,33 +76,52 @@ export const FooterNavbar = ({ setProfileOpen }: Props) => {
                 setProfileOpen((prev) => !prev);
               }}
             >
-              <SparklesIcon />
-              Profile
+              <User />
+              {t("footer.profile")}
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem>
-              <BadgeCheckIcon />
-              Language: English
-            </DropdownMenuItem>
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>
+                <Languages />
+                {t("footer.language")}:{" "}
+                {i18n.language === "en"
+                  ? t("footer.english")
+                  : t("footer.vietnamese")}
+              </DropdownMenuSubTrigger>
+              <DropdownMenuPortal>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem onSelect={() => handleLanguageChange("en")}>
+                    {t("footer.english")}{" "}
+                    {isLanguageActive("en") ? <Check /> : ""}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => handleLanguageChange("vi")}>
+                    {t("footer.vietnamese")}{" "}
+                    {isLanguageActive("vi") ? <Check /> : ""}
+                  </DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuPortal>
+            </DropdownMenuSub>
+
             <DropdownMenuItem
               onSelect={() => {
                 setTheme(theme === "dark" ? "light" : "dark");
               }}
             >
               {theme === "dark" ? <Moon /> : <Sun />}
-              {theme === "dark" ? "Dark Theme" : "Light Theme"}
+              {t("footer.theme")}:{" "}
+              {theme === "dark" ? t("footer.dark") : t("footer.light")}
             </DropdownMenuItem>
             <DropdownMenuItem>
               <BellIcon />
-              Notifications
+              {t("footer.notifications")}
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleLogout}>
             <LogOutIcon />
-            Logout
+            {t("footer.logout")}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

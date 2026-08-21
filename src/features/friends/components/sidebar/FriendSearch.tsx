@@ -1,8 +1,10 @@
 import { Input } from "@/components/ui/input";
 import { SidebarHeader } from "@/components/ui/sidebar";
 import { Search } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export const FriendSearch = () => {
+  const { t } = useTranslation();
   return (
     <SidebarHeader className="flex flex-col gap-2 px-4 py-3">
       <div className="flex gap-1">
@@ -22,7 +24,7 @@ export const FriendSearch = () => {
         <Input
           className="bg-background pl-9"
           id="search-input"
-          placeholder="Search..."
+          placeholder={t("common.search")}
           type="search"
         />
       </div>

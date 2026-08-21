@@ -24,10 +24,12 @@ import { useRenameGroup } from "@/features/chat/hooks/useRenameGroup";
 import { useFavoriteConversation } from "@/features/chat/hooks/useFavoriteConversation";
 import { useAddNewMembers } from "@/features/chat/hooks/useAddNewMember";
 import { useGetAllAttachmentInConversation } from "@/features/chat/hooks/queries/useGetAllAttachmentInConversation";
+import { useTranslation } from "react-i18next";
 
 export function AppCustomSidebar({
   ...props
 }: React.ComponentProps<typeof CustomSidebar>) {
+  const { t } = useTranslation();
   const conversationDataDetail = useConversationStore(
     (state) => state.conversationDataDetail,
   );
@@ -52,9 +54,8 @@ export function AppCustomSidebar({
 
   const { mutateAsync: addFavoriteConversation } = useFavoriteConversation();
 
-  const { data: attachments } = useGetAllAttachmentInConversation(
-    conversationDataDetail?._id,
-  );
+  const { data: attachments, isLoading: isAttachmentsLoading } =
+    useGetAllAttachmentInConversation(conversationDataDetail?._id);
 
   if (!conversationDataDetail) {
     return null;
@@ -67,7 +68,7 @@ export function AppCustomSidebar({
   const nameHeader =
     conversationDataDetail?.type === conversationTypeToLabel.direct
       ? members?.[0]?.displayName
-      : conversationDataDetail?.group?.name || "No Name";
+      : conversationDataDetail?.group?.name || t("chat.noName");
 
   //handle
   const handleUnpinMessage = async (messageId: string) => {
@@ -200,11 +201,11 @@ export function AppCustomSidebar({
                 </AvatarFallback>
               </Avatar>
               <div className="text-panel-foreground text-lg font-bold">
-                {members?.[0]?.displayName || "No Name"}
+                {members?.[0]?.displayName || t("chat.noName")}
               </div>
             </div>
             <div className="text-sm text-gray-500">
-              "No description available"
+              {t("sidebar.noDescription")}
             </div>
           </>
         );
@@ -234,12 +235,12 @@ export function AppCustomSidebar({
                 open={isRenameDialogOpen}
                 onOpenChange={setIsRenameDialogOpen}
                 onSubmit={handleRenameGroup}
-                title="Rename Group"
+                title={t("sidebar.renameGroup")}
                 isPending={isRenaming}
               />
             </div>
             <div className="text-sm text-gray-500">
-              "No description available"
+              {t("sidebar.noDescription")}
             </div>
           </>
         );
@@ -274,7 +275,7 @@ export function AppCustomSidebar({
       case SIDEBAR_CONTENT_STATUS.PINNED:
         return (
           <div className="flex flex-col gap-2">
-            <Header title="Pinned List" name={nameHeader} />
+            <Header title={t("sidebar.pinnedList")} name={nameHeader} />
             <PinnedList
               pinnedMessages={conversationDataDetail.pinnedMessages || []}
               onUnpinMessage={handleUnpinMessage}
@@ -284,7 +285,7 @@ export function AppCustomSidebar({
       case SIDEBAR_CONTENT_STATUS.MEMBERS:
         return (
           <div className="flex flex-col gap-2">
-            <Header title="Members List" name={nameHeader} />
+            <Header title={t("sidebar.membersList")} name={nameHeader} />
             <MemberList
               ownerId={conversationDataDetail?.group?.createdBy}
               members={conversationDataDetail?.participants || []}
@@ -295,8 +296,11 @@ export function AppCustomSidebar({
       case SIDEBAR_CONTENT_STATUS.SHARED:
         return (
           <div className="flex h-full flex-col gap-2">
-            <Header title="Shared List" name={nameHeader} />
-            <SharedList attachments={attachments || []} />
+            <Header title={t("sidebar.sharedList")} name={nameHeader} />
+            <SharedList
+              attachments={attachments || []}
+              isLoading={isAttachmentsLoading}
+            />
           </div>
         );
     }

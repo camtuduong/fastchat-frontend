@@ -4,11 +4,13 @@ import type { Conversation } from "@/features/chat/types/conversation";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useSocketStore } from "@/stores/useSocketStore";
 import { useParams } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   conversations: Conversation[];
 };
 export const NavConversations = ({ conversations }: Props) => {
+  const { t } = useTranslation();
   const myUserId = useAuthStore((state) => state.userId);
   const conversationId = useParams({
     strict: false,
@@ -22,7 +24,10 @@ export const NavConversations = ({ conversations }: Props) => {
   };
 
   return (
-    <SidebarChildLayout label="Conversations" className="flex flex-col gap-y-2">
+    <SidebarChildLayout
+      label={t("chat.conversations")}
+      className="flex flex-col gap-y-2"
+    >
       {conversations.map((conversation) => {
         const members = conversation?.participants
           .map((participant) => participant)

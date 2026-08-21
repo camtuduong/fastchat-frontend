@@ -2,17 +2,21 @@ import { SidebarTriggerHeader } from "@/features/friends/components/SidebarTrigg
 import { getLabelAndIconByPath } from "@/features/friends/constant";
 import { useGetPath } from "@/features/friends/hooks/useGetPath";
 import { Style } from "@/style";
+import { useTranslation } from "react-i18next";
 
 export const FriendsRequestPage = () => {
+  const { t } = useTranslation();
   const path = useGetPath();
   const { label, icon } = getLabelAndIconByPath(path);
   return (
     <>
       <SidebarTriggerHeader label={label} icon={icon} />
       <div className={Style.dashboardEmptyContainer}>
-        <div className="text-2xl font-bold">No friend selected</div>
+        <div className="text-2xl font-bold">
+          {t("friends.noRequests.title")}
+        </div>
         <div className="text-muted-foreground">
-          Please select a friend from the sidebar or add a new one.
+          {t("friends.noRequests.description")}
         </div>
       </div>
     </>
