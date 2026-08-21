@@ -11,10 +11,16 @@ i18n
     fallbackLng: "en",
     debug: import.meta.env.DEV,
     interpolation: {
-      escapeValue: false, // react already safes from xss
+      escapeValue: false,
     },
     backend: {
       loadPath: "/locales/{{lng}}/{{ns}}.json",
+    },
+    detection: {
+      // only read from localStorage, never auto-detect from browser/navigator
+      order: ["localStorage"],
+      caches: ["localStorage"],
+      lookupLocalStorage: "i18nextLng",
     },
   });
 export default i18n;
