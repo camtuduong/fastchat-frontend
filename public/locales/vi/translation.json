@@ -1,0 +1,13 @@
+{
+  "footer": {
+    "profile": "Tài khoản",
+    "language": "Ngôn ngữ",
+    "theme": "Giao diện",
+    "light": "Sáng",
+    "dark": "Tối",
+    "notifications": "Thông báo",
+    "logout": "Đăng xuất",
+    "vietnamese": "Tiếng Việt",
+    "english": "Tiếng Anh"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "footer": {
+    "profile": "Profile",
+    "language": "Language",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "notifications": "Notifications",
+    "logout": "Logout",
+    "vietnamese": "Vietnamese",
+    "english": "English"
+  }
+}
