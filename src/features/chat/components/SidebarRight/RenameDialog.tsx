@@ -8,6 +8,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   open: boolean;
@@ -23,6 +24,7 @@ export const RenameDialog = ({
   title,
   isPending,
 }: Props) => {
+  const { t } = useTranslation();
   const [newName, setNewName] = useState("");
 
   return (
@@ -47,11 +49,11 @@ export const RenameDialog = ({
           <DialogFooter>
             <DialogClose asChild>
               <Button type="button" variant="outline">
-                Cancel
+                {t("common.cancel")}
               </Button>
             </DialogClose>
             <Button type="submit" disabled={isPending}>
-              {isPending ? "Renaming..." : "Rename"}
+              {isPending ? t("common.renaming") : t("common.rename")}
             </Button>
           </DialogFooter>
         </form>

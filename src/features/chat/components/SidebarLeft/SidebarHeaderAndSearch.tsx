@@ -6,6 +6,7 @@ import { conversationTypeToLabel } from "@/features/chat/constant";
 import { useCreateNewConversation } from "@/features/chat/hooks/useCreateNewConversation";
 import { useNavigate } from "@tanstack/react-router";
 import { Search, SquarePen } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 // const sortValue = [
 //   { value: "all", label: "All" },
@@ -13,6 +14,7 @@ import { Search, SquarePen } from "lucide-react";
 //   { value: "group", label: "Group" },
 // ];
 export const SidebarHeaderAndSearch = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { mutateAsync: createGroupMutation, isPending } =
     useCreateNewConversation();
@@ -39,10 +41,10 @@ export const SidebarHeaderAndSearch = () => {
   return (
     <SidebarHeader className="flex flex-col gap-2 px-4 py-3">
       <div className="mb-4 flex items-center justify-between gap-2">
-        <div className="text-lg font-semibold">Chats with Friends</div>
+        <div className="text-lg font-semibold">{t("chat.sidebarTitle")}</div>
         <div className="flex gap-1">
           <SelectUsersDialog
-            title="Create Conversation"
+            title={t("chat.createConversation")}
             onSubmit={handleCreateGroup}
             isPending={isPending}
             buttonTrigger={
@@ -59,7 +61,7 @@ export const SidebarHeaderAndSearch = () => {
           autoComplete="one-time-code"
           className="bg-background pl-9"
           id="search-input"
-          placeholder="Search..."
+          placeholder={t("common.search")}
           type="search"
         />
       </div>

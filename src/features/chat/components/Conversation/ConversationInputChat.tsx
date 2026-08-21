@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Textarea } from "@/components/ui/textarea";
 import { FormatterActions } from "@/features/chat/components/Conversation/FormatterActions";
@@ -62,6 +63,7 @@ export const ConversationInputChat = ({
   if (!conversationId) {
     return null;
   }
+  const { t } = useTranslation();
   const [message, setMessage] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -367,7 +369,7 @@ export const ConversationInputChat = ({
   return (
     <>
       {(isPending || isUploading) && (
-        <div className={Style.textPending}>Sending...</div>
+        <div className={Style.textPending}>{t("chat.sending")}</div>
       )}
 
       <form className={Style.container} onSubmit={handleSubmit}>
@@ -419,7 +421,7 @@ export const ConversationInputChat = ({
                 ref={inputRef}
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Type a message..."
+                placeholder={t("chat.inputPlaceholder")}
                 onInput={(e) => {
                   const scrollHeight = e.currentTarget.scrollHeight;
                   setIsExpanded((prev) => {
@@ -505,8 +507,8 @@ export const ConversationInputChat = ({
           open={openAlertDialog}
           onOpenChange={handleOpenChange}
           onConfirm={handleConfirmReplacePreview}
-          title="Do you want to replace the attachment?"
-          description="Replacing the attachment cannot be undone."
+          title={t("chat.replaceAttachment.title")}
+          description={t("chat.replaceAttachment.description")}
         />
       </form>
     </>

@@ -22,8 +22,10 @@ import { useCreateNewConversation } from "@/features/chat/hooks/useCreateNewConv
 import type { AxiosError } from "axios";
 import type { AxiosConversationError } from "@/types/api";
 import { Spinner } from "@/components/ui/spinner";
+import { useTranslation } from "react-i18next";
 
 export const ListFriendsPage = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const path = useGetPath();
   const [searchValue, setSearchValue] = useState("");
@@ -72,7 +74,7 @@ export const ListFriendsPage = () => {
             autoComplete="one-time-code"
             className="bg-background pl-9"
             id="search-input"
-            placeholder="Search..."
+            placeholder={t("common.search")}
             type="search"
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
@@ -86,9 +88,11 @@ export const ListFriendsPage = () => {
 
       {friends && friends.length === 0 ? (
         <div className={Style.dashboardEmptyContainer}>
-          <div className="text-2xl font-bold">Cannot find any friends</div>
+          <div className="text-2xl font-bold">
+            {t("friends.noFriends.title")}
+          </div>
           <div className="text-muted-foreground">
-            Try searching for friends using the search bar above.
+            {t("friends.noFriends.description")}
           </div>
         </div>
       ) : (

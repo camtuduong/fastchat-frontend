@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { conversationTypeToLabel } from "@/features/chat/constant";
 import type { Conversation } from "@/features/chat/types/conversation";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   type: Conversation["type"] | undefined;
@@ -25,6 +26,7 @@ export const ConversationHeader = ({
   groupAvatarUrl,
   groupName,
 }: Props) => {
+  const { t } = useTranslation();
   const renderHeaderConversation = () => {
     switch (type) {
       case conversationTypeToLabel.direct:
@@ -62,7 +64,7 @@ export const ConversationHeader = ({
             <span className="truncate">
               {groupName ||
                 members?.map((member) => member.displayName).join(", ") ||
-                "No Name"}
+                t("chat.noName")}
             </span>
           </div>
         );

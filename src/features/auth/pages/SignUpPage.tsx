@@ -7,8 +7,10 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { useSignUp } from "@/features/auth/hooks/useSignup";
+import { useTranslation } from "react-i18next";
 
 export default function SignUpPage() {
+  const { t } = useTranslation();
   const { mutateAsync: signUp } = useSignUp();
   const navigate = useNavigate();
 
@@ -36,7 +38,7 @@ export default function SignUpPage() {
       await signUp({ username, email, password, firstName, lastName });
       navigate({ to: "/signin" });
     } catch (error) {
-      toast.error("Failed to sign up. Please try again.");
+      toast.error(t("signup.errorMessage"));
     }
   };
 
@@ -46,11 +48,9 @@ export default function SignUpPage() {
         <div className="flex flex-col items-start space-y-4">
           <div className="mb-4">
             <h2 className="text-2xl font-bold text-[#525252]">
-              Sign Up to Your Account
+              {t("signup.title")}
             </h2>
-            <p className="text-[0.75rem]">
-              Join us and start managing your business effectively
-            </p>
+            <p className="text-[0.75rem]">{t("signup.subtitle")}</p>
           </div>
         </div>
 
@@ -58,9 +58,9 @@ export default function SignUpPage() {
           <InputField
             type="text"
             id="username"
-            placeholder="Your username"
+            placeholder={t("signup.usernamePlaceholder")}
             {...register("username")}
-            label="Username"
+            label={t("signup.username")}
             error={errors.username?.message}
           />
 
@@ -69,9 +69,9 @@ export default function SignUpPage() {
               <InputField
                 type="text"
                 id="firstName"
-                placeholder="Your first name"
+                placeholder={t("signup.firstNamePlaceholder")}
                 {...register("firstName")}
-                label="First Name"
+                label={t("signup.firstName")}
                 error={errors.firstName?.message}
               />
             </div>
@@ -79,9 +79,9 @@ export default function SignUpPage() {
               <InputField
                 type="text"
                 id="lastName"
-                placeholder="Your last name"
+                placeholder={t("signup.lastNamePlaceholder")}
                 {...register("lastName")}
-                label="Last Name"
+                label={t("signup.lastName")}
                 error={errors.lastName?.message}
               />
             </div>
@@ -90,9 +90,9 @@ export default function SignUpPage() {
           <InputField
             type="email"
             id="email"
-            placeholder="mail@abc.com"
+            placeholder={t("signup.emailPlaceholder")}
             {...register("email")}
-            label="Email"
+            label={t("signup.email")}
             error={errors.email?.message}
           />
 
@@ -101,7 +101,7 @@ export default function SignUpPage() {
             id="password"
             placeholder="**********"
             {...register("password")}
-            label="Password"
+            label={t("signup.password")}
             error={errors.password?.message}
           />
 
@@ -110,7 +110,7 @@ export default function SignUpPage() {
             id="confirmPassword"
             placeholder="**********"
             {...register("confirmPassword")}
-            label="Confirm Password"
+            label={t("signup.confirmPassword")}
             error={errors.confirmPassword?.message}
           />
 
@@ -120,22 +120,22 @@ export default function SignUpPage() {
               className="w-full cursor-not-allowed rounded-md bg-(--color-plum) px-4 py-2 text-white opacity-50"
               disabled
             >
-              Signing Up...
+              {t("signup.signingUp")}
             </Button>
           ) : (
             <Button
               type="submit"
               className="w-full rounded-md bg-(--color-plum) px-4 py-2 text-white hover:bg-(--color-plum-dark)"
             >
-              Sign Up
+              {t("signup.signUpButton")}
             </Button>
           )}
         </form>
 
         <p className="mt-2 mb-2 text-center text-[0.75rem] text-(--gray-2)">
-          Already have an account?{" "}
+          {t("signup.alreadyAccount")}{" "}
           <a href="/signin" className="text-(--color-plum) hover:underline">
-            Sign In
+            {t("signup.signInLink")}
           </a>
         </p>
       </div>

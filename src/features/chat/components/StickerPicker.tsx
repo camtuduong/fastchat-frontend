@@ -10,6 +10,7 @@ import {
 } from "@/utils/constant";
 import { Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   pickerRef?: React.Ref<HTMLDivElement>;
@@ -17,6 +18,7 @@ type Props = {
 };
 
 export const StickerPicker = ({ pickerRef, onStickerClick }: Props) => {
+  const { t } = useTranslation();
   const [searchStickerQuery, setSearchStickerQuery] = useState("");
 
   const searchDebounce = useDebounce(searchStickerQuery, 500);
@@ -85,7 +87,7 @@ export const StickerPicker = ({ pickerRef, onStickerClick }: Props) => {
           ref={searchInputRef}
           className="bg-sticker-picker-input pl-9"
           id="search-input"
-          placeholder="Search by name or email..."
+          placeholder={t("common.searchSticker")}
           type="search"
           value={searchStickerQuery}
           onFocus={() => {}}
@@ -121,13 +123,18 @@ export const StickerPicker = ({ pickerRef, onStickerClick }: Props) => {
         ) : (
           <div className="col-span-4 flex h-full w-full items-center justify-center">
             {isLoadingStickers ? (
-              <span className="text-muted-foreground">Loading...</span>
+              <span className="text-muted-foreground">
+                {t("sticker.loading")}
+              </span>
             ) : stickerError ? (
               <span className="text-destructive">
-                Error: {stickerError.message || "Failed to load stickers"}
+                {t("sticker.error")}
+                {stickerError.message || "Failed to load stickers"}
               </span>
             ) : (
-              <span className="text-muted-foreground">No stickers found</span>
+              <span className="text-muted-foreground">
+                {t("sticker.noResults")}
+              </span>
             )}
           </div>
         )}
@@ -136,7 +143,9 @@ export const StickerPicker = ({ pickerRef, onStickerClick }: Props) => {
           className="col-span-4 flex h-8 items-center justify-center"
         >
           {isFetchingNextPage && (
-            <span className="text-muted-foreground text-sm">Loading...</span>
+            <span className="text-muted-foreground text-sm">
+              {t("sticker.loading")}
+            </span>
           )}
         </div>
       </div>

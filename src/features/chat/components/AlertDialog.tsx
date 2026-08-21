@@ -8,6 +8,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   open: boolean;
@@ -25,6 +26,7 @@ export const AlertDialog = ({
   description,
   isPending,
 }: Props) => {
+  const { t } = useTranslation();
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -35,11 +37,11 @@ export const AlertDialog = ({
         <DialogFooter>
           <DialogClose asChild>
             <Button type="button" variant="outline">
-              Cancel
+              {t("common.cancel")}
             </Button>
           </DialogClose>
           <Button type="button" variant="destructive" onClick={onConfirm}>
-            {isPending ? "Confirming..." : "Confirm"}
+            {isPending ? t("common.confirming") : t("common.confirm")}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -3,6 +3,7 @@ import { typeMessageAttachmentTypeToLabel } from "@/features/chat/constant";
 import type { Attachment } from "@/features/chat/types/conversation";
 import { cn } from "@/lib/utils";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   attachments: Attachment[];
@@ -13,20 +14,25 @@ const STYLE = {
   button:
     "relative border-button-x border text-button-x py-1 px-2 rounded-xl text-sm font-medium  hover:bg-button-x/10 hover:text-button-x cursor-pointer transition-all duration-200",
 };
-const buttons = [
-  { title: "Images", type: typeMessageAttachmentTypeToLabel.image },
-  { title: "Files", type: typeMessageAttachmentTypeToLabel.file },
-];
 
 function NoItemsFound() {
+  const { t } = useTranslation();
   return (
     <div className="flex h-full items-center justify-center text-gray-500">
-      No items found.
+      {t("common.noItems")}
     </div>
   );
 }
 
 export const SharedList = ({ attachments, isLoading }: Props) => {
+  const { t } = useTranslation();
+  const buttons = [
+    {
+      title: t("sidebar.images"),
+      type: typeMessageAttachmentTypeToLabel.image,
+    },
+    { title: t("sidebar.files"), type: typeMessageAttachmentTypeToLabel.file },
+  ];
   const [type, setType] = useState<
     | typeof typeMessageAttachmentTypeToLabel.image
     | typeof typeMessageAttachmentTypeToLabel.file
@@ -98,7 +104,7 @@ export const SharedList = ({ attachments, isLoading }: Props) => {
       {isLoading ? (
         <div className="flex w-full items-center justify-center py-2">
           <Spinner className="size-4" />
-          <span className="ml-2">Loading attachments...</span>
+          <span className="ml-2">{t("common.loadingAttachments")}</span>
         </div>
       ) : attachments.length === 0 ? (
         <NoItemsFound />

@@ -8,8 +8,10 @@ import { InputField } from "@/components/form/InputField";
 import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { useLogin } from "@/features/auth/hooks/useLogin";
+import { useTranslation } from "react-i18next";
 
 export const SignInPage = () => {
+  const { t } = useTranslation();
   const { mutateAsync: loginMutation, isPending } = useLogin();
 
   const navigate = useNavigate();
@@ -36,9 +38,7 @@ export const SignInPage = () => {
       });
       navigate({ to: "/chat" });
     } catch (error) {
-      toast.error(
-        "Failed to sign in. Please check your credentials and try again.",
-      );
+      toast.error(t("login.errorMessage"));
     }
   };
 
@@ -48,11 +48,9 @@ export const SignInPage = () => {
         <div className="flex flex-col items-start space-y-4">
           <div>
             <h2 className="text-2xl font-bold text-[#525252]">
-              Login to your Account
+              {t("login.title")}
             </h2>
-            <p className="text-[0.75rem]">
-              See what is going on with your business
-            </p>
+            <p className="text-[0.75rem]">{t("login.subtitle")}</p>
           </div>
           <Button>
             <div className="flex items-center justify-center">
@@ -61,14 +59,14 @@ export const SignInPage = () => {
                 alt="Google Icon"
                 className="mr-2 h-5 w-5"
               />
-              Continue with Google
+              {t("login.withGoogle")}
             </div>
           </Button>
         </div>
 
         <div className="mt-6 mb-9 flex items-center justify-center text-[0.75rem] text-[#A1A1A1]">
           <span className="text-(--gray-1)">-------------</span>
-          <span className="text-(--gray-2)"> or Sign in with Email </span>
+          <span className="text-(--gray-2)">{t("login.withEmail")}</span>
           <span className="text-(--gray-1)">-------------</span>
         </div>
 
@@ -76,9 +74,9 @@ export const SignInPage = () => {
           <InputField
             type="text"
             id="username"
-            placeholder="Username"
+            placeholder={t("login.usernamePlaceholder")}
             {...register("username")}
-            label="Username"
+            label={t("login.username")}
             error={errors.username?.message}
           />
           <div>
@@ -87,7 +85,7 @@ export const SignInPage = () => {
               id="password"
               placeholder="**********"
               {...register("password")}
-              label="Password"
+              label={t("login.password")}
               error={errors.password?.message}
             />
 
@@ -99,39 +97,34 @@ export const SignInPage = () => {
                   className="mt-0.5"
                   {...register("rememberMe")}
                 />
-                <span className="text-[0.75rem] text-(--gray-2)">Remember</span>
+                <span className="text-[0.75rem] text-(--gray-2)">
+                  {t("login.rememberMe")}
+                </span>
               </label>
 
               <a
                 href="#"
                 className="text-[0.75rem] text-(--color-plum) hover:underline"
               >
-                Forgot password?
+                {t("login.forgotPassword")}
               </a>
             </div>
           </div>
-          {isSubmitting || isPending ? (
-            <Button
-              type="submit"
-              className="w-full cursor-not-allowed rounded-md bg-(--color-plum) px-4 py-2 text-white opacity-50"
-              disabled
-            >
-              Logging in...
-            </Button>
-          ) : (
-            <Button
-              type="submit"
-              className="w-full rounded-md bg-(--color-plum) px-4 py-2 text-white hover:bg-(--color-plum-dark)"
-            >
-              Login
-            </Button>
-          )}
+          <Button
+            type="submit"
+            className="w-full rounded-md bg-(--color-plum) px-4 py-2 text-white"
+            disabled={isSubmitting || isPending}
+          >
+            {isSubmitting || isPending
+              ? t("login.loggingIn")
+              : t("login.loginButton")}
+          </Button>
         </form>
 
         <p className="mt-6 text-center text-[0.75rem] text-(--gray-2)">
-          Don't have an account?{" "}
+          {t("login.noAccount")}{" "}
           <a href="/signup" className="text-(--color-plum) hover:underline">
-            Sign up
+            {t("login.registerButton")}
           </a>
         </p>
       </div>

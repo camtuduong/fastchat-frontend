@@ -1,5 +1,7 @@
 import { SidebarChildLayout } from "@/features/chat/layouts/SidebarChildLayout";
+import { useTranslation } from "react-i18next";
 
 export const NavFriends = () => {
-  return <SidebarChildLayout label="Friends">hi</SidebarChildLayout>;
+  const { t } = useTranslation();
+  return <SidebarChildLayout label={t("friends.label")}>hi</SidebarChildLayout>;
 };

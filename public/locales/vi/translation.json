@@ -1,4 +1,148 @@
 {
+  "login": {
+    "title": "Đăng nhập",
+    "subtitle": "Xem những gì đang diễn ra với bạn bè",
+    "withGoogle": "Tiếp tục với Google",
+    "withEmail": "hoặc Email",
+    "username": "Tên đăng nhập",
+    "password": "Mật khẩu",
+    "rememberMe": "Lưu",
+    "loginButton": "Đăng nhập",
+    "registerButton": "Đăng ký",
+    "forgotPassword": "Quên mật khẩu?",
+    "loggingIn": "Đang đăng nhập...",
+    "invalidCredentials": "Tên đăng nhập hoặc mật khẩu không hợp lệ.",
+    "requiredField": "Trường này là bắt buộc.",
+    "noAccount": "Chưa có tài khoản?",
+    "passwordMismatch": "Mật khẩu không khớp.",
+    "passwordMinLength": "Mật khẩu phải có ít nhất 8 ký tự.",
+    "usernamePlaceholder": "Nhập tên đăng nhập",
+    "passwordLabel": "Mật khẩu",
+    "errorMessage": "Đăng nhập thất bại. Vui lòng kiểm tra thông tin đăng nhập."
+  },
+  "signup": {
+    "title": "Đăng ký tài khoản",
+    "subtitle": "Tham gia và bắt đầu trò chuyện cùng bạn bè",
+    "username": "Tên đăng nhập",
+    "usernamePlaceholder": "Tên đăng nhập của bạn",
+    "firstName": "Tên",
+    "firstNamePlaceholder": "Tên của bạn",
+    "lastName": "Họ",
+    "lastNamePlaceholder": "Họ của bạn",
+    "email": "Email",
+    "emailPlaceholder": "mail@abc.com",
+    "password": "Mật khẩu",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "signingUp": "Đang đăng ký...",
+    "signUpButton": "Đăng ký",
+    "alreadyAccount": "Đã có tài khoản?",
+    "signInLink": "Đăng nhập",
+    "errorMessage": "Đăng ký thất bại. Vui lòng thử lại."
+  },
+  "chat": {
+    "inputPlaceholder": "Nhập tin nhắn...",
+    "sending": "Đang gửi...",
+    "replaceAttachment": {
+      "title": "Bạn có muốn thay thế tệp đính kèm không?",
+      "description": "Thay thế tệp đính kèm không thể hoàn tác."
+    },
+    "noName": "Chưa đặt tên",
+    "loadingMore": "Đang tải thêm tin nhắn...",
+    "noConversation": {
+      "title": "Chưa chọn cuộc trò chuyện",
+      "description": "Vui lòng chọn cuộc trò chuyện từ thanh bên hoặc bắt đầu cuộc trò chuyện mới."
+    },
+    "sidebarTitle": "Trò chuyện với bạn bè",
+    "createConversation": "Tạo cuộc trò chuyện",
+    "conversations": "Cuộc trò chuyện",
+    "lastMessage": "Tin nhắn cuối",
+    "reply": "Trả lời",
+    "removeMessage": {
+      "title": "Xóa tin nhắn",
+      "description": "Sau khi xóa tin nhắn này, không thể hoàn tác."
+    }
+  },
+  "friends": {
+    "label": "Bạn bè",
+    "noFriends": {
+      "title": "Không tìm thấy bạn bè",
+      "description": "Hãy tìm kiếm bạn bè bằng thanh tìm kiếm bên trên."
+    },
+    "noBlocked": {
+      "title": "Không có người dùng bị chặn",
+      "description": "Bạn chưa chặn người dùng nào."
+    },
+    "noRequests": {
+      "title": "Chưa chọn bạn bè",
+      "description": "Vui lòng chọn bạn bè từ thanh bên hoặc thêm người mới."
+    },
+    "noGroups": {
+      "title": "Không có nhóm",
+      "description": "Bạn chưa tham gia nhóm nào."
+    }
+  },
+  "profile": {
+    "firstName": "Tên",
+    "lastName": "Họ",
+    "username": "Tên đăng nhập",
+    "email": "Email",
+    "cancel": "Hủy",
+    "saveChanges": "Lưu thay đổi"
+  },
+  "common": {
+    "search": "Tìm kiếm...",
+    "searchByName": "Tìm theo tên hoặc email...",
+    "searchSticker": "Tìm theo hình dán",
+    "loading": "Đang tải...",
+    "cancel": "Hủy",
+    "confirm": "Xác nhận",
+    "confirming": "Đang xác nhận...",
+    "noItems": "Không tìm thấy mục nào.",
+    "loadingAttachments": "Đang tải tệp đính kèm...",
+    "noMembers": "Không tìm thấy thành viên.",
+    "noPinned": "Không có tin nhắn được ghim.",
+    "more": "Thêm",
+    "copy": "Sao chép",
+    "pin": "Ghim",
+    "delete": "Xóa",
+    "rename": "Đổi tên",
+    "renaming": "Đang đổi tên..."
+  },
+  "sidebar": {
+    "like": "Thích",
+    "unlike": "Bỏ thích",
+    "notification": "Âm thanh",
+    "add": "Thêm",
+    "copyLink": "Sao chép",
+    "groupSetting": "Cài đặt nhóm",
+    "notificationOptions": "Tùy chọn thông báo",
+    "members": "Thành viên",
+    "pinnedMessages": "Tin nhắn ghim",
+    "attachments": "Tệp đính kèm",
+    "addNewMembers": "Thêm thành viên mới",
+    "info": "Thông tin",
+    "images": "Hình ảnh",
+    "files": "Tệp",
+    "pinnedList": "Tin nhắn ghim",
+    "membersList": "Thành viên",
+    "sharedList": "Tệp đính kèm",
+    "renameGroup": "Đổi tên nhóm",
+    "noDescription": "Chưa có mô tả"
+  },
+  "menuActions": {
+    "like": "Thích",
+    "unlike": "Bỏ thích",
+    "remove": "Xóa",
+    "removeConversation": {
+      "title": "Xóa cuộc trò chuyện",
+      "description": "Sau khi xóa cuộc trò chuyện này, không thể hoàn tác."
+    }
+  },
+  "sticker": {
+    "loading": "Đang tải...",
+    "noResults": "Không tìm thấy sticker",
+    "error": "Lỗi: "
+  },
   "footer": {
     "profile": "Tài khoản",
     "language": "Ngôn ngữ",

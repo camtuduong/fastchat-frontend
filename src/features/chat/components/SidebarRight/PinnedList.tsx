@@ -6,19 +6,21 @@ import {
 } from "@/features/chat/constant";
 import type { PinnedMessage } from "@/features/chat/types/conversation";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   pinnedMessages: PinnedMessage[];
   onUnpinMessage: (messageId: string) => void;
 };
 export const PinnedList = ({ pinnedMessages, onUnpinMessage }: Props) => {
+  const { t } = useTranslation();
   const listPinnedMessages = addPositionForPinnedMessages(pinnedMessages);
 
   return (
     <div className="flex flex-1 flex-col gap-2 overflow-y-auto p-2">
       {listPinnedMessages.length === 0 ? (
         <div className="flex h-full items-center justify-center text-gray-500">
-          No pinned messages.
+          {t("common.noPinned")}
         </div>
       ) : (
         <div className="flex flex-col gap-1">

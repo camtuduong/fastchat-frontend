@@ -8,6 +8,7 @@ import {
 import type { User } from "@/features/chat/types/searchUser";
 import { X, Search } from "lucide-react";
 import { useState, type Dispatch, type SetStateAction } from "react";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   searchValue: string;
@@ -24,6 +25,7 @@ export const SearchUser = ({
   selectedUsers,
   setSelectedUsers,
 }: Props) => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
   const allUsers = users ?? [];
@@ -79,7 +81,7 @@ export const SearchUser = ({
               autoComplete="one-time-code"
               className="bg-background pl-9"
               id="search-input"
-              placeholder="Search by name or email..."
+              placeholder={t("common.searchByName")}
               type="search"
               value={searchValue}
               onFocus={() => {

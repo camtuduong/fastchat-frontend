@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import type { JSX, ReactNode } from "react";
 import { Fragment } from "react";
+import { useTranslation } from "react-i18next";
 const Style = {
   icon: "text-panel-foreground flex h-4 w-4 items-center justify-center text-sm font-medium transition-all duration-200",
   iconSize: "h-4 w-4",
@@ -55,6 +56,7 @@ export const DefaultContent = ({
   isFavorite,
   attachmentsLength,
 }: Props) => {
+  const { t } = useTranslation();
   const setStatus = useCustomSidebarStore((state) => state.setStatus);
 
   const fastAction: {
@@ -65,7 +67,7 @@ export const DefaultContent = ({
     dialog?: (trigger: ReactNode) => ReactNode;
   }[] = [
     {
-      value: isFavorite ? "Unlike" : "Like",
+      value: isFavorite ? t("sidebar.unlike") : t("sidebar.like"),
       icon: (
         <Star
           fill={isFavorite ? "#ecc94b" : "none"}
@@ -79,18 +81,18 @@ export const DefaultContent = ({
       },
     },
     {
-      value: "Notification",
+      value: t("sidebar.notification"),
       icon: <BellRing className={Style.iconSize} />,
       type: [conversationTypeToLabel.direct, conversationTypeToLabel.group],
       action: () => {},
     },
     {
-      value: "Add",
+      value: t("sidebar.add"),
       icon: <UserPlus className={Style.iconSize} />,
       type: [conversationTypeToLabel.group],
       dialog: (trigger) => (
         <SelectUsersDialog
-          title="Add New Members"
+          title={t("sidebar.addNewMembers")}
           onSubmit={onAddNewMembers}
           isPending={isPending}
           buttonTrigger={trigger}
@@ -98,7 +100,7 @@ export const DefaultContent = ({
       ),
     },
     {
-      value: "Copy link",
+      value: t("sidebar.copyLink"),
       icon: <Link className={Style.iconSize} />,
       type: [conversationTypeToLabel.group],
       action: () => {},
@@ -114,21 +116,21 @@ export const DefaultContent = ({
     action: (() => void) | undefined;
   }[] = [
     {
-      value: "Group Setting",
+      value: t("sidebar.groupSetting"),
       icon: <Settings className={Style.iconSize} />,
       type: [conversationTypeToLabel.group],
       status: SIDEBAR_CONTENT_STATUS.SETTINGS,
       action: () => {},
     },
     {
-      value: "Notifications Options",
+      value: t("sidebar.notificationOptions"),
       icon: <Bell className={Style.iconSize} />,
       type: [conversationTypeToLabel.group],
       status: SIDEBAR_CONTENT_STATUS.NOTIFICATIONS,
       action: () => {},
     },
     {
-      value: "Members",
+      value: t("sidebar.members"),
       icon: <User className={Style.iconSize} />,
       type: [conversationTypeToLabel.group],
       status: SIDEBAR_CONTENT_STATUS.MEMBERS,
@@ -138,7 +140,7 @@ export const DefaultContent = ({
       },
     },
     {
-      value: "Pinned Messages",
+      value: t("sidebar.pinnedMessages"),
       icon: <Pin className={Style.iconSize} />,
       type: [conversationTypeToLabel.direct, conversationTypeToLabel.group],
       status: SIDEBAR_CONTENT_STATUS.PINNED,
@@ -146,7 +148,7 @@ export const DefaultContent = ({
       action: () => {},
     },
     {
-      value: "Attachments",
+      value: t("sidebar.attachments"),
       icon: <Paperclip className={Style.iconSize} />,
       type: [conversationTypeToLabel.direct, conversationTypeToLabel.group],
       status: SIDEBAR_CONTENT_STATUS.SHARED,

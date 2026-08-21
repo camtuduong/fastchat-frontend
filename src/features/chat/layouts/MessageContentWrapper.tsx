@@ -16,6 +16,7 @@ import { AlertDialog } from "@/features/chat/components/AlertDialog";
 import { usePinMessageInConversation } from "@/features/chat/hooks/usePinMessageInConversation";
 import { useCustomSidebarStore } from "@/stores/useCustomSidebarStore";
 import { SIDEBAR_CONTENT_STATUS } from "@/utils/constant";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   isMyMessage?: boolean;
@@ -37,6 +38,7 @@ export const MessageContentWrapper = ({
   isMyMessage,
   message,
 }: Props) => {
+  const { t } = useTranslation();
   const { setReplyMessage } = useMessageStore();
   const [openMoreAction, setOpenMoreAction] = useState(false);
 
@@ -122,7 +124,7 @@ export const MessageContentWrapper = ({
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p className="text-xs">Reply</p>
+            <p className="text-xs">{t("chat.reply")}</p>
           </TooltipContent>
         </Tooltip>
 
@@ -140,8 +142,8 @@ export const MessageContentWrapper = ({
           open={openAlertDialog}
           onOpenChange={handleOpenChange}
           onConfirm={handleDeleteMessage}
-          title="Remove message"
-          description="Once you delete this message, it cannot be undone."
+          title={t("chat.removeMessage.title")}
+          description={t("chat.removeMessage.description")}
           isPending={isPending}
         />
       </div>
