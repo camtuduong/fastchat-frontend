@@ -185,6 +185,7 @@ export const typeMessageIconAction: Record<ActionType, LucideIcon | null> = {
   create_group: null,
   rename_group: Pen,
   add_member: UserPlus,
+  share_conversation: UserPlus,
   remove_member: UserMinus,
   change_group_avatar: FileImage,
   leave_group: UserRoundArrowLeft,

@@ -48,8 +48,8 @@
     },
     "noName": "Chưa đặt tên",
     "loadingMore": "Đang tải thêm tin nhắn...",
-    "noConversation": {
-      "title": "Chưa chọn cuộc trò chuyện",
+    "welcome": {
+      "title": "Chào mừng đến với FastChat",
       "description": "Vui lòng chọn cuộc trò chuyện từ thanh bên hoặc bắt đầu cuộc trò chuyện mới."
     },
     "sidebarTitle": "Trò chuyện với bạn bè",
@@ -106,7 +106,8 @@
     "pin": "Ghim",
     "delete": "Xóa",
     "rename": "Đổi tên",
-    "renaming": "Đang đổi tên..."
+    "renaming": "Đang đổi tên...",
+    "linkCopied": "Đã sao chép liên kết!"
   },
   "sidebar": {
     "like": "Thích",

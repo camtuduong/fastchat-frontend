@@ -14,11 +14,9 @@ export const EmptyChatPage = () => {
         {/* Action buttons */}
       </header>
       <div className="flex h-full w-full flex-col items-center justify-center gap-4">
-        <div className="text-2xl font-bold">
-          {t("chat.noConversation.title")}
-        </div>
+        <div className="text-2xl font-bold">{t("chat.welcome.title")}</div>
         <div className="text-muted-foreground">
-          {t("chat.noConversation.description")}
+          {t("chat.welcome.description")}
         </div>
       </div>
     </div>

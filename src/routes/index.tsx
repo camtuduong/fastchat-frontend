@@ -18,6 +18,7 @@ import { ConversationPage } from "@/features/chat/pages/ConversationPage";
 import { ListFriendsPage } from "@/features/friends/pages/ListFriendsPage";
 import { BlockUsersPage } from "@/features/friends/pages/BlockUsersPage";
 import { ListGroupsPage } from "@/features/friends/pages/ListGroupPage";
+import { ShareRedirect } from "@/features/chat/pages/ShareRedirect";
 
 export const rootRoute = createRootRoute({
   component: App,
@@ -100,6 +101,26 @@ export const chatConversationRoute = createRoute({
   component: ConversationPage,
 });
 
+//share
+export const shareRoute = createRoute({
+  getParentRoute: () => appLayoutRoute,
+  path: "share",
+  beforeLoad: redirectIfUnauthenticated,
+  component: () => <Outlet />,
+});
+
+export const shareListRoute = createRoute({
+  getParentRoute: () => shareRoute,
+  path: "/",
+  component: () => null,
+});
+
+export const shareDetailRoute = createRoute({
+  getParentRoute: () => shareRoute,
+  path: "$token",
+  component: ShareRedirect,
+});
+
 //friends
 export const friendsRoute = createRoute({
   getParentRoute: () => appLayoutRoute,
@@ -152,6 +173,7 @@ const routeTree = rootRoute.addChildren([
       listGroupsRoute,
       friendConversationRoute,
     ]),
+    shareRoute.addChildren([shareListRoute, shareDetailRoute]),
   ]),
 ]);
 

@@ -25,6 +25,8 @@ import { useFavoriteConversation } from "@/features/chat/hooks/useFavoriteConver
 import { useAddNewMembers } from "@/features/chat/hooks/useAddNewMember";
 import { useGetAllAttachmentInConversation } from "@/features/chat/hooks/queries/useGetAllAttachmentInConversation";
 import { useTranslation } from "react-i18next";
+import { useShareConversation } from "@/features/chat/hooks/useShareConversation";
+import { toast } from "sonner";
 
 export function AppCustomSidebar({
   ...props
@@ -46,13 +48,11 @@ export function AppCustomSidebar({
   const { mutateAsync: removeMember } = useRemoveMemberInConversation();
 
   const { mutateAsync: uploadAvatar } = useUploadGroupAvatar();
-
   const { mutateAsync: renameGroup, isPending: isRenaming } = useRenameGroup();
-
   const { mutateAsync: addNewMembers, isPending: isAddingNewMembers } =
     useAddNewMembers();
-
   const { mutateAsync: addFavoriteConversation } = useFavoriteConversation();
+  const { mutateAsync: shareConversation } = useShareConversation();
 
   const { data: attachments, isLoading: isAttachmentsLoading } =
     useGetAllAttachmentInConversation(conversationDataDetail?._id);
@@ -147,6 +147,22 @@ export function AppCustomSidebar({
       await addFavoriteConversation(conversationDataDetail._id);
     } catch (error) {
       console.error("Error adding favorite conversation:", error);
+    }
+  };
+
+  const handleShareConversationGroup = async () => {
+    try {
+      if (!conversationDataDetail) {
+        return;
+      }
+
+      const res = await shareConversation(conversationDataDetail._id);
+
+      const link = `${window.location.origin}/share/${res.token}`;
+      await navigator.clipboard.writeText(link);
+      toast.success(t("common.linkCopied"));
+    } catch (error) {
+      console.error("Error sharing conversation group:", error);
     }
   };
 
@@ -266,6 +282,7 @@ export function AppCustomSidebar({
             }
             attachmentsLength={attachments?.length || 0}
             onAddNewMembers={handleAddNewMembers}
+            onShareConversationGroup={handleShareConversationGroup}
             isPending={isAddingNewMembers}
             onAddFavoriteConversation={handleFavoriteConversation}
             groupAt={conversationDataDetail?.group?.createdAt || ""}

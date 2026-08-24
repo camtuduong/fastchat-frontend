@@ -48,8 +48,8 @@
     },
     "noName": "No Name",
     "loadingMore": "Loading more messages...",
-    "noConversation": {
-      "title": "No conversation selected",
+    "welcome": {
+      "title": "Welcome to FastChat",
       "description": "Please select a conversation from the sidebar or start a new one."
     },
     "sidebarTitle": "Chats with Friends",
@@ -106,7 +106,8 @@
     "pin": "Pin",
     "delete": "Delete",
     "rename": "Rename",
-    "renaming": "Renaming..."
+    "renaming": "Renaming...",
+    "linkCopied": "Link copied to clipboard!"
   },
   "sidebar": {
     "like": "Like",
