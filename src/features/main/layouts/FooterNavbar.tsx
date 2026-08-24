@@ -53,7 +53,6 @@ export const FooterNavbar = ({ setProfileOpen }: Props) => {
   const handleLanguageChange = (lng: string) => {
     i18n.changeLanguage(lng);
   };
-  console.log(t("footer", { returnObjects: true }));
 
   const isLanguageActive = (lng: string) => i18n.language === lng;
   return (
@@ -104,15 +103,23 @@ export const FooterNavbar = ({ setProfileOpen }: Props) => {
               </DropdownMenuPortal>
             </DropdownMenuSub>
 
-            <DropdownMenuItem
-              onSelect={() => {
-                setTheme(theme === "dark" ? "light" : "dark");
-              }}
-            >
-              {theme === "dark" ? <Moon /> : <Sun />}
-              {t("footer.theme")}:{" "}
-              {theme === "dark" ? t("footer.dark") : t("footer.light")}
-            </DropdownMenuItem>
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>
+                {theme === "dark" ? <Moon /> : <Sun />}
+                {t("footer.theme")}:{" "}
+                {theme === "dark" ? t("footer.dark") : t("footer.light")}
+              </DropdownMenuSubTrigger>
+              <DropdownMenuPortal>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem onSelect={() => setTheme("light")}>
+                    {t("footer.light")} {theme === "light" ? <Check /> : ""}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => setTheme("dark")}>
+                    {t("footer.dark")} {theme === "dark" ? <Check /> : ""}
+                  </DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuPortal>
+            </DropdownMenuSub>
             <DropdownMenuItem>
               <BellIcon />
               {t("footer.notifications")}

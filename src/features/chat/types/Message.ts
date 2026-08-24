@@ -40,6 +40,7 @@ type ActionType =
   | "rename_group"
   | "change_group_avatar"
   | "add_member"
+  | "share_conversation"
   | "remove_member"
   | "leave_group"
   | "pin_message"

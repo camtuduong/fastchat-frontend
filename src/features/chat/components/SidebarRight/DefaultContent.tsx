@@ -41,6 +41,7 @@ type Props = {
   groupAt: string;
   groupBy: string;
   attachmentsLength: number;
+  onShareConversationGroup: () => void;
 };
 export const DefaultContent = ({
   type,
@@ -55,6 +56,7 @@ export const DefaultContent = ({
   groupBy,
   isFavorite,
   attachmentsLength,
+  onShareConversationGroup,
 }: Props) => {
   const { t } = useTranslation();
   const setStatus = useCustomSidebarStore((state) => state.setStatus);
@@ -103,7 +105,9 @@ export const DefaultContent = ({
       value: t("sidebar.copyLink"),
       icon: <Link className={Style.iconSize} />,
       type: [conversationTypeToLabel.group],
-      action: () => {},
+      action: () => {
+        onShareConversationGroup();
+      },
     },
   ];
 
