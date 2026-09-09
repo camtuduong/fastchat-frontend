@@ -51,9 +51,9 @@ interface PinnedMessage {
 }
 
 interface Attachment {
-  type: "img" | "file";
+  type: "file" | "image";
   url: string;
-  createAt: string;
+  createdAt: string;
   sender: {
     userId: string;
     displayName: string;

@@ -1,5 +1,7 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import type { Attachment } from "@/features/chat/types/Message";
+import type { Attachment as MessageAttachment } from "@/features/chat/types/Message";
+import type { Attachment as ConversationAttachment } from "@/features/chat/types/conversation";
+
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -16,7 +18,7 @@ const STYLE = {
 type Props = {
   open: boolean;
   onOpenChange: (nextOpen: boolean) => void;
-  attachments: Attachment[];
+  attachments: MessageAttachment[] | ConversationAttachment[];
 };
 
 export const GalleryImg = ({ open, onOpenChange, attachments }: Props) => {
@@ -47,9 +49,9 @@ export const GalleryImg = ({ open, onOpenChange, attachments }: Props) => {
         <div className={STYLE.container}>
           {attachments.length > 0 && (
             <img
-              key={attachments[currentIndex].id}
+              key={attachments[currentIndex].url}
               src={attachments[currentIndex].url}
-              alt={attachments[currentIndex].name}
+              alt={attachments[currentIndex].url}
               className={STYLE.img}
               style={{ zIndex: 10 - currentIndex }}
             />
@@ -63,6 +65,16 @@ export const GalleryImg = ({ open, onOpenChange, attachments }: Props) => {
             <button className={cn(STYLE.button, "-right-15")} onClick={next}>
               <ChevronRight />
             </button>
+            <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 rounded-full text-sm">
+              {Array.from({ length: 3 }).map((_, index) => (
+                <span
+                  key={index}
+                  className={cn(
+                    "mx-1 inline-block h-2 w-2 rounded-full bg-gray-500",
+                  )}
+                />
+              ))}
+            </div>
           </>
         )}
       </DialogContent>
