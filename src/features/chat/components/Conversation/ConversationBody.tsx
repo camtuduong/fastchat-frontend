@@ -9,10 +9,11 @@ import {
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { DATE_FORMAT } from "@/utils/constant";
-import type { Conversation } from "@/features/chat/types/conversation";
 import type { MessageUI } from "@/features/chat/types/bubbleChat";
 import type { ReactVirtualizer } from "@tanstack/react-virtual";
 import { useTranslation } from "react-i18next";
+import { useConversationStore } from "@/stores/useConversationStore";
+import { useMemo } from "react";
 
 type Props = {
   messages: MessageUI[];
@@ -21,7 +22,8 @@ type Props = {
   containerRef: React.RefObject<HTMLDivElement | null>;
   onScroll: (event: React.UIEvent<HTMLDivElement, UIEvent>) => void;
   isFetchingNextPage: boolean;
-  conversationData: Conversation | undefined;
+  isGetDataDetail: boolean;
+  bodyClassName?: string;
 };
 
 export const ConversationBody = ({
@@ -31,13 +33,31 @@ export const ConversationBody = ({
   containerRef,
   onScroll,
   isFetchingNextPage,
-  conversationData,
+  isGetDataDetail,
+  bodyClassName,
 }: Props) => {
   const { t } = useTranslation();
   const virtualItems = virtualizer.getVirtualItems();
-  const conversationCreatedAt = conversationData?.createdAt
-    ? format(new Date(conversationData.createdAt), DATE_FORMAT)
+
+  const conversationDataDetail = useConversationStore(
+    (state) => state.conversationDataDetail,
+  );
+
+  const conversationCreatedAt = conversationDataDetail?.createdAt
+    ? format(new Date(conversationDataDetail.createdAt), DATE_FORMAT)
     : "";
+
+  const hasConversationStart =
+    isGetDataDetail &&
+    conversationDataDetail?.type !== conversationTypeToLabel.thread;
+
+  const listParticipantIds = useMemo(
+    () =>
+      conversationDataDetail?.participants.map(
+        (participant) => participant.userId,
+      ) || [],
+    [conversationDataDetail],
+  );
 
   return (
     <>
@@ -49,15 +69,18 @@ export const ConversationBody = ({
       )}
       <div
         ref={containerRef}
-        className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain rounded-b-xl p-8 pt-4"
+        className={cn(
+          "min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain rounded-b-xl p-8 pt-4",
+          bodyClassName,
+        )}
         onScroll={onScroll}
       >
         <div ref={virtualizer.containerRef} className="relative w-full">
           {virtualItems.map((virtualItem) => {
-            if (virtualItem.index === 0) {
+            if (virtualItem.index === 0 && hasConversationStart) {
               return (
                 <div
-                  key={virtualItem.key}
+                  key={`initial-message-${virtualItem.key}`}
                   ref={virtualizer.measureElement}
                   data-index={virtualItem.index}
                   className="absolute top-0 left-0 flex w-full flex-col items-center justify-center pb-4 text-xs text-gray-400"
@@ -78,7 +101,8 @@ export const ConversationBody = ({
                     </span>
                     <span className="text-lg">
                       Let's chat with your friend
-                      {conversationData?.type === conversationTypeToLabel.direct
+                      {conversationDataDetail?.type ===
+                      conversationTypeToLabel.direct
                         ? ""
                         : "s"}
                       !
@@ -88,7 +112,10 @@ export const ConversationBody = ({
               );
             }
 
-            const message = messages[virtualItem.index - 1];
+            const messageIndex = hasConversationStart
+              ? virtualItem.index - 1
+              : virtualItem.index;
+            const message = messages[messageIndex];
 
             if (!message) return null;
 
@@ -138,7 +165,11 @@ export const ConversationBody = ({
                       </p>
                     </div>
                   )}
-                  <MessageBubble message={message} isMyMessage={isMyMessage} />
+                  <MessageBubble
+                    message={message}
+                    isMyMessage={isMyMessage}
+                    participantIds={listParticipantIds}
+                  />
                 </div>
               </div>
             );

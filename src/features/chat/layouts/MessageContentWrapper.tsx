@@ -8,7 +8,7 @@ import {
 import { useState } from "react";
 import { MessageWrapperActions } from "@/features/chat/components/MessageWrapper/MessageWrapperActions";
 import { cn } from "@/lib/utils";
-import { CornerUpLeft } from "lucide-react";
+import { CornerUpLeft, Spool } from "lucide-react";
 import type { ReactNode } from "react";
 import type { MessageUI } from "@/features/chat/types/bubbleChat";
 import { useDeleteMessage } from "@/features/chat/hooks/useDeleteMessage";
@@ -17,11 +17,13 @@ import { usePinMessageInConversation } from "@/features/chat/hooks/usePinMessage
 import { useCustomSidebarStore } from "@/stores/useCustomSidebarStore";
 import { SIDEBAR_CONTENT_STATUS } from "@/utils/constant";
 import { useTranslation } from "react-i18next";
+import { useCreateNewConversation } from "@/features/chat/hooks/useCreateNewConversation";
 
 type Props = {
   isMyMessage?: boolean;
   children: ReactNode;
   message?: MessageUI;
+  participantIds: string[];
 };
 
 const Style = {
@@ -37,6 +39,7 @@ export const MessageContentWrapper = ({
   children,
   isMyMessage,
   message,
+  participantIds,
 }: Props) => {
   const { t } = useTranslation();
   const { setReplyMessage } = useMessageStore();
@@ -46,9 +49,12 @@ export const MessageContentWrapper = ({
 
   const setOpen = useCustomSidebarStore((state) => state.setOpen);
   const setStatus = useCustomSidebarStore((state) => state.setStatus);
+  const setThreadId = useCustomSidebarStore((state) => state.setThreadId);
 
   const { mutateAsync: deleteMessage, isPending } = useDeleteMessage();
   const { mutateAsync: pinMessage } = usePinMessageInConversation();
+  const { mutateAsync: createConversationMutation } =
+    useCreateNewConversation();
 
   const handleCopy = async () => {
     try {
@@ -67,6 +73,10 @@ export const MessageContentWrapper = ({
       try {
         await deleteMessage(message._id);
         setOpenAlertDialog(false);
+
+        if (message.threadId) {
+          setOpen(false);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -86,6 +96,23 @@ export const MessageContentWrapper = ({
       } catch (error) {
         console.error(error);
       }
+    }
+  };
+
+  const handleCreateThread = async () => {
+    try {
+      const result = await createConversationMutation({
+        participants: participantIds,
+        parentMessageId: message?._id || "",
+      });
+
+      if (result.conversation) {
+        setThreadId(result.conversation);
+        setStatus(SIDEBAR_CONTENT_STATUS.THREAD_DETAIL);
+        setOpen(true);
+      }
+    } catch (error) {
+      console.error("Failed to create group:", error);
     }
   };
 
@@ -125,6 +152,26 @@ export const MessageContentWrapper = ({
           </TooltipTrigger>
           <TooltipContent>
             <p className="text-xs">{t("chat.reply")}</p>
+          </TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="icon"
+              size="icon-sm"
+              className={Style.actionButton}
+              onClick={() => {
+                if (message) {
+                  handleCreateThread();
+                }
+              }}
+            >
+              <Spool />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p className="text-xs">{t("chat.thread")}</p>
           </TooltipContent>
         </Tooltip>
 

@@ -26,6 +26,8 @@ export const SIDEBAR_CONTENT_STATUS: Record<string, SidebarStatusType> = {
   PINNED: "pinned",
   MEMBERS: "members",
   SHARED: "shared",
+  THREADS: "threads",
+  THREAD_DETAIL: "threadDetail",
 };
 
 export const sortedUserName = (users: Participant[]) =>

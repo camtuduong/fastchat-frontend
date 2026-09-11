@@ -40,12 +40,15 @@
     "errorMessage": "Failed to sign up. Please try again."
   },
   "chat": {
+    "threadMessageCount": "{{count}} replies",
+    "threadNewMessages": "{{count}} unread messages",
     "inputPlaceholder": "Type a message...",
     "sending": "Sending...",
     "replaceAttachment": {
       "title": "Do you want to replace the attachment?",
       "description": "Replacing the attachment cannot be undone."
     },
+    "thread": "Thread",
     "noName": "No Name",
     "loadingMore": "Loading more messages...",
     "welcome": {
@@ -104,6 +107,7 @@
     "more": "More",
     "copy": "Copy",
     "pin": "Pin",
+    "thread": "Thread",
     "delete": "Delete",
     "rename": "Rename",
     "renaming": "Renaming...",
@@ -127,6 +131,8 @@
     "pinnedList": "Pinned List",
     "membersList": "Members List",
     "sharedList": "Shared List",
+    "threadsList": "Threads",
+    "threadDetail": "Thread",
     "renameGroup": "Rename Group",
     "noDescription": "No description available"
   },

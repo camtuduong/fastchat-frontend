@@ -4,11 +4,12 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/components/ui/avatar";
-import { CustomSidebarTrigger } from "@/components/ui/custom-sidebar";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { conversationTypeToLabel } from "@/features/chat/constant";
 import type { Conversation } from "@/features/chat/types/conversation";
+import { useCustomSidebarStore } from "@/stores/useCustomSidebarStore";
+import { Info } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 type Props = {
@@ -27,6 +28,9 @@ export const ConversationHeader = ({
   groupName,
 }: Props) => {
   const { t } = useTranslation();
+  const open = useCustomSidebarStore((state) => state.open);
+  const setOpen = useCustomSidebarStore((state) => state.setOpen);
+
   const renderHeaderConversation = () => {
     switch (type) {
       case conversationTypeToLabel.direct:
@@ -73,6 +77,14 @@ export const ConversationHeader = ({
     }
   };
 
+  const handleOpenSidebar = () => {
+    if (open) {
+      setOpen(false);
+    } else {
+      setOpen(true);
+    }
+  };
+
   return (
     <header className="flex h-16 w-full shrink-0 items-center justify-between gap-2 border-b">
       <div className="flex gap-2 px-4">
@@ -86,9 +98,12 @@ export const ConversationHeader = ({
         {renderHeaderConversation()}
       </div>
       {/* Action buttons */}
-      <div className="flex gap-2 px-4">
-        <CustomSidebarTrigger className="-ml-1" />
-      </div>
+      <button
+        className="text-muted-foreground hover:text-foreground flex cursor-pointer items-center gap-2 px-4 text-sm"
+        onClick={handleOpenSidebar}
+      >
+        <Info className="h-4 w-4" />
+      </button>
     </header>
   );
 };

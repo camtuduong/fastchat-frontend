@@ -1,7 +1,4 @@
 import { Separator } from "@/components/ui/separator";
-
-import { CustomSidebar } from "@/components/ui/custom-sidebar";
-
 import { useConversationStore } from "@/stores/useConversationStore";
 import { useCustomSidebarStore } from "@/stores/useCustomSidebarStore";
 import { SIDEBAR_CONTENT_STATUS } from "@/utils/constant";
@@ -27,10 +24,13 @@ import { useGetAllAttachmentInConversation } from "@/features/chat/hooks/queries
 import { useTranslation } from "react-i18next";
 import { useShareConversation } from "@/features/chat/hooks/useShareConversation";
 import { toast } from "sonner";
+import { ThreadConversation } from "@/features/chat/components/Conversation/ThreadConversation";
 
-export function AppCustomSidebar({
-  ...props
-}: React.ComponentProps<typeof CustomSidebar>) {
+type Props = {
+  setOpen: (open: boolean) => void;
+};
+
+export function AppCustomSidebar({ setOpen }: Props) {
   const { t } = useTranslation();
   const conversationDataDetail = useConversationStore(
     (state) => state.conversationDataDetail,
@@ -40,7 +40,6 @@ export function AppCustomSidebar({
 
   const status = useCustomSidebarStore((state) => state.status);
   const setStatus = useCustomSidebarStore((state) => state.setStatus);
-  const setOpen = useCustomSidebarStore((state) => state.setOpen);
 
   const [isRenameDialogOpen, setIsRenameDialogOpen] = useState(false);
 
@@ -287,6 +286,7 @@ export function AppCustomSidebar({
             onAddFavoriteConversation={handleFavoriteConversation}
             groupAt={conversationDataDetail?.group?.createdAt || ""}
             groupBy={conversationDataDetail?.group?.createdBy || ""}
+            threadsLength={0}
           />
         );
       case SIDEBAR_CONTENT_STATUS.PINNED:
@@ -320,12 +320,24 @@ export function AppCustomSidebar({
             />
           </div>
         );
+      case SIDEBAR_CONTENT_STATUS.THREADS:
+        return (
+          <div className="flex h-full flex-col gap-2">
+            <Header title={t("sidebar.threadsList")} name={nameHeader} />
+            <div className="flex h-full items-center justify-center text-sm text-gray-500">
+              Threads list is not implemented yet.
+            </div>
+          </div>
+        );
+      case SIDEBAR_CONTENT_STATUS.THREAD_DETAIL:
+        return (
+          <div className="flex h-full flex-col gap-2">
+            <Header title={t("sidebar.threadDetail")} name={nameHeader} />
+            <ThreadConversation />
+          </div>
+        );
     }
   };
 
-  return (
-    <CustomSidebar variant="floating" {...props}>
-      {renderSidebarContent()}
-    </CustomSidebar>
-  );
+  return <div className="h-full">{renderSidebarContent()}</div>;
 }

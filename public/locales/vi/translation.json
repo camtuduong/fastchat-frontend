@@ -40,8 +40,11 @@
     "errorMessage": "Đăng ký thất bại. Vui lòng thử lại."
   },
   "chat": {
+    "threadMessageCount": "{{count}} phản hồi",
+    "threadNewMessages": "{{count}} tin nhắn chưa đọc",
     "inputPlaceholder": "Nhập tin nhắn...",
     "sending": "Đang gửi...",
+    "thread": "Chủ đề",
     "replaceAttachment": {
       "title": "Bạn có muốn thay thế tệp đính kèm không?",
       "description": "Thay thế tệp đính kèm không thể hoàn tác."
@@ -104,6 +107,7 @@
     "more": "Thêm",
     "copy": "Sao chép",
     "pin": "Ghim",
+    "thread": "Chủ đề",
     "delete": "Xóa",
     "rename": "Đổi tên",
     "renaming": "Đang đổi tên...",
@@ -127,6 +131,8 @@
     "pinnedList": "Tin nhắn ghim",
     "membersList": "Thành viên",
     "sharedList": "Tệp đính kèm",
+    "threadsList": "Danh sách chủ đề",
+    "threadDetail": "Chủ đề",
     "renameGroup": "Đổi tên nhóm",
     "noDescription": "Chưa có mô tả"
   },

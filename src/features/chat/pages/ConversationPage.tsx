@@ -1,15 +1,22 @@
-import { Spinner } from "@/components/ui/spinner";
-import { ConversationBody } from "@/features/chat/components/Conversation/ConversationBody";
-import { ConversationInputChat } from "@/features/chat/components/Conversation/ConversationInputChat";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
+import { ConversationChatLayout } from "@/features/chat/components/Conversation/ConversationChatLayout";
 import { ConversationHeader } from "@/features/chat/components/Conversation/ConversationHeader";
+import { AppCustomSidebar } from "@/features/chat/components/SidebarRight/AppCustomSidebar";
+import { BOTTOM_SCROLL_THRESHOLD, bubbleChat } from "@/features/chat/constant";
 import { useGetAllMessages } from "@/features/chat/hooks/queries/useGetAllMessages";
 import { useGetConversationById } from "@/features/chat/hooks/queries/useGetConversationById";
+import { useSeenConversation } from "@/features/chat/hooks/useSeenConversation";
 import { useAuthStore } from "@/stores/useAuthStore";
-import {
-  CustomSidebarProvider,
-  CustomSidebarInset,
-} from "@/components/ui/custom-sidebar";
-import { AppCustomSidebar } from "@/features/chat/components/SidebarRight/AppCustomSidebar";
+import { useConversationStore } from "@/stores/useConversationStore";
+import { useCustomSidebarStore } from "@/stores/useCustomSidebarStore";
+import { useMessageStore } from "@/stores/useMessage";
+import { useSocketStore } from "@/stores/useSocketStore";
+import { useNavigate, useParams } from "@tanstack/react-router";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import {
   useCallback,
   useEffect,
@@ -18,15 +25,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { useNavigate, useParams } from "@tanstack/react-router";
-import { useMessageStore } from "@/stores/useMessage";
-import { useConversationStore } from "@/stores/useConversationStore";
-import { useSeenConversation } from "@/features/chat/hooks/useSeenConversation";
-import { useCustomSidebarStore } from "@/stores/useCustomSidebarStore";
-import { useSocketStore } from "@/stores/useSocketStore";
-import { BOTTOM_SCROLL_THRESHOLD, bubbleChat } from "@/features/chat/constant";
-import { ArrowDownToDot } from "lucide-react";
-import { useVirtualizer } from "@tanstack/react-virtual";
 
 export const ConversationPage = () => {
   const navigate = useNavigate();
@@ -48,13 +46,20 @@ export const ConversationPage = () => {
 
   const onlineUsers = useSocketStore((state) => state.onlineUsers);
   const clearReplyMessage = useMessageStore((state) => state.clearReplyMessage);
+
+  const conversationDataDetail = useConversationStore(
+    (state) => state.conversationDataDetail,
+  );
   const setConversationDataDetail = useConversationStore(
     (state) => state.setConversationDataDetail,
   );
   const clearConversationDataDetail = useConversationStore(
     (state) => state.clearConversationDataDetail,
   );
+
+  const open = useCustomSidebarStore((state) => state.open);
   const clearStatus = useCustomSidebarStore((state) => state.clearStatus);
+  const clearThreadId = useCustomSidebarStore((state) => state.clearThreadId);
   const setOpen = useCustomSidebarStore((state) => state.setOpen);
 
   const { data: conversationData, error: conversationError } =
@@ -71,7 +76,7 @@ export const ConversationPage = () => {
   const { mutate: seenConversation, error: seenConversationError } =
     useSeenConversation();
 
-  const members = conversationData?.participants
+  const members = conversationDataDetail?.participants
     .map((participant) => participant)
     .filter((participant) => participant.userId !== myUserId);
 
@@ -142,6 +147,7 @@ export const ConversationPage = () => {
     clearReplyMessage();
     clearConversationDataDetail();
     clearStatus();
+    clearThreadId();
     setOpen(false);
     if (conversationId) {
       seenConversation(conversationId);
@@ -187,61 +193,50 @@ export const ConversationPage = () => {
   }, [conversationId, messages, isFetchingNextPage, virtualizer]);
 
   return (
-    <CustomSidebarProvider>
-      <AppCustomSidebar />
-      <CustomSidebarInset className="min-h-0 flex-1 overflow-hidden">
-        {isLoading ? (
-          <div className="flex h-full w-full items-center justify-center">
-            <Spinner className="size-6" />
-          </div>
-        ) : (
-          <>
-            <ConversationHeader
-              type={conversationData?.type}
-              members={members}
-              isOnline={isOnline}
-              groupAvatarUrl={conversationData?.group.groupAvatarUrl}
-              groupName={conversationData?.group.name}
-            />
-            <ConversationBody
-              messages={messages}
-              virtualizer={virtualizer}
-              myUserId={myUserId}
-              containerRef={containerRef}
-              onScroll={(event: React.UIEvent<HTMLDivElement, UIEvent>) => {
-                if (virtualizer.isAtEnd(BOTTOM_SCROLL_THRESHOLD)) {
-                  setHasNewMessage(0);
-                  return;
-                }
+    <ResizablePanelGroup orientation="horizontal">
+      <ResizablePanel
+        defaultSize="60%"
+        minSize="20%"
+        className="flex h-full min-h-0 flex-1 flex-col overflow-hidden"
+      >
+        <ConversationHeader
+          type={conversationDataDetail?.type}
+          members={members}
+          isOnline={isOnline}
+          groupAvatarUrl={conversationDataDetail?.group.groupAvatarUrl}
+          groupName={conversationDataDetail?.group.name}
+        />
 
-                if (event.currentTarget.scrollTop < 120) {
-                  loadOlder();
-                }
-              }}
-              isFetchingNextPage={isFetchingNextPage}
-              conversationData={conversationData}
-            />
-          </>
-        )}
-        {hasNewMessage > 0 && (
-          <div className="flex items-center justify-center">
-            <button
-              type="button"
-              className="cursor-pointer"
-              onClick={scrollToLatest}
-            >
-              <ArrowDownToDot className="h-4 w-4 animate-bounce" />
-            </button>
-          </div>
-        )}
-
-        {/* Spacer for footer */}
-        <ConversationInputChat
-          conversationId={conversationId}
+        <ConversationChatLayout
+          isLoading={isLoading}
+          messages={messages}
           virtualizer={virtualizer}
+          myUserId={myUserId}
+          containerRef={containerRef}
+          onScroll={(event: React.UIEvent<HTMLDivElement, UIEvent>) => {
+            if (virtualizer.isAtEnd(BOTTOM_SCROLL_THRESHOLD)) {
+              setHasNewMessage(0);
+              return;
+            }
+
+            if (event.currentTarget.scrollTop < 120) {
+              loadOlder();
+            }
+          }}
+          isFetchingNextPage={isFetchingNextPage}
+          hasNewMessage={hasNewMessage}
+          scrollToLatest={scrollToLatest}
+          conversationId={conversationId}
           setHasNewMessage={setHasNewMessage}
         />
-      </CustomSidebarInset>
-    </CustomSidebarProvider>
+      </ResizablePanel>
+      <ResizableHandle withHandle />
+
+      {open && (
+        <ResizablePanel defaultSize="40%" minSize="20%">
+          <AppCustomSidebar setOpen={setOpen} />
+        </ResizablePanel>
+      )}
+    </ResizablePanelGroup>
   );
 };

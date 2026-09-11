@@ -41,11 +41,13 @@ export const bubbleChat = (messageItem: MessageItem[]): MessageUI[] => {
     const samePrev =
       !!prevMessage &&
       prevMessage.sender.userId === message.sender.userId &&
+      !prevMessage.system &&
       getTimeDiffInMs(message.createdAt, prevMessage?.createdAt || "") <
         TEN_MINUTES_IN_MINUTES;
     const sameNext =
       !!nextMessage &&
       nextMessage.sender.userId === message.sender.userId &&
+      !nextMessage.system &&
       getTimeDiffInMs(nextMessage?.createdAt || "", message.createdAt) <
         TEN_MINUTES_IN_MINUTES;
 
@@ -148,6 +150,7 @@ export const bubbleReplyClass = (
 export const conversationTypeToLabel: Record<ConversationType, string> = {
   direct: "direct",
   group: "group",
+  thread: "thread",
 };
 
 export const getMembers = (conversationData: Conversation, userId: string) => {
