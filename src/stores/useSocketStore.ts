@@ -8,8 +8,16 @@ import type { Conversation } from "@/features/chat/types/conversation";
 import type { InfiniteData } from "@tanstack/react-query";
 import { messageNotificationSound } from "@/lib/notificationSound";
 import { useConversationStore } from "@/stores/useConversationStore";
+import type { ThreadSurface } from "@/features/chat/types/thread";
 
 const baseUrl = import.meta.env.VITE_SOCKET_URL;
+
+type ThreadSurfaceUpdate = Pick<
+  ThreadSurface,
+  "threadId" | "lastSender" | "lastMessageAt"
+> & {
+  unreadCount: Record<string, number> | null;
+};
 
 export const useSocketStore = create<SocketState>((set, get) => ({
   socket: null,
@@ -67,6 +75,33 @@ export const useSocketStore = create<SocketState>((set, get) => ({
 
       queryClient.invalidateQueries({
         queryKey: ["conversation-by-id", conversationId],
+      });
+    });
+
+    //thread surface update
+    socket.on("thread-surface-update", (thread: ThreadSurfaceUpdate) => {
+      const threadId = thread.threadId.toString();
+      const userId = useAuthStore.getState().userId;
+      console.log("Thread surface update received:", thread);
+
+      queryClient.setQueryData<ThreadSurface>(
+        ["thread-surface", threadId],
+        (oldData) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            lastSender: thread.lastSender ?? oldData.lastSender,
+            lastMessageAt: thread.lastMessageAt,
+            unreadCount: userId
+              ? (thread.unreadCount?.[userId] ?? 0)
+              : oldData.unreadCount,
+            countMessageInThread: oldData.countMessageInThread + 1,
+          };
+        },
+      );
+      queryClient.invalidateQueries({
+        queryKey: ["thread-surface", threadId],
       });
     });
 

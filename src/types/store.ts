@@ -48,6 +48,22 @@ export interface CustomSidebarStore {
   threadId: string | null;
   setThreadId: (threadId: string | null) => void;
   clearThreadId: () => void;
+  threadMessageCount: number;
+  threadUnreadCount: number;
+  lastMessage: MessageUI | null;
+
+  setThreadMessageCount: (
+    threadId: string | null,
+    threadMessageCount: number,
+  ) => void;
+  clearThreadMessageCount: () => void;
+  setThreadUnreadCount: (
+    threadId: string | null,
+    threadUnreadCount: number,
+  ) => void;
+  clearThreadUnreadCount: () => void;
+  setLastMessage: (lastMessage: MessageUI) => void;
+  clearLastMessage: () => void;
 }
 
 export type SidebarStatusType =

@@ -40,6 +40,8 @@
     "errorMessage": "Đăng ký thất bại. Vui lòng thử lại."
   },
   "chat": {
+    "threadMessageCount": "{{count}} phản hồi",
+    "threadNewMessages": "{{count}} tin nhắn chưa đọc",
     "inputPlaceholder": "Nhập tin nhắn...",
     "sending": "Đang gửi...",
     "thread": "Chủ đề",

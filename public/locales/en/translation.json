@@ -40,6 +40,8 @@
     "errorMessage": "Failed to sign up. Please try again."
   },
   "chat": {
+    "threadMessageCount": "{{count}} replies",
+    "threadNewMessages": "{{count}} unread messages",
     "inputPlaceholder": "Type a message...",
     "sending": "Sending...",
     "replaceAttachment": {
