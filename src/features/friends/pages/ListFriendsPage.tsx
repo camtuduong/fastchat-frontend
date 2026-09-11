@@ -46,7 +46,6 @@ export const ListFriendsPage = () => {
 
     try {
       const result = await createGroupMutation({
-        type: "direct",
         participants: userId,
       });
       navigate({ to: `/chat/${result.conversation}` });

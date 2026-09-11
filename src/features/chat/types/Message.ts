@@ -15,6 +15,7 @@ interface MessageItem {
     | null
     | undefined;
   attachments: Attachment[] | [];
+  threadId: string | null;
   replyTo: MessageItem | null | undefined;
   createdAt: string;
   updatedAt: string;

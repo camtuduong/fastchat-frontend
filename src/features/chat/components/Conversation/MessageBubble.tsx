@@ -16,10 +16,12 @@ import { RenderImgs } from "@/features/chat/components/Conversation/MessageTypeR
 import { RenderSticker } from "@/features/chat/components/Conversation/MessageTypeRender/RenderSticker";
 import { DATE_FORMAT } from "@/utils/constant";
 import { format } from "date-fns/format";
+import { ThreadMessageBubble } from "@/features/chat/components/Conversation/ThreadMessageBubble";
 
 type Props = {
   message: MessageUI;
   isMyMessage: boolean;
+  participantIds: string[];
 };
 
 const Style = {
@@ -39,7 +41,11 @@ const Style = {
     "m-0 flex flex-col rounded-tr-sm rounded-br-sm rounded-bl-xl rounded-tl-xl bg-gray-100 p-2 mb-2",
 };
 
-export const MessageBubble = ({ message, isMyMessage }: Props) => {
+export const MessageBubble = ({
+  message,
+  isMyMessage,
+  participantIds,
+}: Props) => {
   const renderAttachmentByType = (attachments: Attachment[]) => {
     const attachmentType = attachments[0].type;
     const transferDate = format(
@@ -64,12 +70,7 @@ export const MessageBubble = ({ message, isMyMessage }: Props) => {
   };
 
   return (
-    <div
-      className={cn(
-        Style.container,
-        isMyMessage ? "justify-end" : "justify-start",
-      )}
-    >
+    <div className={cn(Style.container)}>
       <Avatar
         className={cn(
           "self-start",
@@ -84,40 +85,52 @@ export const MessageBubble = ({ message, isMyMessage }: Props) => {
           {message.sender?.displayName?.[0]?.toUpperCase()}
         </AvatarFallback>
       </Avatar>
-      <MessageContentWrapper isMyMessage={isMyMessage} message={message}>
-        <div
-          className={cn(
-            Style.bubble,
-            bubbleClass(message.position, isMyMessage),
-            isMyMessage ? Style.myMessage : Style.otherMessage,
-            message?.attachments?.length > 0 && !message?.replyTo
-              ? cn(Style.attachmentContainer(message.attachments[0].type))
-              : "",
-          )}
+      <div
+        className={cn(
+          "flex w-full flex-col",
+          isMyMessage ? "items-end" : "items-start",
+        )}
+      >
+        <MessageContentWrapper
+          isMyMessage={isMyMessage}
+          message={message}
+          participantIds={participantIds}
         >
-          {message?.replyTo && (
-            <ReplyMessage
-              avatarUrl={message?.replyTo?.sender?.avatarUrl}
-              displayName={message?.replyTo?.sender?.displayName}
-              content={message?.replyTo?.content}
-              isMyMessage={isMyMessage}
-              messagePosition={message?.position}
-            />
-          )}
-          {message?.attachments?.length > 0 ? (
-            <div className={message?.replyTo ? "mt-2" : ""}>
-              {renderAttachmentByType(message.attachments)}
-              {/* 1 message chỉ có 1 cái type attachment nên dù có list attachment thì chỉ cần check cái attachment đầu tiên */}
-            </div>
-          ) : (
-            <div className="px-2 py-1">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {message.content.trim()}
-              </ReactMarkdown>
-            </div>
-          )}
-        </div>
-      </MessageContentWrapper>
+          <div
+            className={cn(
+              Style.bubble,
+              bubbleClass(message.position, isMyMessage),
+              isMyMessage ? Style.myMessage : Style.otherMessage,
+              message?.attachments?.length > 0 && !message?.replyTo
+                ? cn(Style.attachmentContainer(message.attachments[0].type))
+                : "",
+            )}
+          >
+            {message?.replyTo && (
+              <ReplyMessage
+                avatarUrl={message?.replyTo?.sender?.avatarUrl}
+                displayName={message?.replyTo?.sender?.displayName}
+                content={message?.replyTo?.content}
+                isMyMessage={isMyMessage}
+                messagePosition={message?.position}
+              />
+            )}
+            {message?.attachments?.length > 0 ? (
+              <div className={message?.replyTo ? "mt-2" : ""}>
+                {renderAttachmentByType(message.attachments)}
+                {/* 1 message chỉ có 1 cái type attachment nên dù có list attachment thì chỉ cần check cái attachment đầu tiên */}
+              </div>
+            ) : (
+              <div className="px-2 py-1">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {message.content.trim()}
+                </ReactMarkdown>
+              </div>
+            )}
+          </div>
+        </MessageContentWrapper>
+        {message?.threadId && <ThreadMessageBubble isMyMessage={isMyMessage} />}
+      </div>
     </div>
   );
 };

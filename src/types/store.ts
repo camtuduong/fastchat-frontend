@@ -45,6 +45,9 @@ export interface CustomSidebarStore {
   setOpen: (open: boolean) => void;
   setStatus: (status: SidebarStatusType) => void;
   clearStatus: () => void;
+  threadId: string | null;
+  setThreadId: (threadId: string | null) => void;
+  clearThreadId: () => void;
 }
 
 export type SidebarStatusType =
@@ -54,6 +57,8 @@ export type SidebarStatusType =
   | "shared"
   | "settings"
   | "notifications"
+  | "threads"
+  | "threadDetail"
   | null;
 
 export type UserState = {

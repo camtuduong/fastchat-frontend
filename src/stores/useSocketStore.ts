@@ -45,6 +45,31 @@ export const useSocketStore = create<SocketState>((set, get) => ({
       set({ onlineUsers: userIds });
     });
 
+    //new thread in conversation
+    socket.on("new-thread", ({ conversationId, message }) => {
+      queryClient.setQueryData<
+        InfiniteData<GetAllMessagesResponse, string | null>
+      >(["messages", conversationId], (oldData) => {
+        if (!oldData) return oldData;
+
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page) => ({
+            ...page,
+            messages: page.messages.map((oldMessage) =>
+              oldMessage._id === message._id
+                ? { ...oldMessage, ...message }
+                : oldMessage,
+            ),
+          })),
+        };
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["conversation-by-id", conversationId],
+      });
+    });
+
     //new message
     socket.on("new-message", ({ message, conversation, unreadCount }) => {
       const conversationId = conversation._id.toString();

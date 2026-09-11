@@ -2,21 +2,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SidebarHeader } from "@/components/ui/sidebar";
 import { SelectUsersDialog } from "@/features/chat/components/SelectUsersDialog";
-import { conversationTypeToLabel } from "@/features/chat/constant";
 import { useCreateNewConversation } from "@/features/chat/hooks/useCreateNewConversation";
 import { useNavigate } from "@tanstack/react-router";
 import { Search, SquarePen } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-// const sortValue = [
-//   { value: "all", label: "All" },
-//   { value: "unread", label: "Unread" },
-//   { value: "group", label: "Group" },
-// ];
 export const SidebarHeaderAndSearch = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { mutateAsync: createGroupMutation, isPending } =
+  const { mutateAsync: createConversationMutation, isPending } =
     useCreateNewConversation();
 
   const handleCreateGroup = async (userIdsSelected: string[]) => {
@@ -25,11 +19,7 @@ export const SidebarHeaderAndSearch = () => {
     }
 
     try {
-      const result = await createGroupMutation({
-        type:
-          userIdsSelected.length === 1
-            ? conversationTypeToLabel.direct
-            : conversationTypeToLabel.group,
+      const result = await createConversationMutation({
         participants: userIdsSelected,
       });
       navigate({ to: `/chat/${result.conversation}` });

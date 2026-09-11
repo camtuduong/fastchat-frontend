@@ -15,6 +15,7 @@ interface Conversation {
   pinnedMessages: PinnedMessage[];
   favoriteBy: string[];
   isFavorite: boolean;
+  parentMessageId: string | null;
 }
 interface Participant {
   userId: string;
@@ -39,7 +40,7 @@ interface LastMessage {
   createdAt: string;
 }
 
-type ConversationType = "direct" | "group";
+type ConversationType = "direct" | "group" | "thread";
 
 interface PinnedMessage {
   messageId: string;

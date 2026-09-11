@@ -19,6 +19,7 @@ import {
   User,
   Pin,
   Paperclip,
+  Spool,
 } from "lucide-react";
 import type { JSX, ReactNode } from "react";
 import { Fragment } from "react";
@@ -42,6 +43,7 @@ type Props = {
   groupBy: string;
   attachmentsLength: number;
   onShareConversationGroup: () => void;
+  threadsLength: number;
 };
 export const DefaultContent = ({
   type,
@@ -56,6 +58,7 @@ export const DefaultContent = ({
   groupBy,
   isFavorite,
   attachmentsLength,
+  threadsLength,
   onShareConversationGroup,
 }: Props) => {
   const { t } = useTranslation();
@@ -157,6 +160,14 @@ export const DefaultContent = ({
       type: [conversationTypeToLabel.direct, conversationTypeToLabel.group],
       status: SIDEBAR_CONTENT_STATUS.SHARED,
       length: attachmentsLength,
+      action: () => {},
+    },
+    {
+      value: t("sidebar.threadsList"),
+      icon: <Spool className={Style.iconSize} />,
+      type: [conversationTypeToLabel.direct, conversationTypeToLabel.group],
+      status: SIDEBAR_CONTENT_STATUS.THREADS,
+      length: threadsLength,
       action: () => {},
     },
   ];

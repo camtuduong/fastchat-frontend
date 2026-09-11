@@ -148,6 +148,7 @@ export const bubbleReplyClass = (
 export const conversationTypeToLabel: Record<ConversationType, string> = {
   direct: "direct",
   group: "group",
+  thread: "thread"
 };
 
 export const getMembers = (conversationData: Conversation, userId: string) => {
