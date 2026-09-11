@@ -1,8 +1,12 @@
 import { Thread } from "@/assets/Thread";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useGetConversationById } from "@/features/chat/hooks/queries/useGetConversationById";
+import { useCustomSidebarStore } from "@/stores/useCustomSidebarStore";
+import { SIDEBAR_CONTENT_STATUS } from "@/utils/constant";
 
 type Props = {
   isMyMessage: boolean;
+  threadId: string;
 };
 
 const STYLES = {
@@ -12,10 +16,21 @@ const STYLES = {
   avatarContainer: `relative h-6 w-16`,
   avatar: `absolute h-5 w-5`,
 };
-export const ThreadMessageBubble = ({ isMyMessage }: Props) => {
+export const ThreadMessageBubble = ({ isMyMessage, threadId }: Props) => {
+  const setThreadId = useCustomSidebarStore((state) => state.setThreadId);
+  const setStatus = useCustomSidebarStore((state) => state.setStatus);
+  const setOpen = useCustomSidebarStore((state) => state.setOpen);
+
+  const { data: conversationData } = useGetConversationById(threadId);
+  console.log(conversationData);
   return (
     <div
       className={`${STYLES.container} ${isMyMessage ? "" : "flex-row-reverse"}`}
+      onClick={() => {
+        setThreadId(threadId);
+        setStatus(SIDEBAR_CONTENT_STATUS.THREAD_DETAIL);
+        setOpen(true);
+      }}
     >
       <div
         className={`${STYLES.threadContainer} ${isMyMessage ? "" : "flex-row-reverse"}`}
@@ -25,7 +40,9 @@ export const ThreadMessageBubble = ({ isMyMessage }: Props) => {
         </button>
         {/* {!isMyMessage && ( */}
         <div className={STYLES.avatarContainer}>
-          {Array.from({ length: 4 }).map((_, index) => {
+          {Array.from({
+            length: conversationData?.participants.length ?? 0,
+          }).map((_, index) => {
             const positionOffset = `${index * 0.75}rem`;
             return (
               <Avatar

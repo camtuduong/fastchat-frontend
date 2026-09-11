@@ -129,7 +129,12 @@ export const MessageBubble = ({
             )}
           </div>
         </MessageContentWrapper>
-        {message?.threadId && <ThreadMessageBubble isMyMessage={isMyMessage} />}
+        {message?.threadId && (
+          <ThreadMessageBubble
+            isMyMessage={isMyMessage}
+            threadId={message?.threadId}
+          />
+        )}
       </div>
     </div>
   );

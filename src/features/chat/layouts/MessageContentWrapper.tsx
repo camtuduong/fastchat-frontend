@@ -73,6 +73,10 @@ export const MessageContentWrapper = ({
       try {
         await deleteMessage(message._id);
         setOpenAlertDialog(false);
+
+        if (message.threadId) {
+          setOpen(false);
+        }
       } catch (error) {
         console.error(error);
       }

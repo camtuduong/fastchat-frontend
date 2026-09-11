@@ -59,6 +59,7 @@ export const ConversationPage = () => {
 
   const open = useCustomSidebarStore((state) => state.open);
   const clearStatus = useCustomSidebarStore((state) => state.clearStatus);
+  const clearThreadId = useCustomSidebarStore((state) => state.clearThreadId);
   const setOpen = useCustomSidebarStore((state) => state.setOpen);
 
   const { data: conversationData, error: conversationError } =
@@ -146,6 +147,7 @@ export const ConversationPage = () => {
     clearReplyMessage();
     clearConversationDataDetail();
     clearStatus();
+    clearThreadId();
     setOpen(false);
     if (conversationId) {
       seenConversation(conversationId);
