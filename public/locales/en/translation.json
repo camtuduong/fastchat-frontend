@@ -40,10 +40,17 @@
     "errorMessage": "Failed to sign up. Please try again."
   },
   "chat": {
-    "threadMessageCount": "{{count}} replies",
-    "threadNewMessages": "{{count}} unread messages",
+    "first_message_one": "Let's chat with your friend!",
+    "first_message_other": "Let's chat with your friends!",
+    "threadMessageCount_one": "{{count}} reply",
+    "threadMessageCount_other": "{{count}} replies",
+    "threadNewMessages_one": "{{count}} unread message",
+    "threadNewMessages_other": "{{count}} unread messages",
     "inputPlaceholder": "Type a message...",
     "sending": "Sending...",
+    "typing_one": "is  typing...",
+    "typing_other": "are  typing...",
+
     "replaceAttachment": {
       "title": "Do you want to replace the attachment?",
       "description": "Replacing the attachment cannot be undone."

@@ -100,12 +100,9 @@ export const ConversationBody = ({
                       You started the conversation at {conversationCreatedAt}
                     </span>
                     <span className="text-lg">
-                      Let's chat with your friend
-                      {conversationDataDetail?.type ===
-                      conversationTypeToLabel.direct
-                        ? ""
-                        : "s"}
-                      !
+                      {t("chat.first_message", {
+                        count: listParticipantIds.length,
+                      })}
                     </span>
                   </div>
                 </div>
