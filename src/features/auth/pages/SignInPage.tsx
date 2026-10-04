@@ -1,6 +1,6 @@
 import Button from "@/components/base/Button";
 import AuthBackgroundLayout from "@/components/layout/AuthBackgroundLayout";
-import { signInSchema, type SignInData } from "@/features/auth/auth";
+import { signInSchema, type SignInData } from "@/features/auth/authSchema";
 import GoogleIcon from "@/assets/auth/google.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";

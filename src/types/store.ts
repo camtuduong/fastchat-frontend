@@ -32,10 +32,26 @@ export interface MessageState {
 
 export interface ConversationStore {
   conversationDataDetail: Conversation | null;
+
   setConversationDataDetail: (
     conversationDataDetail: Conversation | null,
   ) => void;
   clearConversationDataDetail: () => void;
+}
+
+export interface TextingStore {
+  userTexting: {
+    conversationId: string;
+    userId: string;
+    userDisplayName: string;
+  }[];
+
+  setUserTexting: (
+    conversationId: string,
+    userId: string,
+    userDisplayName: string,
+  ) => void;
+  clearUserTexting: (conversationId: string, userId: string) => void;
 }
 
 export interface CustomSidebarStore {

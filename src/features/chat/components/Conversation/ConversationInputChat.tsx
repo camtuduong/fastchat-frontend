@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Textarea } from "@/components/ui/textarea";
@@ -24,10 +24,15 @@ import { useMessageStore } from "@/stores/useMessage";
 import { ReplyMessage } from "@/features/chat/components/Conversation/ReplyMessage";
 import { useUploadAttachments } from "@/features/chat/hooks/useUploadAttachments";
 import type { ReactVirtualizer } from "@tanstack/react-virtual";
+import { useSocketStore } from "@/stores/useSocketStore";
+import { useTextingStore } from "@/stores/useTextingStore";
 
 const Style = {
-  container: "relative mb-3 flex items-end gap-2 px-4 py-2",
-  textPending: "text-muted-foreground text-sm italic flex justify-end pr-6",
+  container: "relative flex items-end gap-2 p-4 pb-8",
+  textPending:
+    "animate-pulse text-muted-foreground text-sm italic flex justify-end pr-6",
+  typing:
+    "animate-pulse absolute bottom-2 left-4.5 text-muted-foreground text-sm italic",
   actionButtonContainer: "flex min-w-0 flex-1 rounded-2xl border-2",
   actionButton:
     "cursor-pointer items-center hover:bg-accent-foreground/10 rounded-md p-2 transition-colors duration-100 bg-transparent text-muted-foreground hover:text-accent-foreground [&_svg]:size-4",
@@ -65,6 +70,7 @@ export const ConversationInputChat = ({
   }
   const { t } = useTranslation();
   const [message, setMessage] = useState("");
+
   const [isExpanded, setIsExpanded] = useState(false);
 
   const [showPicker, setShowPicker] = useState(false);
@@ -79,6 +85,19 @@ export const ConversationInputChat = ({
 
   //==> At any given time, only one image can be displayed: a sticker or images.
   const [openAlertDialog, setOpenAlertDialog] = useState(false);
+
+  const isTypingRef = useRef(false);
+  const stopTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  //socket
+  const socket = useSocketStore((state) => state.socket);
+
+  // Typing indicator state
+  const userTexting = useTextingStore((state) => state.userTexting);
+  const currentTypingUsers = useMemo(
+    () => userTexting.filter((item) => item.conversationId === conversationId),
+    [userTexting, conversationId],
+  );
 
   //state reply message store
   const replyMessage = useMessageStore((state) => state.replyMessage);
@@ -206,8 +225,33 @@ export const ConversationInputChat = ({
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    stopTyping(conversationId);
     e.preventDefault();
     handleSendMessage();
+  };
+
+  const handleOnChangeInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    // Chỉ emit "typing" lần đầu, không emit mỗi ký tự
+    if (!isTypingRef.current && socket) {
+      isTypingRef.current = true;
+      socket.emit("typing", { conversationId });
+    }
+    // Sau 2 giây không gõ nữa thì báo dừng
+    if (stopTimerRef.current !== null) {
+      clearTimeout(stopTimerRef.current);
+    }
+    stopTimerRef.current = setTimeout(() => stopTyping(conversationId), 2000);
+
+    setMessage(e.currentTarget.value);
+  };
+
+  const stopTyping = (conversationId: string) => {
+    if (!isTypingRef.current || !socket) return;
+    isTypingRef.current = false;
+    if (stopTimerRef.current !== null) {
+      clearTimeout(stopTimerRef.current);
+    }
+    socket?.emit("stopped-typing", { conversationId });
   };
 
   const requestChangePreview = (nextPreview: PendingPreview) => {
@@ -373,6 +417,12 @@ export const ConversationInputChat = ({
       )}
 
       <form className={Style.container} onSubmit={handleSubmit}>
+        {currentTypingUsers.length > 0 && (
+          <div className={Style.typing}>
+            {currentTypingUsers.map((user) => user.userDisplayName).join(", ")}{" "}
+            {t("chat.typing", { count: currentTypingUsers.length })}
+          </div>
+        )}
         <div
           className={cn(
             Style.actionButtonContainer,
@@ -419,7 +469,7 @@ export const ConversationInputChat = ({
               <Textarea
                 value={message}
                 ref={inputRef}
-                onChange={(e) => setMessage(e.target.value)}
+                onChange={handleOnChangeInput}
                 onKeyDown={handleKeyDown}
                 placeholder={t("chat.inputPlaceholder")}
                 onInput={(e) => {

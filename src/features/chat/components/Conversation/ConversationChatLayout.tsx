@@ -43,6 +43,7 @@ export const ConversationChatLayout = ({
         </div>
       ) : (
         <ConversationBody
+          key={conversationId}
           messages={messages}
           virtualizer={virtualizer}
           myUserId={myUserId}
@@ -57,10 +58,10 @@ export const ConversationChatLayout = ({
         <div className="flex items-center justify-center">
           <button
             type="button"
-            className="cursor-pointer"
+            className="animate-bounce cursor-pointer rounded-full p-2 transition-colors duration-200 hover:bg-gray-200"
             onClick={scrollToLatest}
           >
-            <ArrowDownToDot className="h-4 w-4 animate-bounce" />
+            <ArrowDownToDot className="h-4 w-4" />
           </button>
         </div>
       )}

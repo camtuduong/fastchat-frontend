@@ -10,8 +10,8 @@ export const Thread = (props: React.SVGProps<SVGSVGElement>) => {
     >
       <path
         stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
+        strokeWidth="2"
+        strokeLinecap="round"
         d="M1 1V7C1 12.5228 5.47715 17 11 17"
       />
     </svg>

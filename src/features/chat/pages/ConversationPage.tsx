@@ -36,7 +36,6 @@ export const ConversationPage = () => {
   const [hasNewMessage, setHasNewMessage] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const initialScrollConversationRef = useRef<string | null>(null);
   const previousMessagesRef = useRef<{
     conversationId: string | null;
     length: number;
@@ -119,16 +118,32 @@ export const ConversationPage = () => {
 
   useLayoutEffect(() => {
     if (!conversationId || isLoading) return;
-    if (initialScrollConversationRef.current === conversationId) return;
 
-    virtualizer.scrollToEnd();
-    setHasNewMessage(0);
+    let settleFrameId: number | null = null;
+    const frameId = requestAnimationFrame(() => {
+      virtualizer.scrollToEnd();
+      settleFrameId = requestAnimationFrame(() => {
+        const scrollElement = containerRef.current;
 
-    initialScrollConversationRef.current = conversationId;
+        if (scrollElement) {
+          scrollElement.scrollTop = scrollElement.scrollHeight;
+        }
+
+        setHasNewMessage(0);
+      });
+    });
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      if (settleFrameId !== null) {
+        cancelAnimationFrame(settleFrameId);
+      }
+    };
   }, [conversationId, isLoading, virtualizer]);
 
   const scrollToLatest = () => {
     virtualizer.scrollToEnd();
+    console.log("Scrolling to latest message");
     setHasNewMessage(0);
   };
   useEffect(() => {

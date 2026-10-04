@@ -8,6 +8,7 @@ import type { Conversation } from "@/features/chat/types/conversation";
 import type { InfiniteData } from "@tanstack/react-query";
 import { messageNotificationSound } from "@/lib/notificationSound";
 import { useConversationStore } from "@/stores/useConversationStore";
+import { useTextingStore } from "@/stores/useTextingStore";
 import type { ThreadSurface } from "@/features/chat/types/thread";
 
 const baseUrl = import.meta.env.VITE_SOCKET_URL;
@@ -18,6 +19,14 @@ type ThreadSurfaceUpdate = Pick<
 > & {
   unreadCount: Record<string, number> | null;
 };
+
+type TypingEvent = {
+  conversationId: string;
+  userId: string;
+  userDisplayName: string;
+};
+
+const typingTimers = new Map<string, ReturnType<typeof setTimeout>>();
 
 export const useSocketStore = create<SocketState>((set, get) => ({
   socket: null,
@@ -313,6 +322,48 @@ export const useSocketStore = create<SocketState>((set, get) => ({
       queryClient.invalidateQueries({
         queryKey: ["conversation-by-id", conversationId],
       });
+    });
+
+    socket.on(
+      "typing",
+      ({ conversationId, userId, userDisplayName }: TypingEvent) => {
+        console.log(`User typing in conversation ${conversationId}: ${userId}`);
+
+        const typingKey = `${conversationId}:${userId}`;
+        const previousTimer = typingTimers.get(typingKey);
+
+        useTextingStore
+          .getState()
+          .setUserTexting(conversationId, userId, userDisplayName);
+
+        if (previousTimer !== undefined) {
+          clearTimeout(previousTimer);
+        }
+
+        typingTimers.set(
+          typingKey,
+          setTimeout(() => {
+            useTextingStore.getState().clearUserTexting(conversationId, userId);
+            typingTimers.delete(typingKey);
+          }, 5000),
+        );
+      },
+    );
+
+    socket.on("stopped-typing", ({ conversationId, userId }: TypingEvent) => {
+      console.log(
+        `User stopped typing in conversation ${conversationId}: ${userId}`,
+      );
+
+      const typingKey = `${conversationId}:${userId}`;
+      const timer = typingTimers.get(typingKey);
+
+      if (timer !== undefined) {
+        clearTimeout(timer);
+        typingTimers.delete(typingKey);
+      }
+
+      useTextingStore.getState().clearUserTexting(conversationId, userId);
     });
   },
 

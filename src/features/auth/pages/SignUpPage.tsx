@@ -1,7 +1,7 @@
 import Button from "@/components/base/Button";
 import { InputField } from "@/components/form/InputField";
 import AuthBackgroundLayout from "@/components/layout/AuthBackgroundLayout";
-import { signUpSchema, type SignUpData } from "@/features/auth/auth";
+import { signUpSchema, type SignUpData } from "@/features/auth/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "@tanstack/react-router";
