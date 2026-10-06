@@ -18,9 +18,11 @@
     "passwordMinLength": "Mật khẩu phải có ít nhất 8 ký tự.",
     "usernamePlaceholder": "Nhập tên đăng nhập",
     "passwordLabel": "Mật khẩu",
+    "successMessage": "Đăng nhập thành công.",
     "errorMessage": "Đăng nhập thất bại. Vui lòng kiểm tra thông tin đăng nhập."
   },
   "signup": {
+    "successMessage": "Đăng ký thành công!",
     "title": "Đăng ký tài khoản",
     "subtitle": "Tham gia và bắt đầu trò chuyện cùng bạn bè",
     "username": "Tên đăng nhập",

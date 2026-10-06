@@ -1,6 +1,7 @@
 import { login } from "@/features/auth/api/login";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 type Props = {
@@ -9,6 +10,7 @@ type Props = {
 };
 
 export const useLogin = () => {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -18,7 +20,12 @@ export const useLogin = () => {
         accessToken: response.accessToken,
       });
       queryClient.invalidateQueries({ queryKey: ["me"] });
-      toast.success("Login successful");
+      toast.success(t("login.successMessage"));
+    },
+    onError: (error) => {
+      const message = error instanceof Error ? error.message : undefined;
+
+      toast.error(message ?? t("login.errorMessage"));
     },
   });
 };

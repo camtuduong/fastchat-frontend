@@ -5,7 +5,6 @@ import { signUpSchema, type SignUpData } from "@/features/auth/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "@tanstack/react-router";
-import { toast } from "sonner";
 import { useSignUp } from "@/features/auth/hooks/useSignup";
 import { useTranslation } from "react-i18next";
 
@@ -34,12 +33,8 @@ export default function SignUpPage() {
 
   const onSubmit = async (data: SignUpData) => {
     const { username, email, password, firstName, lastName } = data;
-    try {
-      await signUp({ username, email, password, firstName, lastName });
-      navigate({ to: "/signin" });
-    } catch (error) {
-      toast.error(t("signup.errorMessage"));
-    }
+    await signUp({ username, email, password, firstName, lastName });
+    navigate({ to: "/signin" });
   };
 
   return (
@@ -132,7 +127,7 @@ export default function SignUpPage() {
           )}
         </form>
 
-        <p className="mt-2 mb-2 text-center text-[0.75rem] text-(--gray-2)">
+        <p className="mt-2 mb-2 text-center text-[0.75rem] text-gray-200">
           {t("signup.alreadyAccount")}{" "}
           <a href="/signin" className="text-(--color-plum) hover:underline">
             {t("signup.signInLink")}

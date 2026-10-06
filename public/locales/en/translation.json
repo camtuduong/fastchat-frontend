@@ -18,9 +18,11 @@
     "passwordMinLength": "Password must be at least 8 characters.",
     "usernamePlaceholder": "Enter your username",
     "passwordLabel": "Password",
+    "successMessage": "Login successful.",
     "errorMessage": "Failed to sign in. Please check your credentials and try again."
   },
   "signup": {
+    "successMessage": "Sign up successful!",
     "title": "Sign Up to Your Account",
     "subtitle": "Join us and start managing your business effectively",
     "username": "Username",
