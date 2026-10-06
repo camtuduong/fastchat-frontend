@@ -11,7 +11,7 @@ export const RightSidebarHeader = ({ name }: Props) => {
   const setOpen = useCustomSidebarStore((state) => state.setOpen);
 
   return (
-    <header className="flex h-16 w-full shrink-0 items-center justify-between gap-2 border-b">
+    <header className="flex h-12 w-full shrink-0 items-center justify-between gap-2 border-b">
       <div className="flex gap-2 px-4">
         <div className="flex items-center gap-2">
           <div className="font-bold">{t("sidebar.info")}</div>
@@ -19,7 +19,7 @@ export const RightSidebarHeader = ({ name }: Props) => {
             orientation="vertical"
             className="mr-2 data-[orientation=vertical]:h-6"
           />
-          <div className="text-muted-foreground text-[13px] italic">{name}</div>
+          <div className="text-muted-foreground text-[14px]">{name}</div>
         </div>
       </div>
       {/* Action buttons */}

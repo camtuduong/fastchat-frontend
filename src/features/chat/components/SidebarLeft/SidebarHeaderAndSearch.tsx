@@ -29,17 +29,17 @@ export const SidebarHeaderAndSearch = () => {
   };
 
   return (
-    <SidebarHeader className="flex flex-col gap-2 px-2 py-3">
-      <div className="mb-4 flex items-center justify-between gap-2">
-        <div className="text-lg font-semibold">{t("chat.sidebarTitle")}</div>
+    <SidebarHeader className="flex flex-col gap-2 px-2 pt-3 pb-0">
+      <div className="flex items-center justify-between gap-2">
+        <div className="text-xl font-semibold">{t("chat.sidebarTitle")}</div>
         <div className="flex gap-1">
           <SelectUsersDialog
             title={t("chat.createConversation")}
             onSubmit={handleCreateGroup}
             isPending={isPending}
             buttonTrigger={
-              <Button className="p-1" variant="icon" size="icon">
-                <SquarePen />
+              <Button className="h-8 w-8 p-1" variant="icon" size="icon">
+                <SquarePen className="size-3" />
               </Button>
             }
           />
@@ -49,20 +49,12 @@ export const SidebarHeaderAndSearch = () => {
         <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
         <Input
           autoComplete="one-time-code"
-          className="!bg-search-bg border-search-border text-foreground placeholder:text-muted-foreground focus:border-search-focus-border pl-9"
+          className="bg-search-bg! border-search-border text-foreground placeholder:text-muted-foreground focus:border-search-focus-border pl-9 placeholder:text-xs"
           id="search-input"
           placeholder={t("common.search")}
           type="search"
         />
       </div>
-
-      {/* <div className="mt-2 flex items-center gap-2">
-        {sortValue.map((item) => (
-          <Button key={item.value} className="p-2" variant="outline" size="sm">
-            {item.label}
-          </Button>
-        ))}
-      </div> */}
     </SidebarHeader>
   );
 };

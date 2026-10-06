@@ -60,7 +60,7 @@ export const MenuActions = ({ style, conversationId, isFavorite }: Props) => {
             e.stopPropagation();
           }}
         >
-          <MoreHorizontal className="size-4" />
+          <MoreHorizontal className="size-3" />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="center">
@@ -69,18 +69,22 @@ export const MenuActions = ({ style, conversationId, isFavorite }: Props) => {
             onClick={() => {
               handleFavoriteConversation();
             }}
+            className="text-xs"
           >
             <Star
               fill={isFavorite ? "#ecc94b" : "none"}
               stroke={isFavorite ? "#ecc94b" : "currentColor"}
             />{" "}
-            {isFavorite ? t("menuActions.unlike") : t("menuActions.like")}
+            {isFavorite
+              ? t("menuActions.unfavorite")
+              : t("menuActions.favorite")}
           </DropdownMenuItem>
 
           <DropdownMenuItem
             onClick={() => {
               setOpenAlertDialog(true);
             }}
+            className="text-xs"
           >
             <Trash2 /> {t("menuActions.remove")}
           </DropdownMenuItem>

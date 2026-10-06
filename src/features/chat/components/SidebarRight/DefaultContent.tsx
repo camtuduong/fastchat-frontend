@@ -25,7 +25,7 @@ import type { JSX, ReactNode } from "react";
 import { Fragment } from "react";
 import { useTranslation } from "react-i18next";
 const Style = {
-  icon: "text-panel-foreground flex h-4 w-4 items-center justify-center text-sm font-medium transition-all duration-200",
+  icon: "text-panel-foreground flex h-4 w-4 items-center justify-center text-sm font-medium transition-all duration-200 m-1",
   iconSize: "h-4 w-4",
 };
 
@@ -72,7 +72,7 @@ export const DefaultContent = ({
     dialog?: (trigger: ReactNode) => ReactNode;
   }[] = [
     {
-      value: isFavorite ? t("sidebar.unlike") : t("sidebar.like"),
+      value: isFavorite ? t("sidebar.unfavorite") : t("sidebar.favorite"),
       icon: (
         <Star
           fill={isFavorite ? "#ecc94b" : "none"}
@@ -183,7 +183,7 @@ export const DefaultContent = ({
               .map((action, index) => {
                 const triggerDiv = (
                   <div
-                    className="bg-panel-action hover:bg-panel-action-hover flex w-full cursor-pointer flex-col items-center gap-2 rounded-md p-2 transition-all duration-200"
+                    className="bg-panel-action hover:bg-panel-action-hover flex w-full cursor-pointer flex-col items-center self-center rounded-md p-2 py-4 transition-all duration-200"
                     onClick={action.action}
                   >
                     <span className={Style.icon}>{action.icon}</span>

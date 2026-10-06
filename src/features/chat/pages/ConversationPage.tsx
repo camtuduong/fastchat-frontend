@@ -228,7 +228,7 @@ export const ConversationPage = () => {
       <ResizablePanel
         defaultSize="60%"
         minSize="20%"
-        className="flex h-full min-h-0 flex-1 flex-col overflow-hidden"
+        className="flex h-full min-h-0 flex-1 flex-col"
       >
         <ConversationHeader
           type={conversationDataDetail.type}

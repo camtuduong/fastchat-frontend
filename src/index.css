@@ -51,14 +51,31 @@
   --bubble-other-bg: #f1f2f4;
   --bubble-other-foreground: #17181b;
   --bubble-other-heading: #17181b;
-  --bubble-other-link: #26282c;
-  --bubble-other-link-hover: #111214;
-  --bubble-other-quote-border: #ececef;
-  --bubble-other-quote-foreground: #8a8f98;
-  --bubble-other-code-bg: #e7e8ec;
+  --bubble-other-link: #1d5fd1;
+  --bubble-other-link-hover: #1d5fd1;
+  --bubble-other-quote-border: #c3c7ce;
+  --bubble-other-quote-foreground: #5f646d;
+  --bubble-other-code-bg: #e2e4e9;
   --bubble-other-code-foreground: #17181b;
   --bubble-other-pre-bg: #17181b;
-  --bubble-other-pre-foreground: #ffffff;
+  --bubble-other-pre-border: #17181b;
+  --bubble-other-pre-foreground: #ececef;
+  --bubble-other-list-marker: #8a8f98;
+  --bubble-other-divider: #d5d8de;
+  --bubble-other-table-header: #e7e8ec;
+
+  --bubble-me-foreground: #ffffff;
+  --bubble-me-link: #8ab4ff;
+  --bubble-me-inline-code-bg: rgba(255, 255, 255, 0.16);
+  --bubble-me-pre-bg: #0a0b0d;
+  --bubble-me-pre-border: rgba(255, 255, 255, 0.14);
+  --bubble-me-pre-foreground: #ececef;
+  --bubble-me-quote-border: rgba(255, 255, 255, 0.35);
+  --bubble-me-quote-foreground: rgba(255, 255, 255, 0.75);
+  --bubble-me-list-marker: rgba(255, 255, 255, 0.6);
+  --bubble-me-divider: rgba(255, 255, 255, 0.22);
+  --bubble-me-table-border: rgba(255, 255, 255, 0.22);
+  --bubble-me-table-header: rgba(255, 255, 255, 0.1);
 
   --reply-other-bg: #f4f5f7;
   --reply-other-foreground: #17181b;
@@ -133,7 +150,7 @@
   --panel-action-hover-bg: #e7e8ec;
   --panel-row-hover-bg: #f4f5f7;
   --menu-action-bg: #ffffff;
-  --menu-action-hover-bg: #e7e8ec;
+  --menu-action-hover-bg: #cbcdd3;
   --nav-active-bg: #e7e8ec;
   --nav-hover-bg: #ecedf0;
 
@@ -291,6 +308,7 @@
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
   --color-primary-bubble-chat: var(--primary-bubble-chat);
+  --color-bubble-me-foreground: var(--bubble-me-foreground);
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
   --color-popover-accent: var(--popover-accent);
@@ -452,17 +470,34 @@
   --panel-foreground: #e7ebf3;
   --panel-muted: #80858f;
 
-  --bubble-other-bg: #232936;
-  --bubble-other-foreground: #e2e8f2;
-  --bubble-other-heading: #f5f7fb;
+  --bubble-other-bg: #202227;
+  --bubble-other-foreground: #ececef;
+  --bubble-other-heading: #ececef;
   --bubble-other-link: #8ab4ff;
   --bubble-other-link-hover: #b8cdff;
-  --bubble-other-quote-border: #465166;
-  --bubble-other-quote-foreground: #80858f;
-  --bubble-other-code-bg: #1b2430;
-  --bubble-other-code-foreground: #f8c76f;
-  --bubble-other-pre-bg: #131722;
-  --bubble-other-pre-foreground: #eef2f7;
+  --bubble-other-quote-border: #4a4e57;
+  --bubble-other-quote-foreground: #a4a9b3;
+  --bubble-other-code-bg: #2f3238;
+  --bubble-other-code-foreground: #ececef;
+  --bubble-other-pre-bg: #0f1012;
+  --bubble-other-pre-border: #2c2f35;
+  --bubble-other-pre-foreground: #ececef;
+  --bubble-other-list-marker: #80858f;
+  --bubble-other-divider: #3a3d44;
+  --bubble-other-table-header: #2a2d33;
+
+  --bubble-me-foreground: #111214;
+  --bubble-me-link: #1d5fd1;
+  --bubble-me-inline-code-bg: rgba(17, 18, 20, 0.1);
+  --bubble-me-pre-bg: #17181b;
+  --bubble-me-pre-border: #17181b;
+  --bubble-me-pre-foreground: #ececef;
+  --bubble-me-quote-border: rgba(17, 18, 20, 0.35);
+  --bubble-me-quote-foreground: #4a4e57;
+  --bubble-me-list-marker: #6b707a;
+  --bubble-me-divider: rgba(17, 18, 20, 0.22);
+  --bubble-me-table-border: rgba(17, 18, 20, 0.25);
+  --bubble-me-table-header: rgba(17, 18, 20, 0.07);
 
   --reply-other-bg: #191f2b;
   --reply-other-foreground: #eef2f7;
@@ -548,7 +583,7 @@
   --popover-accent: #272a30;
   /* Neutral primary */
   --primary: #08090a;
-  --primary-bubble-chat: #3157ab;
+  --primary-bubble-chat: #ececef;
 
   --secondary: #25272c;
   --secondary-foreground: #ececef;
@@ -634,34 +669,49 @@
   color-scheme: dark;
 }
 
-/* ===== Bubble của mình (bg-primary text-white) ===== */
+/* ===== Bubble của mình ===== */
+
+.markdown-me {
+  color: var(--bubble-me-foreground);
+}
 
 .markdown-me h1 {
-  @apply mb-4 text-3xl font-bold;
+  @apply mb-4 text-3xl;
+  color: var(--bubble-me-foreground);
+  font-weight: 600;
 }
 
 .markdown-me h2 {
-  @apply mb-3 text-2xl font-bold;
+  @apply mb-3 text-2xl;
+  color: var(--bubble-me-foreground);
+  font-weight: 600;
 }
 
 .markdown-me h3 {
-  @apply mb-2 text-xl font-semibold;
+  @apply mb-2 text-xl;
+  color: var(--bubble-me-foreground);
+  font-weight: 600;
 }
 
 .markdown-me a {
-  @apply text-blue-300 underline hover:text-blue-200;
+  @apply underline;
+  color: var(--bubble-me-link);
 }
 
 .markdown-me strong {
-  @apply font-bold;
+  color: var(--bubble-me-foreground);
+  font-weight: 600;
 }
 
 .markdown-me em {
-  @apply italic;
+  color: var(--bubble-me-foreground);
+  font-style: italic;
 }
 
 .markdown-me blockquote {
-  @apply border-l-4 border-white/20 pl-4 text-white/80 italic;
+  @apply border-l-4 pl-4 italic;
+  border-color: var(--bubble-me-quote-border);
+  color: var(--bubble-me-quote-foreground);
 }
 
 .markdown-me ul {
@@ -672,33 +722,69 @@
   @apply list-decimal pl-6;
 }
 
+.markdown-me li::marker {
+  color: var(--bubble-me-list-marker);
+}
+
 .markdown-me :not(pre) > code {
-  @apply rounded bg-white/10 px-1 py-0.5 font-mono text-amber-300;
+  @apply rounded px-1 py-0.5 font-mono;
+  background: var(--bubble-me-inline-code-bg);
+  color: var(--bubble-me-foreground);
 }
 
 .markdown-me pre {
-  @apply my-3 overflow-x-auto rounded-lg bg-black/30 p-4;
+  @apply my-3 overflow-x-auto rounded-lg p-4;
+  background: var(--bubble-me-pre-bg);
+  border: 1px solid var(--bubble-me-pre-border);
 }
 
 .markdown-me pre code {
-  @apply rounded bg-transparent p-0 text-white;
+  @apply rounded bg-transparent p-0;
+  color: var(--bubble-me-pre-foreground);
 }
 
-/* ===== Bubble của người khác (bg-gray-100 text-gray-700) ===== */
+.markdown-me hr {
+  border-color: var(--bubble-me-divider);
+}
+
+.markdown-me table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.markdown-me th,
+.markdown-me td {
+  border: 1px solid var(--bubble-me-table-border);
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.markdown-me th {
+  background: var(--bubble-me-table-header);
+}
+
+/* ===== Bubble của người khác ===== */
+
+.markdown-other {
+  color: var(--bubble-other-foreground);
+}
 
 .markdown-other h1 {
-  @apply mb-4 text-3xl font-bold;
+  @apply mb-4 text-3xl;
   color: var(--bubble-other-heading);
+  font-weight: 600;
 }
 
 .markdown-other h2 {
-  @apply mb-3 text-2xl font-bold;
+  @apply mb-3 text-2xl;
   color: var(--bubble-other-heading);
+  font-weight: 600;
 }
 
 .markdown-other h3 {
-  @apply mb-2 text-xl font-semibold;
+  @apply mb-2 text-xl;
   color: var(--bubble-other-heading);
+  font-weight: 600;
 }
 
 .markdown-other a {
@@ -711,12 +797,13 @@
 }
 
 .markdown-other strong {
-  @apply font-bold;
+  font-weight: 600;
   color: var(--bubble-other-heading);
 }
 
 .markdown-other em {
-  @apply italic;
+  color: var(--bubble-other-foreground);
+  font-style: italic;
 }
 
 .markdown-other blockquote {
@@ -733,6 +820,10 @@
   @apply list-decimal pl-6;
 }
 
+.markdown-other li::marker {
+  color: var(--bubble-other-list-marker);
+}
+
 .markdown-other :not(pre) > code {
   @apply rounded px-1 py-0.5 font-mono;
   background: var(--bubble-other-code-bg);
@@ -742,11 +833,32 @@
 .markdown-other pre {
   @apply my-3 overflow-x-auto rounded-lg p-4;
   background: var(--bubble-other-pre-bg);
+  border: 1px solid var(--bubble-other-pre-border);
 }
 
 .markdown-other pre code {
   @apply rounded bg-transparent p-0;
   color: var(--bubble-other-pre-foreground);
+}
+
+.markdown-other hr {
+  border-color: var(--bubble-other-divider);
+}
+
+.markdown-other table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.markdown-other th,
+.markdown-other td {
+  border: 1px solid var(--bubble-other-divider);
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.markdown-other th {
+  background: var(--bubble-other-table-header);
 }
 
 .avatar-frame::after {

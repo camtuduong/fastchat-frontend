@@ -9,9 +9,9 @@ type Props = {
 
 const STYLE = {
   container:
-    "relative mt-10 flex h-42 w-42 cursor-pointer items-center justify-center",
-  img: "absolute h-42 w-42 rounded-2xl border object-cover",
-  imgSingle: "h-42 w-42 cursor-pointer rounded-md object-cover",
+    "relative mt-10 flex h-32 w-32 cursor-pointer items-center justify-center",
+  img: "absolute h-32 w-32 rounded-2xl border object-cover",
+  imgSingle: "h-32 w-32 cursor-pointer rounded-md object-cover",
 };
 
 export const RenderImgs = ({ attachments, date }: Props) => {

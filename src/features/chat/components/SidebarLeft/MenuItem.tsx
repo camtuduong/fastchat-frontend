@@ -23,14 +23,14 @@ type Props = {
 };
 
 const Style = {
-  container: "flex items-start gap-x-2 min-h-[70px] cursor-pointer",
+  container: "flex items-center gap-x-2 min-h-[70px] cursor-pointer ",
   containerItem: "flex items-center gap-x-2",
-  avatar: "h-10 w-10 shrink-0",
+  avatar: "h-8 w-8 shrink-0",
   name: "truncate",
   lastMessage: "text-muted-foreground text-sm truncate",
-  lastMessageTimeAgo: "text-muted-foreground text-xs",
+  lastMessageTimeAgo: "text-muted-foreground text-[10px]",
   buttonAction:
-    "bg-menu-action hover:bg-menu-action-hover absolute top-1/2 right-2 z-10 -translate-y-1/2 transform cursor-pointer items-center rounded-full p-2 opacity-0 shadow-md transition-opacity group-hover/menu-item:opacity-100",
+    "bg-menu-action hover:bg-menu-action-hover absolute top-1/2 right-2 z-10 -translate-y-1/2 cursor-pointer items-center rounded-full p-2 opacity-0 shadow-md group-hover/menu-item:opacity-100 duration-300 transition-colors",
 };
 
 export const MenuItem = ({ conversation, isOnline, isActive }: Props) => {
@@ -71,7 +71,7 @@ export const MenuItem = ({ conversation, isOnline, isActive }: Props) => {
             <div className="flex-1 truncate">
               <div className="flex items-center justify-between">
                 <div
-                  className="truncate"
+                  className="truncate text-xs"
                   title={conversation?.group?.name || participantsName}
                 >
                   {friends?.displayName}
@@ -111,7 +111,7 @@ export const MenuItem = ({ conversation, isOnline, isActive }: Props) => {
             <div className="flex-1 truncate">
               <div className="flex items-center justify-between">
                 <div
-                  className="truncate"
+                  className="truncate text-xs"
                   title={conversation?.group?.name || participantsName}
                 >
                   {conversation?.group?.name || participantsName}

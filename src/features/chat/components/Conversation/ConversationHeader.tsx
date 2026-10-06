@@ -36,7 +36,7 @@ export const ConversationHeader = ({
       case conversationTypeToLabel.direct:
         return (
           <div className="flex items-center gap-2">
-            <Avatar>
+            <Avatar className="h-8 w-8">
               <AvatarImage
                 src={members?.[0]?.avatarUrl || undefined}
                 alt="@shadcn"
@@ -50,7 +50,7 @@ export const ConversationHeader = ({
                 className={`${isOnline ? "bg-status-online" : "bg-status-offline"}`}
               />
             </Avatar>
-            <span className="truncate">
+            <span className="truncate text-sm">
               {members?.map((member) => member.displayName).join(", ")}
             </span>
           </div>
@@ -58,14 +58,14 @@ export const ConversationHeader = ({
       case conversationTypeToLabel.group:
         return (
           <div className="flex items-center gap-2">
-            <Avatar>
+            <Avatar className="h-8 w-8">
               <AvatarImage src={groupAvatarUrl || undefined} alt="@group" />
               <AvatarFallback>GR</AvatarFallback>
               <AvatarBadge
                 className={`${isOnline ? "bg-status-online" : "bg-status-offline"}`}
               />
             </Avatar>
-            <span className="truncate">
+            <span className="truncate text-sm">
               {groupName ||
                 members?.map((member) => member.displayName).join(", ") ||
                 t("chat.noName")}
@@ -86,7 +86,7 @@ export const ConversationHeader = ({
   };
 
   return (
-    <header className="flex h-16 w-full shrink-0 items-center justify-between gap-2 border-b">
+    <header className="flex h-12 w-full shrink-0 items-center justify-between gap-2 border-b">
       <div className="flex gap-2 px-4">
         <div className="flex items-center gap-2">
           <SidebarTrigger className="-ml-1" />
