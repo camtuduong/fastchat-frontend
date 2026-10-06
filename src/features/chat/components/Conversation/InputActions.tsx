@@ -18,9 +18,7 @@ const Style = {
   actionButton: (isActive?: boolean) =>
     cn(
       "cursor-pointer items-center hover:bg-composer-action-hover rounded-md bg-transparent p-2 text-composer-icon transition-colors duration-100 hover:text-composer-icon-hover [&_svg]:size-4",
-      isActive
-        ? "bg-composer-action-hover text-composer-icon-hover"
-        : "",
+      isActive ? "bg-composer-action-hover text-composer-icon-hover" : "",
     ),
 };
 type Props = {
