@@ -6,6 +6,7 @@ import type { ReactVirtualizer } from "@tanstack/react-virtual";
 import type { MessageUI } from "@/features/chat/types/bubbleChat";
 
 type Props = {
+  isLoading?: boolean;
   messages: MessageUI[];
   virtualizer: ReactVirtualizer<HTMLDivElement, HTMLDivElement>;
   myUserId: string | undefined | null;
@@ -20,6 +21,7 @@ type Props = {
   bodyClassName?: string;
 };
 export const ConversationChatLayout = ({
+  isLoading,
   messages,
   virtualizer,
   myUserId,
@@ -37,6 +39,7 @@ export const ConversationChatLayout = ({
     <>
       <ConversationBody
         key={conversationId}
+        isLoading={isLoading}
         messages={messages}
         virtualizer={virtualizer}
         myUserId={myUserId}

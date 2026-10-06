@@ -16,6 +16,7 @@ import { useConversationStore } from "@/stores/useConversationStore";
 import { useMemo } from "react";
 
 type Props = {
+  isLoading?: boolean;
   messages: MessageUI[];
   virtualizer: ReactVirtualizer<HTMLDivElement, HTMLDivElement>;
   myUserId: string | undefined | null;
@@ -27,6 +28,7 @@ type Props = {
 };
 
 export const ConversationBody = ({
+  isLoading,
   messages,
   virtualizer,
   myUserId,
@@ -38,6 +40,13 @@ export const ConversationBody = ({
 }: Props) => {
   const { t } = useTranslation();
   const virtualItems = virtualizer.getVirtualItems();
+  if (isLoading) {
+    return (
+      <div className="flex w-full items-center justify-center py-2">
+        <Spinner className="size-4" />
+      </div>
+    );
+  }
 
   const conversationDataDetail = useConversationStore(
     (state) => state.conversationDataDetail,
