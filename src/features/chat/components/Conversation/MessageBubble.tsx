@@ -1,5 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -17,6 +15,7 @@ import { RenderSticker } from "@/features/chat/components/Conversation/MessageTy
 import { DATE_FORMAT } from "@/utils/constant";
 import { format } from "date-fns/format";
 import { ThreadMessageBubble } from "@/features/chat/components/Conversation/ThreadMessageBubble";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 type Props = {
   message: MessageUI;

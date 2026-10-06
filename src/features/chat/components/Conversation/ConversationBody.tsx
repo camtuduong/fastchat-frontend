@@ -40,13 +40,6 @@ export const ConversationBody = ({
 }: Props) => {
   const { t } = useTranslation();
   const virtualItems = virtualizer.getVirtualItems();
-  if (isLoading) {
-    return (
-      <div className="flex w-full items-center justify-center py-2">
-        <Spinner className="size-4" />
-      </div>
-    );
-  }
 
   const conversationDataDetail = useConversationStore(
     (state) => state.conversationDataDetail,
@@ -67,6 +60,14 @@ export const ConversationBody = ({
       ) || [],
     [conversationDataDetail],
   );
+
+  if (isLoading) {
+    return (
+      <div className="flex w-full items-center justify-center py-2">
+        <Spinner className="size-4" />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -92,7 +93,7 @@ export const ConversationBody = ({
                   key={`initial-message-${virtualItem.key}`}
                   ref={virtualizer.measureElement}
                   data-index={virtualItem.index}
-                  className="absolute top-0 left-0 flex w-full flex-col items-center justify-center pb-4 text-xs text-gray-400"
+                  className="absolute top-0 left-0 flex w-full flex-col items-center justify-center pb-4 text-xs"
                 >
                   <video
                     autoPlay
@@ -105,10 +106,10 @@ export const ConversationBody = ({
                     }}
                   />
                   <div className="flex flex-col items-center justify-center gap-1">
-                    <span className="text-sm">
-                      You started the conversation at {conversationCreatedAt}
+                    <span className="text-xs text-gray-400">
+                      You started the conversation on {conversationCreatedAt}
                     </span>
-                    <span className="text-lg">
+                    <span className="text-[16px] font-bold">
                       {t("chat.first_message", {
                         count: listParticipantIds.length,
                       })}

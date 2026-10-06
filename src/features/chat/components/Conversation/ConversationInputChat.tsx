@@ -30,7 +30,7 @@ import { useTextingStore } from "@/stores/useTextingStore";
 const Style = {
   container: "relative flex items-end gap-2 p-4 pb-8",
   textPending:
-    "animate-pulse text-muted-foreground text-sm italic flex justify-end pr-6",
+    "animate-pulse text-status-pending flex justify-end pr-6 text-sm italic",
   typing:
     "animate-pulse absolute bottom-2 left-4.5 text-muted-foreground text-sm italic",
   actionButtonContainer: "flex min-w-0 flex-1 rounded-2xl border-2",

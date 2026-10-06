@@ -47,7 +47,7 @@ export const ProfileDialog = ({ open, onOpenChange }: Props) => {
             <div className="relative h-18 w-18">
               <Avatar className="h-18 w-18">
                 <AvatarImage src={me?.avatarUrl} alt="@shadcn" />
-                <AvatarFallback>CN</AvatarFallback>
+                <AvatarFallback colorSeed={me?.displayName}>CN</AvatarFallback>
               </Avatar>
               <UploadAvatar handleFileChange={handleFileChange} />
             </div>
