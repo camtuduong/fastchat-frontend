@@ -94,7 +94,7 @@ export const ConversationBody = ({
       <div
         ref={containerRef}
         className={cn(
-          "min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain rounded-b-xl p-8 pt-4",
+          "min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain rounded-b-xl px-14 py-4",
           bodyClassName,
         )}
         onScroll={onScroll}
@@ -183,7 +183,7 @@ export const ConversationBody = ({
                     message.position === messagePositionToLabel.last) && (
                     <div
                       className={cn(
-                        "mt-4 flex gap-2",
+                        "mt-4 ml-14 flex gap-2",
                         isMyMessage ? "justify-end" : "justify-start",
                       )}
                     >

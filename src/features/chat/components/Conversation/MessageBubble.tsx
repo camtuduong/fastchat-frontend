@@ -25,8 +25,9 @@ type Props = {
 
 const Style = {
   container: "flex w-full items-end gap-4 p-px",
-  bubble: "py-2 text-sm wrap-anywhere",
-  myMessage: "bg-primary-bubble-chat markdown-me text-white p-0.5",
+  bubble: "py-2 text-[13px] wrap-anywhere",
+  myMessage:
+    "bg-primary-bubble-chat markdown-me text-bubble-me-foreground p-0.5",
   otherMessage:
     "markdown-other bg-bubble-other p-0.5 text-bubble-other-foreground",
   attachmentContainer: (type: AttachmentType) =>

@@ -33,7 +33,7 @@ export const ReplyMessage = ({
         "mb-1 flex flex-col p-2",
         bubbleReplyClass(messagePosition!, isMyMessage),
         isMyMessage
-          ? "bg-primary-bubble-chat text-white"
+          ? "bg-primary-bubble-chat text-bubble-me-foreground"
           : "bg-reply-other text-reply-other-foreground",
 
         className,
