@@ -7,29 +7,30 @@ type Props = React.InputHTMLAttributes<HTMLInputElement> & {
 };
 
 export const InputField = forwardRef<HTMLInputElement, Props>(
-  ({ className, ...props }, ref) => {
+  ({ className, label, error, ...props }, ref) => {
+    const isCheckbox = props.type === "checkbox";
+
     return (
-      <div className="w-full">
-        {props.label && (
+      <div className={cn("w-full", isCheckbox && "w-auto")}>
+        {label && (
           <label
             htmlFor={props.id}
-            className="text-gray-3 block text-sm font-medium"
+            className="text-muted-foreground block text-xs font-semibold tracking-wide"
           >
-            {props.label}
+            {label}
           </label>
         )}
         <input
           autoComplete="one-time-code"
           ref={ref}
           {...props}
+          aria-invalid={error ? true : props["aria-invalid"]}
           className={cn(
-            "border-gray-3 focus:border-plum text-input-field-foreground mt-1 w-full rounded-md border px-3 py-2 focus:outline-none",
+            "border-input bg-field text-input-field-foreground placeholder:text-muted-foreground focus:border-field-focus-border disabled:bg-field-disabled disabled:text-muted-foreground aria-invalid:border-field-invalid-border mt-1 w-full rounded-lg border px-3 py-2 text-sm transition-colors outline-none",
             className,
           )}
         />
-        {props.error && (
-          <p className="mt-1 text-sm text-red-500">{props.error}</p>
-        )}
+        {error && <p className="text-destructive mt-1 text-xs">{error}</p>}
       </div>
     );
   },

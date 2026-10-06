@@ -17,8 +17,10 @@ const Style = {
   actionButtonContainer: "flex gap-1",
   actionButton: (isActive?: boolean) =>
     cn(
-      "cursor-pointer items-center hover:bg-accent-foreground/10 rounded-md p-2 transition-colors duration-100 bg-transparent text-muted-foreground hover:text-accent-foreground [&_svg]:size-4",
-      isActive ? "bg-accent/5 text-accent-foreground" : "",
+      "cursor-pointer items-center hover:bg-composer-action-hover rounded-md bg-transparent p-2 text-composer-icon transition-colors duration-100 hover:text-composer-icon-hover [&_svg]:size-4",
+      isActive
+        ? "bg-composer-action-hover text-composer-icon-hover"
+        : "",
     ),
 };
 type Props = {
@@ -99,6 +101,7 @@ export const InputActions = ({
         <Button
           disabled={showMarkDown || isPending || isUploading}
           type="submit"
+          className="bg-composer-send text-composer-send-foreground hover:bg-composer-send-hover"
         >
           {isPending || isUploading ? (
             <Spinner className="size-4" />

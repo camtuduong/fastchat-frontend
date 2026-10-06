@@ -4,7 +4,7 @@ import AuthBackgroundLayout from "@/components/layout/AuthBackgroundLayout";
 import { signUpSchema, type SignUpData } from "@/features/auth/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useSignUp } from "@/features/auth/hooks/useSignup";
 import { useTranslation } from "react-i18next";
 
@@ -39,52 +39,52 @@ export default function SignUpPage() {
 
   return (
     <AuthBackgroundLayout>
-      <div className="px-4">
-        <div className="flex flex-col items-start space-y-4">
-          <div className="mb-4">
-            <h2 className="text-2xl font-bold text-[#525252]">
-              {t("signup.title")}
-            </h2>
-            <p className="text-[0.75rem]">{t("signup.subtitle")}</p>
-          </div>
-        </div>
+      <div className="space-y-5">
+        <header className="space-y-2">
+          <h1 className="text-foreground text-3xl font-semibold tracking-tight">
+            {t("signup.title")}
+          </h1>
+          <p className="text-muted-foreground max-w-sm text-sm leading-5">
+            {t("signup.subtitle")}
+          </p>
+        </header>
 
         <form className="space-y-2" onSubmit={handleSubmit(onSubmit)}>
           <InputField
             type="text"
             id="username"
+            autoComplete="username"
             placeholder={t("signup.usernamePlaceholder")}
             {...register("username")}
             label={t("signup.username")}
             error={errors.username?.message}
           />
 
-          <div className="flex space-x-4">
-            <div className="flex-1">
-              <InputField
-                type="text"
-                id="firstName"
-                placeholder={t("signup.firstNamePlaceholder")}
-                {...register("firstName")}
-                label={t("signup.firstName")}
-                error={errors.firstName?.message}
-              />
-            </div>
-            <div className="flex-1">
-              <InputField
-                type="text"
-                id="lastName"
-                placeholder={t("signup.lastNamePlaceholder")}
-                {...register("lastName")}
-                label={t("signup.lastName")}
-                error={errors.lastName?.message}
-              />
-            </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <InputField
+              type="text"
+              id="firstName"
+              autoComplete="given-name"
+              placeholder={t("signup.firstNamePlaceholder")}
+              {...register("firstName")}
+              label={t("signup.firstName")}
+              error={errors.firstName?.message}
+            />
+            <InputField
+              type="text"
+              id="lastName"
+              autoComplete="family-name"
+              placeholder={t("signup.lastNamePlaceholder")}
+              {...register("lastName")}
+              label={t("signup.lastName")}
+              error={errors.lastName?.message}
+            />
           </div>
 
           <InputField
             type="email"
             id="email"
+            autoComplete="email"
             placeholder={t("signup.emailPlaceholder")}
             {...register("email")}
             label={t("signup.email")}
@@ -94,6 +94,7 @@ export default function SignUpPage() {
           <InputField
             type="password"
             id="password"
+            autoComplete="new-password"
             placeholder="**********"
             {...register("password")}
             label={t("signup.password")}
@@ -103,35 +104,27 @@ export default function SignUpPage() {
           <InputField
             type="password"
             id="confirmPassword"
+            autoComplete="new-password"
             placeholder="**********"
             {...register("confirmPassword")}
             label={t("signup.confirmPassword")}
             error={errors.confirmPassword?.message}
           />
 
-          {isSubmitting ? (
-            <Button
-              type="submit"
-              className="w-full cursor-not-allowed rounded-md bg-(--color-plum) px-4 py-2 text-white opacity-50"
-              disabled
-            >
-              {t("signup.signingUp")}
-            </Button>
-          ) : (
-            <Button
-              type="submit"
-              className="w-full rounded-md bg-(--color-plum) px-4 py-2 text-white hover:bg-(--color-plum-dark)"
-            >
-              {t("signup.signUpButton")}
-            </Button>
-          )}
+          <Button
+            type="submit"
+            className="border-navbar bg-navbar hover:bg-navbar-active flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? t("signup.signingUp") : t("signup.signUpButton")}
+          </Button>
         </form>
 
-        <p className="mt-2 mb-2 text-center text-[0.75rem] text-gray-200">
+        <p className="border-border text-muted-foreground border-t pt-3 text-center text-sm">
           {t("signup.alreadyAccount")}{" "}
-          <a href="/signin" className="text-(--color-plum) hover:underline">
+          <Link to="/signin" className="font-semibold italic hover:underline">
             {t("signup.signInLink")}
-          </a>
+          </Link>
         </p>
       </div>
     </AuthBackgroundLayout>

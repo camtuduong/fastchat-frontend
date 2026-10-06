@@ -84,30 +84,33 @@
     rgba(15, 23, 42, 0.12) 0 8px 20px -16px;
 
   --field-bg: #f4f5f7;
-  --field-disabled-bg: #e7e8ec;
-  --field-invalid-border: var(--destructive);
-  --field-invalid-ring: color-mix(
-    in oklch,
-    var(--destructive) 20%,
-    transparent
-  );
+  --field-disabled-bg: #f4f5f7;
+  --field-invalid-border: #d92d20;
+  --field-invalid-ring: rgba(217, 45, 32, 0.12);
+  --field-focus-border: #8a8f98;
+  --field-focus-ring: rgba(23, 24, 27, 0.07);
   --input-field-foreground: #17181b;
 
-  --button-default-hover: color-mix(in oklch, var(--primary) 80%, transparent);
+  --composer-bg: #ffffff;
+  --composer-border: #ececef;
+  --composer-focus-border: #8a8f98;
+  --composer-focus-ring: rgba(23, 24, 27, 0.07);
+  --composer-foreground: #17181b;
+  --composer-placeholder: #8a8f98;
+  --composer-icon: #8a8f98;
+  --composer-icon-hover: #17181b;
+  --composer-action-hover: #f4f5f7;
+  --composer-send-bg: #17181b;
+  --composer-send-foreground: #ffffff;
+  --composer-send-hover: #2a2c31;
+
+  --button-default-hover: #2a2c31;
   --button-outline-border: var(--border);
-  --button-outline-bg: var(--background);
-  --button-outline-hover: var(--muted);
-  --button-ghost-hover: var(--muted);
-  --button-destructive-bg: color-mix(
-    in oklch,
-    var(--destructive) 10%,
-    transparent
-  );
-  --button-destructive-hover: color-mix(
-    in oklch,
-    var(--destructive) 20%,
-    transparent
-  );
+  --button-outline-bg: #f4f5f7;
+  --button-outline-hover: #e7e8ec;
+  --button-ghost-hover: #f3f4f6;
+  --button-destructive-bg: #d92d20;
+  --button-destructive-hover: #b42318;
   --button-destructive-focus-border: color-mix(
     in oklch,
     var(--destructive) 40%,
@@ -122,11 +125,7 @@
   --button-icon-foreground: var(--secondary);
   --button-icon-hover: color-mix(in oklch, var(--primary) 80%, transparent);
 
-  --dropdown-destructive-focus: color-mix(
-    in oklch,
-    var(--destructive) 10%,
-    transparent
-  );
+  --dropdown-destructive-focus: #fef3f2;
   --field-checked-border: color-mix(in oklch, var(--primary) 30%, transparent);
   --field-checked-bg: color-mix(in oklch, var(--primary) 5%, transparent);
 
@@ -141,6 +140,27 @@
   --navbar-bg: #08090a;
   --navbar-icon: #8b8f97;
   --navbar-active: #26282c;
+
+  --dialog-bg: #ffffff;
+  --dialog-border: #ececef;
+  --dialog-row-hover: #f3f4f6;
+  --dialog-row-selected: #e7e8ec;
+  --dialog-separator: #ececef;
+  --dialog-primary: #17181b;
+  --dialog-secondary: #8a8f98;
+  --dialog-danger: #d92d20;
+  --dialog-danger-hover: #fef3f2;
+  --dialog-overlay: rgba(17, 18, 20, 0.4);
+  --dialog-title: #17181b;
+  --dialog-content: #5f646d;
+  --dialog-input: #f4f5f7;
+  --dialog-shadow: 0 8px 24px rgba(17, 18, 20, 0.1);
+  --button-primary: #17181b;
+  --button-primary-foreground: #ffffff;
+  --button-primary-hover: #2a2c31;
+  --button-secondary: #f4f5f7;
+  --button-secondary-foreground: #17181b;
+  --button-secondary-hover: #e7e8ec;
 
   --avatar-frame-blend: darken;
 
@@ -164,9 +184,9 @@
   --card: #ffffff;
   --card-foreground: #17181b;
 
-  --popover: #ffffff;
-  --popover-foreground: #17181b;
-  --popover-accent: #e7e8ec;
+  --popover: var(--dialog-bg);
+  --popover-foreground: var(--dialog-primary);
+  --popover-accent: var(--dialog-row-hover);
 
   --primary: #17181b;
   --primary-bubble-chat: #17181b;
@@ -182,7 +202,7 @@
   --button-x-text: #ffffff;
 
   --accent-foreground: #17181b;
-  --destructive: oklch(65% 0.22 25);
+  --destructive: #d92d20;
   --input: #ececef;
   --ring: #8a8f98;
   --chart-1: #e7e8ec;
@@ -205,7 +225,9 @@
 
   --sidebar-ring: #8a8f98;
 
-  --search-bg: #f4f5f7;
+  --search-bg: #ffffff;
+  --search-border: #dfe2e7;
+  --search-focus-border: #8a8f98;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -272,6 +294,25 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
   --color-popover-accent: var(--popover-accent);
+  --color-dialog: var(--dialog-bg);
+  --color-dialog-border: var(--dialog-border);
+  --color-dialog-row-hover: var(--dialog-row-hover);
+  --color-dialog-row-selected: var(--dialog-row-selected);
+  --color-dialog-separator: var(--dialog-separator);
+  --color-dialog-primary: var(--dialog-primary);
+  --color-dialog-secondary: var(--dialog-secondary);
+  --color-dialog-danger: var(--dialog-danger);
+  --color-dialog-danger-hover: var(--dialog-danger-hover);
+  --color-dialog-overlay: var(--dialog-overlay);
+  --color-dialog-title: var(--dialog-title);
+  --color-dialog-content: var(--dialog-content);
+  --color-dialog-input: var(--dialog-input);
+  --color-button-primary: var(--button-primary);
+  --color-button-primary-foreground: var(--button-primary-foreground);
+  --color-button-primary-hover: var(--button-primary-hover);
+  --color-button-secondary: var(--button-secondary);
+  --color-button-secondary-foreground: var(--button-secondary-foreground);
+  --color-button-secondary-hover: var(--button-secondary-hover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
   --color-foreground: var(--foreground);
@@ -316,7 +357,21 @@
   --color-field-disabled: var(--field-disabled-bg);
   --color-field-invalid-border: var(--field-invalid-border);
   --color-field-invalid-ring: var(--field-invalid-ring);
+  --color-field-focus-border: var(--field-focus-border);
+  --color-field-focus-ring: var(--field-focus-ring);
   --color-input-field-foreground: var(--input-field-foreground);
+  --color-composer: var(--composer-bg);
+  --color-composer-border: var(--composer-border);
+  --color-composer-focus-border: var(--composer-focus-border);
+  --color-composer-focus-ring: var(--composer-focus-ring);
+  --color-composer-foreground: var(--composer-foreground);
+  --color-composer-placeholder: var(--composer-placeholder);
+  --color-composer-icon: var(--composer-icon);
+  --color-composer-icon-hover: var(--composer-icon-hover);
+  --color-composer-action-hover: var(--composer-action-hover);
+  --color-composer-send: var(--composer-send-bg);
+  --color-composer-send-foreground: var(--composer-send-foreground);
+  --color-composer-send-hover: var(--composer-send-hover);
   --color-button-default-hover: var(--button-default-hover);
   --color-button-outline-border: var(--button-outline-border);
   --color-button-outline: var(--button-outline-bg);
@@ -345,6 +400,8 @@
   --color-nav-active: var(--nav-active-bg);
   --color-nav-hover: var(--nav-hover-bg);
   --color-search-bg: var(--search-bg);
+  --color-search-border: var(--search-border);
+  --color-search-focus-border: var(--search-focus-border);
   --color-navbar: var(--navbar-bg);
   --color-navbar-icon: var(--navbar-icon);
   --color-navbar-active: var(--navbar-active);
@@ -421,38 +478,37 @@
   --sticker-picker-shadow:
     rgba(0, 0, 0, 0.48) 0 24px 54px -28px, rgba(0, 0, 0, 0.32) 0 12px 26px -18px;
 
-  --field-bg: #1b202b;
-  --field-disabled-bg: #262d3a;
-  --field-invalid-border: color-mix(
-    in oklch,
-    var(--destructive) 58%,
-    var(--border)
-  );
-  --field-invalid-ring: color-mix(
-    in oklch,
-    var(--destructive) 34%,
-    transparent
-  );
-  --input-field-foreground: var(--gray-3);
+  --field-bg: #18191d;
+  --field-disabled-bg: #202227;
+  --field-invalid-border: #f97066;
+  --field-invalid-ring: rgba(249, 112, 102, 0.16);
+  --field-focus-border: #80858f;
+  --field-focus-ring: rgba(236, 236, 239, 0.07);
+  --input-field-foreground: #ececef;
+
+  --composer-bg: #18191d;
+  --composer-border: #25272c;
+  --composer-focus-border: #80858f;
+  --composer-focus-ring: rgba(236, 236, 239, 0.07);
+  --composer-foreground: #ececef;
+  --composer-placeholder: #80858f;
+  --composer-icon: #80858f;
+  --composer-icon-hover: #ececef;
+  --composer-action-hover: #202227;
+  --composer-send-bg: #ececef;
+  --composer-send-foreground: #18191d;
+  --composer-send-hover: #d4d5d9;
 
   --button-x: #ffffff;
   --button-x-text: #242b37;
 
-  --button-default-hover: #444c5d;
-  --button-outline-border: var(--input);
-  --button-outline-bg: #1a202b;
-  --button-outline-hover: #252d3a;
-  --button-ghost-hover: #252c38;
-  --button-destructive-bg: color-mix(
-    in oklch,
-    var(--destructive) 20%,
-    transparent
-  );
-  --button-destructive-hover: color-mix(
-    in oklch,
-    var(--destructive) 30%,
-    transparent
-  );
+  --button-default-hover: #d4d5d9;
+  --button-outline-border: #2c2f35;
+  --button-outline-bg: #25272c;
+  --button-outline-hover: #2f3238;
+  --button-ghost-hover: #272a30;
+  --button-destructive-bg: #f04438;
+  --button-destructive-hover: #d92d20;
   --button-destructive-focus-border: color-mix(
     in oklch,
     var(--destructive) 55%,
@@ -467,11 +523,7 @@
   --button-icon-foreground: #ffffff;
   --button-icon-hover: #414b5c;
 
-  --dropdown-destructive-focus: color-mix(
-    in oklch,
-    var(--destructive) 20%,
-    transparent
-  );
+  --dropdown-destructive-focus: #3a1d1b;
   --field-checked-border: #4b5566;
   --field-checked-bg: #242b37;
 
@@ -486,29 +538,29 @@
   /* Shadcn / Tailwind semantic colors */
 
   --background: #18191d;
-  --foreground: #f4f7fb;
+  --foreground: #ececef;
 
-  --card: #1b202b;
-  --card-foreground: #eef2f7;
+  --card: #1e2025;
+  --card-foreground: #ececef;
 
-  --popover: #202633;
-  --popover-foreground: #eef2f7;
-  --popover-accent: #2c3444;
+  --popover: #1e2025;
+  --popover-foreground: #ececef;
+  --popover-accent: #272a30;
   /* Neutral primary */
   --primary: #08090a;
   --primary-bubble-chat: #3157ab;
 
-  --secondary: #252c38;
-  --secondary-foreground: #e7ebf3;
+  --secondary: #25272c;
+  --secondary-foreground: #ececef;
 
   --muted: #242b37;
   --muted-foreground: #80858f;
 
   --accent-foreground: #f4f7fb;
 
-  --destructive: #f87171;
+  --destructive: #f97066;
 
-  --input: #384052;
+  --input: #2c2f35;
 
   --ring: #64748b;
 
@@ -532,11 +584,34 @@
   --sidebar-border: #262d3a;
   --sidebar-ring: #64748b;
 
+  --dialog-bg: #1e2025;
+  --dialog-border: #2c2f35;
+  --dialog-row-hover: #272a30;
+  --dialog-row-selected: #2f3238;
+  --dialog-separator: #2c2f35;
+  --dialog-primary: #ececef;
+  --dialog-secondary: #80858f;
+  --dialog-danger: #f97066;
+  --dialog-danger-hover: #3a1d1b;
+  --dialog-overlay: rgba(0, 0, 0, 0.6);
+  --dialog-title: #ececef;
+  --dialog-content: #a4a9b3;
+  --dialog-input: #18191d;
+  --dialog-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --button-primary: #ececef;
+  --button-primary-foreground: #111214;
+  --button-primary-hover: #d4d5d9;
+  --button-secondary: #25272c;
+  --button-secondary-foreground: #ececef;
+  --button-secondary-hover: #2f3238;
+
   color-scheme: dark;
 
   color: var(--text);
   background: var(--bg);
   --search-bg: #202227;
+  --search-border: transparent;
+  --search-focus-border: #80858f;
 }
 
 .ocean {
@@ -696,6 +771,11 @@
 
   * {
     @apply border-border outline-ring/50;
+  }
+
+  :where(*:focus, *:focus-visible) {
+    outline: none !important;
+    box-shadow: none !important;
   }
 
   body {

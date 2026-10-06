@@ -19,8 +19,8 @@ type Props = {
 const Style = {
   buttonStyle: (showMarkDown: boolean) =>
     cn(
-      "cursor-pointer items-center hover:bg-accent-foreground/10 rounded-md p-2 transition-colors duration-100 bg-transparent text-muted-foreground hover:text-accent-foreground [&_svg]:size-4",
-      showMarkDown ? "text-accent-foreground/10" : "",
+      "cursor-pointer items-center hover:bg-composer-action-hover rounded-md bg-transparent p-2 text-composer-icon transition-colors duration-100 hover:text-composer-icon-hover [&_svg]:size-4",
+      showMarkDown ? "text-composer-icon/50" : "",
     ),
 };
 

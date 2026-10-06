@@ -29,7 +29,7 @@ export const SidebarHeaderAndSearch = () => {
   };
 
   return (
-    <SidebarHeader className="flex flex-col gap-2 px-4 py-3">
+    <SidebarHeader className="flex flex-col gap-2 px-2 py-3">
       <div className="mb-4 flex items-center justify-between gap-2">
         <div className="text-lg font-semibold">{t("chat.sidebarTitle")}</div>
         <div className="flex gap-1">
@@ -49,7 +49,7 @@ export const SidebarHeaderAndSearch = () => {
         <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
         <Input
           autoComplete="one-time-code"
-          className="bg-search-bg border-border pl-9"
+          className="!bg-search-bg border-search-border text-foreground placeholder:text-muted-foreground pl-9 focus:border-search-focus-border"
           id="search-input"
           placeholder={t("common.search")}
           type="search"
