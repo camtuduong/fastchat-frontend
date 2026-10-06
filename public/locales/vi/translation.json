@@ -120,8 +120,8 @@
     "linkCopied": "Đã sao chép liên kết!"
   },
   "sidebar": {
-    "like": "Thích",
-    "unlike": "Bỏ thích",
+    "favorite": "Yêu thích",
+    "unfavorite": "Bỏ thích",
     "notification": "Âm thanh",
     "add": "Thêm",
     "copyLink": "Sao chép",

@@ -1,7 +1,7 @@
 {
   "login": {
     "title": "Login to your Account",
-    "subtitle": "See what is going on with your friends",
+    "subtitle": "Let's connect with your friends.",
     "withGoogle": "Continue with Google",
     "withEmail": "or Sign in with Email",
     "username": "Username",
@@ -23,8 +23,8 @@
   },
   "signup": {
     "successMessage": "Sign up successful!",
-    "title": "Sign Up to Your Account",
-    "subtitle": "Join us and start managing your business effectively",
+    "title": "Create Your Account",
+    "subtitle": "Join us and start chatting with your friends.",
     "username": "Username",
     "usernamePlaceholder": "Your username",
     "firstName": "First Name",
@@ -123,8 +123,8 @@
     "linkCopied": "Link copied to clipboard!"
   },
   "sidebar": {
-    "like": "Like",
-    "unlike": "Unlike",
+    "favorite": "Favorite",
+    "unfavorite": "Unfavorite",
     "notification": "Notification",
     "add": "Add",
     "copyLink": "Copy link",
@@ -146,8 +146,8 @@
     "noDescription": "No description available"
   },
   "menuActions": {
-    "like": "Like",
-    "unlike": "Unlike",
+    "favorite": "Favorite",
+    "unfavorite": "Unfavorite",
     "remove": "Remove",
     "removeConversation": {
       "title": "Remove Conversation",

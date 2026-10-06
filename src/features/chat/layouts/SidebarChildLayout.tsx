@@ -10,12 +10,11 @@ type Props = {
   label: string;
   children: ReactNode;
   className?: string;
-  
 };
 
 export const SidebarChildLayout = ({ label, children, className }: Props) => {
   return (
-    <SidebarGroup>
+    <SidebarGroup className="pt-0">
       <SidebarGroupLabel>{label}</SidebarGroupLabel>
       <SidebarMenu className={cn(className)}>{children}</SidebarMenu>
     </SidebarGroup>

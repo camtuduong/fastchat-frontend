@@ -87,7 +87,7 @@ export const MessageBubble = ({
       </Avatar>
       <div
         className={cn(
-          "flex w-full flex-col",
+          "flex w-full min-w-0 flex-col",
           isMyMessage ? "items-end" : "items-start",
         )}
       >
@@ -121,7 +121,7 @@ export const MessageBubble = ({
                 {/* 1 message chỉ có 1 cái type attachment nên dù có list attachment thì chỉ cần check cái attachment đầu tiên */}
               </div>
             ) : (
-              <div className="px-2 py-1">
+              <div className="px-2 py-1 wrap-break-word whitespace-pre-wrap">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                   {message.content.trim()}
                 </ReactMarkdown>

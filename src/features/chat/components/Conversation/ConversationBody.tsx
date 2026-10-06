@@ -183,18 +183,16 @@ export const ConversationBody = ({
                     message.position === messagePositionToLabel.last) && (
                     <div
                       className={cn(
-                        "mt-4 ml-14 flex gap-2",
+                        "mt-4 mb-1 ml-14 flex gap-2",
                         isMyMessage ? "justify-end" : "justify-start",
                       )}
                     >
                       {!isMyMessage && (
-                        <p className="mb-1 text-xs font-semibold text-gray-500">
+                        <p className="text-[12px] font-semibold text-gray-500">
                           {message.sender.displayName}
                         </p>
                       )}
-                      <p className="mb-1 self-end text-xs text-gray-400">
-                        {messageTime}
-                      </p>
+                      <p className="text-[12px] text-gray-400">{messageTime}</p>
                     </div>
                   )}
                   <MessageBubble

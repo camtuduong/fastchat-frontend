@@ -26,7 +26,7 @@ export const NavConversations = ({ conversations }: Props) => {
   return (
     <SidebarChildLayout
       label={t("chat.conversations")}
-      className="flex flex-col gap-y-2"
+      className="flex flex-col gap-y-0.5"
     >
       {conversations.map((conversation) => {
         const members = conversation?.participants
