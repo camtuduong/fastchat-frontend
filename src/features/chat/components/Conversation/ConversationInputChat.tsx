@@ -30,17 +30,18 @@ import { useTextingStore } from "@/stores/useTextingStore";
 const Style = {
   container: "relative flex items-end gap-2 p-4 pb-8",
   textPending:
-    "animate-pulse text-muted-foreground text-sm italic flex justify-end pr-6",
+    "animate-pulse text-status-pending flex justify-end pr-6 text-sm italic",
   typing:
     "animate-pulse absolute bottom-2 left-4.5 text-muted-foreground text-sm italic",
-  actionButtonContainer: "flex min-w-0 flex-1 rounded-2xl border-2",
+  actionButtonContainer:
+    "bg-composer border-composer-border focus-within:border-composer-focus-border flex min-w-0 flex-1 rounded-2xl border",
   actionButton:
     "cursor-pointer items-center hover:bg-accent-foreground/10 rounded-md p-2 transition-colors duration-100 bg-transparent text-muted-foreground hover:text-accent-foreground [&_svg]:size-4",
   inputContainer: "relative flex min-w-0 flex-1",
   input:
-    "max-h-48 min-h-14 resize-none border-none rounded-xl bg-transparent py-4 text-base leading-6",
+    "max-h-48 min-h-14 resize-none rounded-xl border-none bg-transparent py-4 text-base leading-6 text-composer-foreground placeholder:text-composer-placeholder focus:border-0",
   eyeIcon:
-    "text-muted-foreground hover:text-accent-foreground hover:bg-accent/5 absolute top-1 right-2.5 cursor-pointer rounded-lg p-2 transition-colors duration-100",
+    "text-composer-icon hover:text-composer-icon-hover hover:bg-composer-action-hover absolute top-1 right-2.5 cursor-pointer rounded-lg p-2 transition-colors duration-100",
   formatterContainer: "relative flex min-w-0 flex-1",
 };
 
@@ -495,7 +496,9 @@ export const ConversationInputChat = ({
                 type="button"
                 className={cn(
                   Style.eyeIcon,
-                  showMarkDown ? "bg-accent/5 text-accent-foreground" : "",
+                  showMarkDown
+                    ? "bg-composer-action-hover text-composer-icon-hover"
+                    : "",
                 )}
                 onClick={() => setShowMarkDown((prev) => !prev)}
               >
@@ -510,7 +513,7 @@ export const ConversationInputChat = ({
           {/* button actions */}
           <div
             className={cn(
-              "text-muted-foreground flex h-full gap-1 p-3",
+              "text-composer-icon flex h-full gap-1 p-3",
               textFormatter ? "justify-between" : "justify-end self-end",
             )}
           >

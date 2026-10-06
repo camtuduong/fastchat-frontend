@@ -1,10 +1,10 @@
+import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import {
   Avatar,
   AvatarBadge,
   AvatarFallback,
   AvatarImage,
 } from "@/components/ui/avatar";
-import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { LastMessageItem } from "@/features/chat/components/SidebarLeft/LastMessageItem";
 import { conversationTypeToLabel, timeAgo } from "@/features/chat/constant";
 import { useGetUserById } from "@/features/main/hooks/queries/useGetUserById";

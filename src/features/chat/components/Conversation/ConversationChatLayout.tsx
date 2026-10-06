@@ -1,12 +1,12 @@
 import { ConversationInputChat } from "@/features/chat/components/Conversation/ConversationInputChat";
 import { ArrowDownToDot } from "lucide-react";
 import { ConversationBody } from "@/features/chat/components/Conversation/ConversationBody";
-import { Spinner } from "@/components/ui/spinner";
+
 import type { ReactVirtualizer } from "@tanstack/react-virtual";
 import type { MessageUI } from "@/features/chat/types/bubbleChat";
 
 type Props = {
-  isLoading: boolean;
+  isLoading?: boolean;
   messages: MessageUI[];
   virtualizer: ReactVirtualizer<HTMLDivElement, HTMLDivElement>;
   myUserId: string | undefined | null;
@@ -37,23 +37,19 @@ export const ConversationChatLayout = ({
 }: Props) => {
   return (
     <>
-      {isLoading ? (
-        <div className="flex h-full w-full items-center justify-center">
-          <Spinner className="size-6" />
-        </div>
-      ) : (
-        <ConversationBody
-          key={conversationId}
-          messages={messages}
-          virtualizer={virtualizer}
-          myUserId={myUserId}
-          containerRef={containerRef}
-          onScroll={onScroll}
-          isFetchingNextPage={isFetchingNextPage}
-          isGetDataDetail={isGetDataDetail}
-          bodyClassName={bodyClassName}
-        />
-      )}
+      <ConversationBody
+        key={conversationId}
+        isLoading={isLoading}
+        messages={messages}
+        virtualizer={virtualizer}
+        myUserId={myUserId}
+        containerRef={containerRef}
+        onScroll={onScroll}
+        isFetchingNextPage={isFetchingNextPage}
+        isGetDataDetail={isGetDataDetail}
+        bodyClassName={bodyClassName}
+      />
+
       {hasNewMessage > 0 && (
         <div className="flex items-center justify-center">
           <button

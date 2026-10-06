@@ -13,11 +13,11 @@ import { Info } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 type Props = {
-  type: Conversation["type"] | undefined;
-  members: Conversation["participants"] | undefined;
-  isOnline: boolean | undefined;
-  groupAvatarUrl?: string | undefined;
-  groupName?: string | undefined;
+  type: Conversation["type"];
+  members: Conversation["participants"];
+  isOnline: boolean;
+  groupAvatarUrl?: string;
+  groupName?: string;
 };
 
 export const ConversationHeader = ({

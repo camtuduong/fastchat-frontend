@@ -5,20 +5,20 @@ import { Slot } from "radix-ui";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "group/button cursor-pointer inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-field-invalid-border aria-invalid:ring-3 aria-invalid:ring-field-invalid-ring [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "group/button cursor-pointer inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-field-invalid-border [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
         default:
-          "bg-accent text-white hover:bg-button-default-hover",
+          "bg-button-primary text-button-primary-foreground hover:bg-button-primary-hover",
         outline:
-          "border-button-outline-border bg-button-outline hover:bg-button-outline-hover hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground",
+          "border-button-outline-border bg-button-secondary text-button-secondary-foreground hover:bg-button-secondary-hover aria-expanded:bg-dialog-row-selected aria-expanded:text-dialog-primary",
         secondary:
-          "bg-secondary hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
+          "bg-button-secondary text-button-secondary-foreground hover:bg-button-secondary-hover aria-expanded:bg-dialog-row-selected aria-expanded:text-dialog-primary",
         ghost:
-          "hover:bg-button-ghost-hover hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground",
+          "hover:bg-dialog-row-hover hover:text-dialog-primary aria-expanded:bg-dialog-row-selected aria-expanded:text-dialog-primary",
         destructive:
-          "bg-button-destructive text-destructive hover:bg-button-destructive-hover focus-visible:border-button-destructive-focus-border focus-visible:ring-button-destructive-focus-ring",
+          "bg-button-destructive text-white hover:bg-button-destructive-hover focus-visible:border-button-destructive-focus-border",
         link: "text-primary underline-offset-4 hover:underline",
         icon: "bg-button-icon text-button-icon-foreground hover:bg-button-icon-hover rounded-full align-center justify-center",
       },

@@ -1,4 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FooterNavbar } from "@/features/main/layouts/FooterNavbar";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
@@ -7,10 +6,11 @@ import { MessageCircleMore, BookUser, User } from "lucide-react";
 import { useGetMe } from "@/features/auth/hooks/queries/useGetMe";
 import { useState } from "react";
 import { ProfileDialog } from "@/features/main/components/ProfileDialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const Style = {
   button: cn(
-    "flex items-center justify-center rounded-md bg-primary p-2 text-white hover:bg-accent/80 cursor-pointer",
+    "text-navbar-icon hover:bg-navbar-active flex cursor-pointer items-center justify-center rounded-md bg-navbar p-2",
   ),
 };
 
@@ -25,14 +25,14 @@ export const NavbarHeader = () => {
   const isFriends = pathname.startsWith("/friends");
 
   return (
-    <div className="bg-primary z-50 flex w-12 flex-col items-center px-2 py-4">
+    <div className="bg-navbar z-50 flex w-12 flex-col items-center px-2 py-4">
       <div className="flex flex-col items-center gap-4">
         <Avatar
           className="h-10 w-10 cursor-pointer"
           onClick={() => setProfileOpen(true)}
         >
           <AvatarImage src={me?.avatarUrl} alt="@shadcn" />
-          <AvatarFallback>
+          <AvatarFallback colorSeed={me?.username}>
             {me?.username[0].toUpperCase() || <User />}
           </AvatarFallback>
         </Avatar>
@@ -40,14 +40,14 @@ export const NavbarHeader = () => {
         <div className="flex flex-col gap-2">
           <button
             onClick={() => navigate({ to: "/chat" })}
-            className={cn(Style.button, isChat ? "bg-accent" : "")}
+            className={cn(Style.button, isChat ? "bg-navbar-active" : "")}
           >
             <MessageCircleMore />
           </button>
 
           <button
             onClick={() => navigate({ to: "/friends" })}
-            className={cn(Style.button, isFriends ? "bg-accent" : "")}
+            className={cn(Style.button, isFriends ? "bg-navbar-active" : "")}
           >
             <BookUser />
           </button>

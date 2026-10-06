@@ -3,6 +3,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { Spinner } from "@/components/ui/spinner";
 import { ConversationChatLayout } from "@/features/chat/components/Conversation/ConversationChatLayout";
 import { ConversationHeader } from "@/features/chat/components/Conversation/ConversationHeader";
 import { AppCustomSidebar } from "@/features/chat/components/SidebarRight/AppCustomSidebar";
@@ -61,8 +62,11 @@ export const ConversationPage = () => {
   const clearThreadId = useCustomSidebarStore((state) => state.clearThreadId);
   const setOpen = useCustomSidebarStore((state) => state.setOpen);
 
-  const { data: conversationData, error: conversationError } =
-    useGetConversationById(conversationId ?? "");
+  const {
+    data: conversationData,
+    isLoading: isConversationLoading,
+    error: conversationError,
+  } = useGetConversationById(conversationId ?? "");
   const {
     data: conversationMessages,
     isLoading,
@@ -75,9 +79,13 @@ export const ConversationPage = () => {
   const { mutate: seenConversation, error: seenConversationError } =
     useSeenConversation();
 
-  const members = conversationDataDetail?.participants
-    .map((participant) => participant)
-    .filter((participant) => participant.userId !== myUserId);
+  const members = useMemo(
+    () =>
+      (conversationDataDetail?.participants ?? [])
+        .map((participant) => participant)
+        .filter((participant) => participant.userId !== myUserId),
+    [conversationDataDetail?.participants, myUserId],
+  );
 
   const isOnline = members?.some((member) =>
     onlineUsers.includes(member.userId),
@@ -147,12 +155,6 @@ export const ConversationPage = () => {
     setHasNewMessage(0);
   };
   useEffect(() => {
-    if (!conversationData) return;
-
-    setConversationDataDetail(conversationData);
-  }, [conversationData]);
-
-  useEffect(() => {
     if (conversationError || messagesError || seenConversationError) {
       navigate({ to: "/chat" });
     }
@@ -170,6 +172,12 @@ export const ConversationPage = () => {
     previousMessagesRef.current = null;
     setHasNewMessage(0);
   }, [conversationId]);
+
+  useEffect(() => {
+    if (!conversationData) return;
+
+    setConversationDataDetail(conversationData);
+  }, [conversationData]);
 
   useEffect(() => {
     const nextSnapshot = {
@@ -207,6 +215,14 @@ export const ConversationPage = () => {
     previousMessagesRef.current = nextSnapshot;
   }, [conversationId, messages, isFetchingNextPage, virtualizer]);
 
+  if (isConversationLoading || isLoading || !conversationDataDetail) {
+    return (
+      <div className="flex h-full w-full items-center justify-center">
+        <Spinner className="size-6" />
+      </div>
+    );
+  }
+
   return (
     <ResizablePanelGroup orientation="horizontal">
       <ResizablePanel
@@ -215,15 +231,14 @@ export const ConversationPage = () => {
         className="flex h-full min-h-0 flex-1 flex-col overflow-hidden"
       >
         <ConversationHeader
-          type={conversationDataDetail?.type}
+          type={conversationDataDetail.type}
           members={members}
           isOnline={isOnline}
-          groupAvatarUrl={conversationDataDetail?.group.groupAvatarUrl}
-          groupName={conversationDataDetail?.group.name}
+          groupAvatarUrl={conversationDataDetail.group.groupAvatarUrl}
+          groupName={conversationDataDetail.group.name}
         />
 
         <ConversationChatLayout
-          isLoading={isLoading}
           messages={messages}
           virtualizer={virtualizer}
           myUserId={myUserId}

@@ -43,7 +43,7 @@ export const RenameDialog = ({
           <input
             autoComplete="one-time-code"
             type="text"
-            className="w-full rounded-md border border-gray-300 p-2"
+            className="border-input bg-dialog-input text-dialog-primary placeholder:text-dialog-secondary focus:border-field-focus-border w-full rounded-md border p-2 outline-none"
             onChange={(e) => setNewName(e.target.value)}
           />
           <DialogFooter>

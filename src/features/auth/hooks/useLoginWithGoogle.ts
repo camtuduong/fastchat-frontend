@@ -1,20 +1,21 @@
-import { login } from "@/features/auth/api/login";
+import { useMutation } from "@tanstack/react-query";
+import { loginWithGoogle } from "@/features/auth/api/login-with-google";
 import { useAuthStore } from "@/stores/useAuthStore";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useTranslation } from "react-i18next";
+import { queryClient } from "@/lib/queryClient";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
-type Props = {
-  username: string;
-  password: string;
+export type Credential = {
+  scope: string;
+  state?: string;
+  code: string;
 };
-
-export const useLogin = () => {
+export const useLoginWithGoogle = () => {
   const { t } = useTranslation();
-  const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: ({ username, password }: Props) => login(username, password),
+    mutationFn: ({ credential }: { credential: Credential }) =>
+      loginWithGoogle(credential),
+
     onSuccess: (response) => {
       useAuthStore.setState({
         accessToken: response.accessToken,

@@ -1,10 +1,10 @@
 import { Thread } from "@/assets/Thread";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useTranslation } from "react-i18next";
 import { useCustomSidebarStore } from "@/stores/useCustomSidebarStore";
 import { SIDEBAR_CONTENT_STATUS } from "@/utils/constant";
 import { cn } from "@/lib/utils";
 import { useGetThreadSurface } from "@/features/chat/hooks/queries/useGetThreadSurface";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 type Props = {
   isMyMessage: boolean;
@@ -73,7 +73,7 @@ export const ThreadMessageBubble = ({ isMyMessage, threadId }: Props) => {
       </div>
 
       <Thread
-        className={` ${isMyMessage ? "text-chart-5/50 scale-x-[-1]" : "text-bubble-other"}`}
+        className={` ${isMyMessage ? "text-chart-5 scale-x-[-1]" : "text-bubble-other"}`}
       />
     </div>
   );

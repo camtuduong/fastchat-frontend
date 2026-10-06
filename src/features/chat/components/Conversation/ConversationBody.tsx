@@ -14,8 +14,23 @@ import type { ReactVirtualizer } from "@tanstack/react-virtual";
 import { useTranslation } from "react-i18next";
 import { useConversationStore } from "@/stores/useConversationStore";
 import { useMemo } from "react";
+import { Info } from "lucide-react";
+import type { ActionType } from "@/features/chat/types/Message";
+
+const systemMessageIconStyle: Record<ActionType, string> = {
+  create_group: "bg-dialog-row-selected text-dialog-primary",
+  rename_group: "bg-dialog-row-selected text-dialog-primary",
+  change_group_avatar: "bg-dialog-row-selected text-dialog-primary",
+  add_member: "bg-status-online/15 text-status-online",
+  share_conversation: "bg-status-online/15 text-status-online",
+  remove_member: "bg-dialog-danger-hover text-dialog-danger",
+  leave_group: "bg-dialog-danger-hover text-dialog-danger",
+  pin_message: "bg-status-pending/15 text-status-pending",
+  unpin_message: "bg-status-pending/15 text-status-pending",
+};
 
 type Props = {
+  isLoading?: boolean;
   messages: MessageUI[];
   virtualizer: ReactVirtualizer<HTMLDivElement, HTMLDivElement>;
   myUserId: string | undefined | null;
@@ -27,6 +42,7 @@ type Props = {
 };
 
 export const ConversationBody = ({
+  isLoading,
   messages,
   virtualizer,
   myUserId,
@@ -59,6 +75,14 @@ export const ConversationBody = ({
     [conversationDataDetail],
   );
 
+  if (isLoading) {
+    return (
+      <div className="flex w-full items-center justify-center py-2">
+        <Spinner className="size-4" />
+      </div>
+    );
+  }
+
   return (
     <>
       {isFetchingNextPage && (
@@ -83,7 +107,7 @@ export const ConversationBody = ({
                   key={`initial-message-${virtualItem.key}`}
                   ref={virtualizer.measureElement}
                   data-index={virtualItem.index}
-                  className="absolute top-0 left-0 flex w-full flex-col items-center justify-center pb-4 text-xs text-gray-400"
+                  className="absolute top-0 left-0 flex w-full flex-col items-center justify-center pb-4 text-xs"
                 >
                   <video
                     autoPlay
@@ -96,10 +120,10 @@ export const ConversationBody = ({
                     }}
                   />
                   <div className="flex flex-col items-center justify-center gap-1">
-                    <span className="text-sm">
-                      You started the conversation at {conversationCreatedAt}
+                    <span className="text-xs font-bold text-gray-500">
+                      You started the conversation on {conversationCreatedAt}
                     </span>
-                    <span className="text-lg">
+                    <span className="text-[16px] font-bold">
                       {t("chat.first_message", {
                         count: listParticipantIds.length,
                       })}
@@ -121,17 +145,28 @@ export const ConversationBody = ({
 
             if (message.system) {
               const IconType = typeMessageIconAction[message.system.action];
+              const SystemIcon = IconType || Info;
               return (
                 <div
                   key={virtualItem.key}
                   ref={virtualizer.measureElement}
                   data-index={virtualItem.index}
-                  className="absolute top-0 left-0 flex w-full items-center justify-center gap-1 p-2 text-[13px]"
+                  className="absolute top-0 left-0 flex w-full items-center justify-center px-2 py-3 text-[13px]"
                 >
-                  <div className="flex items-center gap-2 rounded-full bg-gray-300 p-1 text-gray-800">
-                    {IconType ? <IconType className="h-4 w-4" /> : null}
+                  <div className="border-border bg-card text-dialog-content flex max-w-[min(100%-1rem,42rem)] items-center gap-2 rounded-full border px-3 py-1.5 shadow-sm">
+                    <span
+                      className={cn(
+                        "flex size-6 shrink-0 items-center justify-center rounded-full",
+                        systemMessageIconStyle[message.system.action],
+                      )}
+                    >
+                      <SystemIcon className="size-3.5" />
+                    </span>
+                    <p
+                      className="min-w-0 text-center leading-5"
+                      dangerouslySetInnerHTML={{ __html: message.content }}
+                    />
                   </div>
-                  <p dangerouslySetInnerHTML={{ __html: message.content }} />
                 </div>
               );
             }

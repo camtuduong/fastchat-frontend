@@ -13,6 +13,23 @@ const api = axios.create({
   withCredentials: true,
 });
 
+const normalizeApiError = (error: unknown) => {
+  if (axios.isAxiosError(error)) {
+    const message = error.response?.data?.message;
+
+    if (typeof message === "string" && message.trim()) {
+      error.message = message;
+    }
+  }
+
+  return Promise.reject(error);
+};
+
+publicApi.interceptors.response.use(
+  (response) => response,
+  normalizeApiError,
+);
+
 //interceptor for private api
 api.interceptors.request.use((config) => {
   const accessToken = useAuthStore.getState().accessToken;
@@ -27,7 +44,7 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const original = error.config;
-    const codeExpired = error.response?.data.code === "TOKEN_EXPIRED";
+    const codeExpired = error.response?.data?.code === "TOKEN_EXPIRED";
 
     if (!codeExpired || original._retry) {
       throw error;
@@ -53,6 +70,11 @@ api.interceptors.response.use(
       throw err;
     }
   },
+);
+
+api.interceptors.response.use(
+  (response) => response,
+  normalizeApiError,
 );
 
 export { api, publicApi };

@@ -79,7 +79,7 @@ export const SearchUser = ({
             <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
             <Input
               autoComplete="one-time-code"
-              className="bg-background pl-9"
+              className="bg-dialog-input pl-9"
               id="search-input"
               placeholder={t("common.searchByName")}
               type="search"
@@ -112,7 +112,7 @@ export const SearchUser = ({
                   type="button"
                   disabled={isSelected}
                   onClick={() => handleSelect(user)}
-                  className="hover:bg-muted flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm disabled:opacity-40"
+                  className="hover:bg-dialog-row-hover flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm disabled:opacity-40"
                 >
                   <Avatar className="h-7 w-7">
                     <AvatarImage
