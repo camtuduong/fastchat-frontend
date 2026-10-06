@@ -1,4 +1,5 @@
 import authBg from "@/assets/auth/auth-bg.png";
+
 export default function AuthBackgroundLayout({
   children,
 }: {

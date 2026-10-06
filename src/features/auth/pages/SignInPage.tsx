@@ -1,7 +1,7 @@
 import Button from "@/components/base/Button";
+import GoogleIcon from "@/assets/auth/google.svg";
 import AuthBackgroundLayout from "@/components/layout/AuthBackgroundLayout";
 import { signInSchema, type SignInData } from "@/features/auth/authSchema";
-import GoogleIcon from "@/assets/auth/google.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { InputField } from "@/components/form/InputField";
@@ -9,10 +9,16 @@ import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { useLogin } from "@/features/auth/hooks/useLogin";
 import { useTranslation } from "react-i18next";
+import { useGoogleLogin } from "@react-oauth/google";
+import { useLoginWithGoogle } from "@/features/auth/hooks/useLoginWithGoogle";
 
 export const SignInPage = () => {
   const { t } = useTranslation();
   const { mutateAsync: loginMutation, isPending } = useLogin();
+  const {
+    mutateAsync: loginWithGoogleMutation,
+    isPending: isGoogleLoginPending,
+  } = useLoginWithGoogle();
 
   const navigate = useNavigate();
 
@@ -21,6 +27,7 @@ export const SignInPage = () => {
     defaultValues: {
       username: "",
       password: "",
+      rememberMe: false,
     },
   });
 
@@ -42,6 +49,17 @@ export const SignInPage = () => {
     }
   };
 
+  const loginWithGoogle = useGoogleLogin({
+    flow: "auth-code",
+    onSuccess: async (res) => {
+      await loginWithGoogleMutation({ credential: res });
+      navigate({ to: "/chat" });
+    },
+    onError: () => {
+      toast.error(t("login.errorMessage"));
+    },
+  });
+
   return (
     <AuthBackgroundLayout>
       <div className="px-4">
@@ -52,7 +70,7 @@ export const SignInPage = () => {
             </h2>
             <p className="text-[0.75rem]">{t("login.subtitle")}</p>
           </div>
-          <Button>
+          <Button onClick={() => loginWithGoogle()}>
             <div className="flex items-center justify-center">
               <img
                 src={GoogleIcon}
@@ -65,9 +83,9 @@ export const SignInPage = () => {
         </div>
 
         <div className="mt-6 mb-9 flex items-center justify-center text-[0.75rem] text-[#A1A1A1]">
-          <span className="text-(--gray-1)">-------------</span>
-          <span className="text-(--gray-2)">{t("login.withEmail")}</span>
-          <span className="text-(--gray-1)">-------------</span>
+          <span className="text-gray-1">-------------</span>
+          <span className="text-gray-2">{t("login.withEmail")}</span>
+          <span className="text-gray-1">-------------</span>
         </div>
 
         <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
@@ -97,7 +115,7 @@ export const SignInPage = () => {
                   className="mt-0.5"
                   {...register("rememberMe")}
                 />
-                <span className="text-[0.75rem] text-(--gray-2)">
+                <span className="text-gray-2 text-[0.75rem]">
                   {t("login.rememberMe")}
                 </span>
               </label>
@@ -113,15 +131,15 @@ export const SignInPage = () => {
           <Button
             type="submit"
             className="w-full rounded-md bg-(--color-plum) px-4 py-2 text-white"
-            disabled={isSubmitting || isPending}
+            disabled={isSubmitting || isPending || isGoogleLoginPending}
           >
-            {isSubmitting || isPending
+            {isSubmitting || isPending || isGoogleLoginPending
               ? t("login.loggingIn")
               : t("login.loginButton")}
           </Button>
         </form>
 
-        <p className="mt-6 text-center text-[0.75rem] text-(--gray-2)">
+        <p className="text-gray-2 mt-6 text-center text-[0.75rem]">
           {t("login.noAccount")}{" "}
           <a href="/signup" className="text-(--color-plum) hover:underline">
             {t("login.registerButton")}
