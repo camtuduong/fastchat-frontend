@@ -263,7 +263,7 @@ export const ConversationPage = () => {
       <ResizableHandle withHandle />
 
       {open && (
-        <ResizablePanel defaultSize="40%" minSize="20%">
+        <ResizablePanel defaultSize="30%" minSize="20%">
           <AppCustomSidebar setOpen={setOpen} />
         </ResizablePanel>
       )}

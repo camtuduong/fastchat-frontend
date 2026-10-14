@@ -6,24 +6,16 @@ import { useTranslation } from "react-i18next";
 export const FriendSearch = () => {
   const { t } = useTranslation();
   return (
-    <SidebarHeader className="flex flex-col gap-2 px-4 py-3">
-      <div className="flex gap-1">
-        {/* <Button className="p-1" variant="icon" size="icon">
-            <Ellipsis />
-          </Button> */}
-        {/* <CreateGroupDialog
-            buttonTrigger={
-              <Button className="p-1" variant="icon" size="icon">
-                <SquarePen />
-              </Button>
-            }
-          /> */}
+    <SidebarHeader className="flex flex-col gap-2 px-2 pt-3 pb-0">
+      <div className="text-xl font-semibold">
+        {t("friends.sidebarTitle")}
       </div>
       <div className="relative">
         <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
         <Input
-          className="bg-background pl-9"
-          id="search-input"
+          autoComplete="one-time-code"
+          className="bg-search-bg! border-search-border text-foreground placeholder:text-muted-foreground focus:border-search-focus-border pl-9 placeholder:text-xs"
+          id="friends-search-input"
           placeholder={t("common.search")}
           type="search"
         />

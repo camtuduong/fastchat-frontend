@@ -3,22 +3,22 @@ import { BookUser, UserPlus, UsersRound, UserX } from "lucide-react";
 export const SidebarFriendMenu = [
   {
     url: "",
-    label: "List Friends",
+    labelKey: "friends.list",
     icon: <UsersRound />,
   },
   {
     url: "/requests",
-    label: "Friend Requests",
+    labelKey: "friends.requests",
     icon: <UserPlus />,
   },
   {
     url: "/blocked-users",
-    label: "Blocked Users",
+    labelKey: "friends.blocked",
     icon: <UserX />,
   },
   {
     url: "/list-groups",
-    label: "List Groups",
+    labelKey: "friends.groups",
     icon: <BookUser />,
   },
 ];
@@ -26,7 +26,7 @@ export const SidebarFriendMenu = [
 export const getLabelAndIconByPath = (path: string) => {
   if (path === "/friends") {
     return {
-      label: SidebarFriendMenu[0].label,
+      labelKey: SidebarFriendMenu[0].labelKey,
       icon: SidebarFriendMenu[0].icon,
     };
   }
@@ -36,6 +36,6 @@ export const getLabelAndIconByPath = (path: string) => {
   );
 
   return menuItem
-    ? { label: menuItem.label, icon: menuItem.icon }
-    : { label: "", icon: null };
+    ? { labelKey: menuItem.labelKey, icon: menuItem.icon }
+    : { labelKey: "friends.label", icon: null };
 };

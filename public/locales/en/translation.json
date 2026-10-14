@@ -76,21 +76,37 @@
   },
   "friends": {
     "label": "Friends",
+    "sidebarTitle": "Friends",
+    "sectionTitle": "Friend list",
+    "list": "All friends",
+    "requests": "Friend requests",
+    "blocked": "Blocked users",
+    "groups": "Groups",
+    "listDescription": "Select a friend to start a conversation.",
+    "openConversation": "Open conversation",
+    "count_one": "{{count}} friend",
+    "count_other": "{{count}} friends",
+    "actions": {
+      "more": "More actions",
+      "profile": "Profile",
+      "block": "Block",
+      "remove": "Remove"
+    },
     "noFriends": {
-      "title": "Cannot find any friends",
-      "description": "Try searching for friends using the search bar above."
+      "title": "No friends found",
+      "description": "Search for a friend to start a conversation."
     },
     "noBlocked": {
       "title": "No blocked users",
-      "description": "You have not blocked any users yet."
+      "description": "Blocked users will appear here."
     },
     "noRequests": {
-      "title": "No friend selected",
-      "description": "Please select a friend from the sidebar or add a new one."
+      "title": "No friend requests",
+      "description": "Pending friend requests will appear here."
     },
     "noGroups": {
       "title": "No groups",
-      "description": "You have not added any groups yet."
+      "description": "Your groups will appear here."
     }
   },
   "profile": {
