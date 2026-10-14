@@ -1,33 +1,39 @@
-import {
-  SidebarGroup,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
+import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
+import { SidebarChildLayout } from "@/features/chat/layouts/SidebarChildLayout";
 import { SidebarFriendMenu } from "@/features/friends/constant";
-import { useNavigate } from "@tanstack/react-router";
+import { cn } from "@/lib/utils";
+import { useNavigate, useRouterState } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 
-const Style = {
-  content: "flex items-center gap-x-2 min-h-[50px] cursor-pointer",
-};
 export const SidebarFriendSidebar = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
+  const pathname = useRouterState({
+    select: (state) => state.location.pathname,
+  });
+
   return (
-    <SidebarGroup className="flex flex-col gap-y-2">
-      <SidebarMenu>
-        <SidebarMenuItem>
-          {SidebarFriendMenu.map((item) => (
+    <SidebarChildLayout label={t("friends.sectionTitle")} className="gap-y-0.5">
+      {SidebarFriendMenu.map((item) => {
+        const itemPath = `/friends${item.url}`;
+        const isActive =
+          item.url === "" ? pathname === "/friends" : pathname === itemPath;
+
+        return (
+          <SidebarMenuItem key={item.url}>
             <SidebarMenuButton
-              key={item.url}
-              className={Style.content}
-              onClick={() => navigate({ to: `/friends${item.url}` })}
+              className={cn(
+                "h-9 cursor-pointer",
+                isActive && "bg-nav-active text-foreground",
+              )}
+              onClick={() => navigate({ to: itemPath })}
             >
               {item.icon}
-              <span>{item.label}</span>
+              <span>{t(item.labelKey)}</span>
             </SidebarMenuButton>
-          ))}
-        </SidebarMenuItem>
-      </SidebarMenu>
-    </SidebarGroup>
+          </SidebarMenuItem>
+        );
+      })}
+    </SidebarChildLayout>
   );
 };

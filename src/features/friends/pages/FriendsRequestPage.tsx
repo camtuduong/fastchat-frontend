@@ -7,10 +7,10 @@ import { useTranslation } from "react-i18next";
 export const FriendsRequestPage = () => {
   const { t } = useTranslation();
   const path = useGetPath();
-  const { label, icon } = getLabelAndIconByPath(path);
+  const { labelKey, icon } = getLabelAndIconByPath(path);
   return (
     <>
-      <SidebarTriggerHeader label={label} icon={icon} />
+      <SidebarTriggerHeader label={t(labelKey)} icon={icon} />
       <div className={Style.dashboardEmptyContainer}>
         <div className="text-2xl font-bold">
           {t("friends.noRequests.title")}

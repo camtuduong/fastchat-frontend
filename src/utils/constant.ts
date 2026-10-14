@@ -30,10 +30,12 @@ export const SIDEBAR_CONTENT_STATUS: Record<string, SidebarStatusType> = {
   THREAD_DETAIL: "threadDetail",
 };
 
-export const sortedUserName = (users: Participant[]) =>
+type NamedUser = Pick<Participant, "displayName">;
+
+export const sortedUserName = <T extends NamedUser>(users: T[]) =>
   [...users].sort((a, b) => a.displayName.localeCompare(b.displayName));
 
-export const grouped = (users: Participant[]) =>
+export const grouped = <T extends NamedUser>(users: T[]) =>
   sortedUserName(users).reduce(
     (acc, friend) => {
       const firstLetter = removeVietnameseTones(friend.displayName)
@@ -45,5 +47,5 @@ export const grouped = (users: Participant[]) =>
       acc[firstLetter].push(friend);
       return acc;
     },
-    {} as Record<string, Participant[]>,
+    {} as Record<string, T[]>,
   );

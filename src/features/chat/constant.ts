@@ -129,7 +129,7 @@ export const bubbleClass = (position: BubblePosition, isMyMessage: boolean) => {
 };
 
 export const bubbleReplyClass = (
-  position: BubblePosition,
+  position: BubblePosition | undefined,
   isMyMessage: boolean,
 ) => {
   switch (position) {

@@ -8,7 +8,7 @@ type Props = {
 };
 export const SidebarTriggerHeader = ({ label, icon }: Props) => {
   return (
-    <header className="flex h-16 w-full shrink-0 items-center justify-between gap-2 border-b">
+    <header className="flex h-12 w-full shrink-0 items-center justify-between gap-2 border-b">
       <div className="flex gap-2 px-4">
         <div className="flex items-center gap-2">
           <SidebarTrigger className="-ml-1" />
@@ -17,8 +17,10 @@ export const SidebarTriggerHeader = ({ label, icon }: Props) => {
             className="mr-2 data-[orientation=vertical]:h-6"
           />
         </div>
-        <div className="flex items-center gap-2">
-          {icon && <span className="truncate">{icon}</span>}
+        <div className="flex items-center gap-2 text-sm font-medium">
+          {icon && (
+            <span className="text-muted-foreground [&>svg]:size-4">{icon}</span>
+          )}
           <span className="truncate">{label || ""}</span>
         </div>
       </div>

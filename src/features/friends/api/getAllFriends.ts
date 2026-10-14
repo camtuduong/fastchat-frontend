@@ -1,8 +1,13 @@
-import type { Participant } from "@/features/chat/types/conversation";
 import { api } from "@/services/api";
 
+type FriendApiUser = {
+  _id: string;
+  displayName: string;
+  avatarUrl?: string;
+};
+
 interface FriendResponse {
-  friends: Participant[];
+  friends: FriendApiUser[];
 }
 
 export const getAllFriends = async (params: string) => {
@@ -10,5 +15,12 @@ export const getAllFriends = async (params: string) => {
     `/friends/search?username=${params}`,
   );
 
-  return response.data;
+  return {
+    ...response.data,
+    friends: response.data.friends.map(({ _id, displayName, avatarUrl }) => ({
+      userId: _id,
+      displayName,
+      avatarUrl,
+    })),
+  };
 };
