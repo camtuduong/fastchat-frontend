@@ -82,7 +82,7 @@
     "requests": "Friend requests",
     "blocked": "Blocked users",
     "groups": "Groups",
-    "listDescription": "Select a friend to start a conversation.",
+    "listDescription": "Start a conversation with someone you know.",
     "openConversation": "Open conversation",
     "count_one": "{{count}} friend",
     "count_other": "{{count}} friends",

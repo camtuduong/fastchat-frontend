@@ -438,13 +438,14 @@ export const ConversationInputChat = ({
                 avatarUrl={replyMessage.sender.avatarUrl}
                 displayName={replyMessage.sender.displayName}
                 content={replyMessage.content}
-                className="bg-reply-preview m-2 rounded-lg p-2"
+                className="m-2 rounded-lg"
                 description={<span className="shrink-0">Replying to:</span>}
                 hasAttachment={(replyMessage.attachments?.length ?? 0) > 0}
+                variant="composer"
               />
               <button
                 type="button"
-                className="bg-button-x hover:bg-destructive text-button-x-text absolute top-6 right-8 cursor-pointer rounded-full p-1 transition-colors duration-100"
+                className="hover:bg-reply-preview-dismiss-hover-bg text-reply-preview-dismiss hover:text-reply-preview-dismiss-hover absolute top-8 right-8 cursor-pointer rounded-full bg-transparent p-1 transition-colors duration-100"
                 onClick={() => clearReplyMessage()}
               >
                 <X size={12} />

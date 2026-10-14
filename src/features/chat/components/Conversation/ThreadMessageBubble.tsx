@@ -12,9 +12,9 @@ type Props = {
 };
 
 const STYLES = {
-  container: `text-muted-foreground flex gap-1 text-xs`,
+  container: `text-reply-action flex gap-1 text-xs`,
   threadContainer: `flex items-center px-0.5 pt-1.5`,
-  button: `hover:bg-bubble-other cursor-pointer rounded-sm p-1 flex gap-1`,
+  button: `text-reply-action hover:bg-reply-action-hover-bg hover:text-reply-action-hover cursor-pointer rounded-sm p-1 flex gap-1`,
   avatarContainer: `relative h-6 w-6`,
   avatar: `absolute h-5 w-5`,
 };
@@ -50,7 +50,7 @@ export const ThreadMessageBubble = ({ isMyMessage, threadId }: Props) => {
           {threadSurfaceData?.unreadCount > 0 &&
             threadSurfaceData?.countMessageInThread && <span>-</span>}
           {threadSurfaceData?.countMessageInThread && (
-            <span className="text-muted-foreground text-xs">
+            <span className="text-xs">
               {t("chat.threadMessageCount", {
                 count: threadSurfaceData?.countMessageInThread,
               })}
@@ -73,7 +73,7 @@ export const ThreadMessageBubble = ({ isMyMessage, threadId }: Props) => {
       </div>
 
       <Thread
-        className={` ${isMyMessage ? "text-chart-5 scale-x-[-1]" : "text-bubble-other"}`}
+        className={cn("text-reply-action", isMyMessage && "scale-x-[-1]")}
       />
     </div>
   );

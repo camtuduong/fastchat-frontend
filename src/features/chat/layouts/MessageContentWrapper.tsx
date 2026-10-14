@@ -33,6 +33,8 @@ const Style = {
     "absolute bottom-0.5 flex opacity-0 group-hover:opacity-100 min-h-0 gap-1 rounded-md p-1",
   actionButton:
     "bg-accent/5 hover:bg-chart-1 text-muted-foreground rounded-full shadow-md border border-border p-1",
+  replyActionButton:
+    "bg-transparent text-reply-action hover:bg-reply-action-hover-bg hover:text-reply-action-hover",
 };
 
 export const MessageContentWrapper = ({
@@ -140,7 +142,7 @@ export const MessageContentWrapper = ({
             <Button
               variant="icon"
               size="icon-sm"
-              className={Style.actionButton}
+              className={cn(Style.actionButton, Style.replyActionButton)}
               onClick={() => {
                 if (message) {
                   setReplyMessage(message);

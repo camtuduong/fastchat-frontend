@@ -35,7 +35,11 @@ interface Group {
 
 interface LastMessage {
   _id: string;
-  senderId: string;
+  sender: {
+    userId: string;
+    displayName: string;
+    avatarUrl: string;
+  };
   content: string;
   createdAt: string;
 }
