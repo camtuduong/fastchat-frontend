@@ -19,9 +19,7 @@ export const SidebarTriggerHeader = ({ label, icon }: Props) => {
         </div>
         <div className="flex items-center gap-2 text-sm font-medium">
           {icon && (
-            <span className="text-muted-foreground [&>svg]:size-4">
-              {icon}
-            </span>
+            <span className="text-muted-foreground [&>svg]:size-4">{icon}</span>
           )}
           <span className="truncate">{label || ""}</span>
         </div>

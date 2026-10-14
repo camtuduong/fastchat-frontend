@@ -1,7 +1,4 @@
-import {
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar";
+import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { SidebarChildLayout } from "@/features/chat/layouts/SidebarChildLayout";
 import { SidebarFriendMenu } from "@/features/friends/constant";
 import { cn } from "@/lib/utils";
@@ -16,10 +13,7 @@ export const SidebarFriendSidebar = () => {
   });
 
   return (
-    <SidebarChildLayout
-      label={t("friends.sectionTitle")}
-      className="gap-y-0.5"
-    >
+    <SidebarChildLayout label={t("friends.sectionTitle")} className="gap-y-0.5">
       {SidebarFriendMenu.map((item) => {
         const itemPath = `/friends${item.url}`;
         const isActive =
