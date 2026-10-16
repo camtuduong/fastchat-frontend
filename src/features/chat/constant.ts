@@ -13,6 +13,7 @@ import type {
   AttachmentType,
   MessageItem,
 } from "@/features/chat/types/Message";
+import type { UserActivity } from "@/features/chat/types/user";
 import {
   Pen,
   UserPlus,
@@ -23,6 +24,7 @@ import {
   PinOff,
   FileImage,
 } from "lucide-react";
+import i18n from "@/i18n";
 
 const TEN_MINUTES_IN_MINUTES = 20;
 
@@ -169,10 +171,10 @@ export const timeAgo = (date: string) => {
   const hours = Math.floor(diffMs / 3600000);
   const days = Math.floor(diffMs / 86400000);
 
-  if (diffMs < 60000) return "Just now";
-  if (minutes < 60) return `${minutes} minutes ago`;
-  if (hours < 24) return `${hours} hours ago`;
-  if (days < 7) return `${days} days ago`;
+  if (diffMs < 60000) return i18n.t("timeAgo.justNow");
+  if (minutes < 60) return i18n.t("timeAgo.minutesAgo", { minutes });
+  if (hours < 24) return i18n.t("timeAgo.hoursAgo", { hours });
+  if (days < 7) return i18n.t("timeAgo.daysAgo", { days });
 
   return parsedDate.toLocaleDateString("vi-VN");
 };
@@ -205,3 +207,32 @@ export const typeMessageAttachmentTypeToLabel: Record<AttachmentType, string> =
   } as const;
 
 export const BOTTOM_SCROLL_THRESHOLD = 80;
+
+export const activeStatus = (status: string, lastActive: string) => {
+  if (status === "online") return i18n.t("timeAgo.activeNow");
+
+  if (status === "offline" && (lastActive === null || lastActive === undefined))
+    return "";
+  return i18n.t("timeAgo.lastActive", { time: timeAgo(lastActive) });
+};
+
+export const lastActive = (members: UserActivity[]) => {
+  if (!members?.length) return "";
+
+  // Có ai đang online thì hiện Active now
+  if (members.some((m) => m.status === "online"))
+    return i18n.t("timeAgo.activeNow");
+
+  // Tìm người có lastActiveAt gần nhất
+  const latest = members.reduce((prev, curr) => {
+    const prevTime = prev.lastActiveAt
+      ? new Date(prev.lastActiveAt).getTime()
+      : 0;
+    const currTime = curr.lastActiveAt
+      ? new Date(curr.lastActiveAt).getTime()
+      : 0;
+    return currTime > prevTime ? curr : prev;
+  });
+
+  return activeStatus(latest.status, latest.lastActiveAt);
+};

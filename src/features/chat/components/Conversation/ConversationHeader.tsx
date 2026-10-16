@@ -6,15 +6,16 @@ import {
 } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { conversationTypeToLabel } from "@/features/chat/constant";
+import { conversationTypeToLabel, lastActive } from "@/features/chat/constant";
 import type { Conversation } from "@/features/chat/types/conversation";
+import type { UserActivity } from "@/features/chat/types/user";
 import { useCustomSidebarStore } from "@/stores/useCustomSidebarStore";
 import { Info } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 type Props = {
   type: Conversation["type"];
-  members: Conversation["participants"];
+  members: UserActivity[];
   isOnline: boolean;
   groupAvatarUrl?: string;
   groupName?: string;
@@ -29,6 +30,7 @@ export const ConversationHeader = ({
 }: Props) => {
   const { t } = useTranslation();
   const open = useCustomSidebarStore((state) => state.open);
+
   const setOpen = useCustomSidebarStore((state) => state.setOpen);
 
   const renderHeaderConversation = () => {
@@ -50,9 +52,14 @@ export const ConversationHeader = ({
                 className={`${isOnline ? "bg-status-online" : "bg-status-offline"}`}
               />
             </Avatar>
-            <span className="truncate text-sm">
-              {members?.map((member) => member.displayName).join(", ")}
-            </span>
+            <div className="flex flex-col leading-normal">
+              <span className="truncate text-sm">
+                {members?.map((member) => member.displayName).join(", ")}
+              </span>
+              <span className="truncate text-[11px]">
+                {lastActive(members)}
+              </span>
+            </div>
           </div>
         );
       case conversationTypeToLabel.group:
@@ -65,11 +72,16 @@ export const ConversationHeader = ({
                 className={`${isOnline ? "bg-status-online" : "bg-status-offline"}`}
               />
             </Avatar>
-            <span className="truncate text-sm">
-              {groupName ||
-                members?.map((member) => member.displayName).join(", ") ||
-                t("chat.noName")}
-            </span>
+            <div className="flex flex-col leading-normal">
+              <span className="truncate text-sm">
+                {groupName ||
+                  members?.map((member) => member.displayName).join(", ") ||
+                  t("chat.noName")}
+              </span>
+              <span className="truncate text-[11px]">
+                {lastActive(members)}
+              </span>
+            </div>
           </div>
         );
       default:

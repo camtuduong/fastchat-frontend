@@ -10,6 +10,7 @@ import { AppCustomSidebar } from "@/features/chat/components/SidebarRight/AppCus
 import { BOTTOM_SCROLL_THRESHOLD, bubbleChat } from "@/features/chat/constant";
 import { useGetAllMessages } from "@/features/chat/hooks/queries/useGetAllMessages";
 import { useGetConversationById } from "@/features/chat/hooks/queries/useGetConversationById";
+import { useGetUserActivityByConversation } from "@/features/chat/hooks/queries/useGetUserActivityByConversation";
 import { useSeenConversation } from "@/features/chat/hooks/useSeenConversation";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useConversationStore } from "@/stores/useConversationStore";
@@ -45,6 +46,7 @@ export const ConversationPage = () => {
   } | null>(null);
 
   const onlineUsers = useSocketStore((state) => state.onlineUsers);
+
   const clearReplyMessage = useMessageStore((state) => state.clearReplyMessage);
 
   const conversationDataDetail = useConversationStore(
@@ -76,20 +78,16 @@ export const ConversationPage = () => {
     error: messagesError,
   } = useGetAllMessages(conversationId ?? "");
 
+  const { data: usersActivity } = useGetUserActivityByConversation(
+    conversationId ?? "",
+  );
+
   const { mutate: seenConversation, error: seenConversationError } =
     useSeenConversation();
 
-  const members = useMemo(
-    () =>
-      (conversationDataDetail?.participants ?? [])
-        .map((participant) => participant)
-        .filter((participant) => participant.userId !== myUserId),
-    [conversationDataDetail?.participants, myUserId],
-  );
+  const members = usersActivity?.filter((p) => p._id !== myUserId);
 
-  const isOnline = members?.some((member) =>
-    onlineUsers.includes(member.userId),
-  );
+  const isOnline = members?.some((member) => onlineUsers.includes(member._id));
 
   const messages = useMemo(() => {
     const chronologicalMessages = bubbleChat(

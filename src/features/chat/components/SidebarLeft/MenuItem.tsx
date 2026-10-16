@@ -51,7 +51,8 @@ export const MenuItem = ({ conversation, isOnline, isActive }: Props) => {
 
   const unreadCount = conversation.unreadCount[userId] || 0;
 
-  const isLastMessageFromMe = conversation.lastMessage.sender.userId === userId;
+  const isLastMessageFromMe =
+    conversation.lastMessage?.sender.userId === userId;
   const lastMessageTimeAgo = timeAgo(conversation.lastMessageAt);
 
   const renderConversationByTypeInNav = () => {

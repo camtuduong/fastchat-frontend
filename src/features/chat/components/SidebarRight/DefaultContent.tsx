@@ -209,7 +209,7 @@ export const DefaultContent = ({
                   {format(new Date(groupAt), DATE_FORMAT)}
                 </div>
               </div>
-              <div className="text-[13px] text-gray-500 italic">{groupBy}</div>
+              {/* <div className="text-[13px] text-gray-500 italic">{groupBy}</div> */}
             </div>
           </div>
         </div>
