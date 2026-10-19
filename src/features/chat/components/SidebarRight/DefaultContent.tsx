@@ -40,7 +40,7 @@ type Props = {
   isPending: boolean;
   onAddFavoriteConversation: () => Promise<void>;
   groupAt: string;
-  groupBy: string;
+  // groupBy: string;
   attachmentsLength: number;
   onShareConversationGroup: () => void;
   threadsLength: number;
@@ -55,7 +55,7 @@ export const DefaultContent = ({
   isPending,
   onAddFavoriteConversation,
   groupAt,
-  groupBy,
+  // groupBy,
   isFavorite,
   attachmentsLength,
   threadsLength,

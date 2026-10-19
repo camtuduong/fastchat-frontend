@@ -285,7 +285,7 @@ export function AppCustomSidebar({ setOpen }: Props) {
             isPending={isAddingNewMembers}
             onAddFavoriteConversation={handleFavoriteConversation}
             groupAt={conversationDataDetail?.group?.createdAt || ""}
-            groupBy={conversationDataDetail?.group?.createdBy || ""}
+            // groupBy={conversationDataDetail?.group?.createdBy || ""}
             threadsLength={0}
           />
         );
