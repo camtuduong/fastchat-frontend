@@ -61,9 +61,9 @@
       "title": "Chào mừng đến với FastChat",
       "description": "Vui lòng chọn cuộc trò chuyện từ thanh bên hoặc bắt đầu cuộc trò chuyện mới."
     },
-    "sidebarTitle": "Trò chuyện với bạn bè",
+    "sidebarTitle": "Trò chuyện với bạn",
     "createConversation": "Tạo cuộc trò chuyện",
-    "conversations": "Cuộc trò chuyện",
+    "conversations": "Các cuộc trò chuyện",
     "lastMessage": "Tin nhắn cuối",
     "reply": "Trả lời",
     "removeMessage": {
@@ -182,5 +182,13 @@
     "logout": "Đăng xuất",
     "vietnamese": "Tiếng Việt",
     "english": "Tiếng Anh"
+  },
+  "timeAgo": {
+    "activeNow": "Đang hoạt động",
+    "lastActive": "Hoạt động lần cuối {{time}}",
+    "justNow": "Vừa xong",
+    "minutesAgo": "{{minutes}} phút trước",
+    "hoursAgo": "{{hours}} giờ trước",
+    "daysAgo": "{{days}} ngày trước"
   }
 }

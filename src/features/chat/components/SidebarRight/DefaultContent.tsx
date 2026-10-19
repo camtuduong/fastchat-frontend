@@ -40,7 +40,7 @@ type Props = {
   isPending: boolean;
   onAddFavoriteConversation: () => Promise<void>;
   groupAt: string;
-  groupBy: string;
+  // groupBy: string;
   attachmentsLength: number;
   onShareConversationGroup: () => void;
   threadsLength: number;
@@ -55,7 +55,7 @@ export const DefaultContent = ({
   isPending,
   onAddFavoriteConversation,
   groupAt,
-  groupBy,
+  // groupBy,
   isFavorite,
   attachmentsLength,
   threadsLength,
@@ -209,7 +209,7 @@ export const DefaultContent = ({
                   {format(new Date(groupAt), DATE_FORMAT)}
                 </div>
               </div>
-              <div className="text-[13px] text-gray-500 italic">{groupBy}</div>
+              {/* <div className="text-[13px] text-gray-500 italic">{groupBy}</div> */}
             </div>
           </div>
         </div>
