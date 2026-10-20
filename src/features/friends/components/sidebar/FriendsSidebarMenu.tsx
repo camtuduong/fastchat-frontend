@@ -23,7 +23,7 @@ export const SidebarFriendSidebar = () => {
           <SidebarMenuItem key={item.url}>
             <SidebarMenuButton
               className={cn(
-                "h-9 cursor-pointer",
+                "h-9 cursor-pointer text-[14px]",
                 isActive && "bg-nav-active text-foreground",
               )}
               onClick={() => navigate({ to: itemPath })}

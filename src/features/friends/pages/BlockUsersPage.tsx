@@ -11,9 +11,11 @@ export const BlockUsersPage = () => {
     <>
       <SidebarTriggerHeader label={t(labelKey)} icon={icon} />
       <div className={Style.dashboardEmptyContainer}>
-        <div className="text-2xl font-bold">{t("friends.noBlocked.title")}</div>
+        <div className="text-2xl font-bold">
+          {t("friends.blocked.noBlocked.title")}
+        </div>
         <div className="text-muted-foreground">
-          {t("friends.noBlocked.description")}
+          {t("friends.blocked.noBlocked.description")}
         </div>
       </div>
     </>

@@ -3,22 +3,22 @@ import { BookUser, UserPlus, UsersRound, UserX } from "lucide-react";
 export const SidebarFriendMenu = [
   {
     url: "",
-    labelKey: "friends.list",
+    labelKey: "friends.list.label",
     icon: <UsersRound />,
   },
   {
     url: "/requests",
-    labelKey: "friends.requests",
+    labelKey: "friends.requests.label",
     icon: <UserPlus />,
   },
   {
     url: "/blocked-users",
-    labelKey: "friends.blocked",
+    labelKey: "friends.blocked.label",
     icon: <UserX />,
   },
   {
     url: "/list-groups",
-    labelKey: "friends.groups",
+    labelKey: "friends.groups.label",
     icon: <BookUser />,
   },
 ];
