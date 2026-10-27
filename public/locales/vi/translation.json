@@ -74,7 +74,14 @@
   "friends": {
     "label": "Bạn bè",
     "sidebarTitle": "Bạn bè",
+    "addFriendDialog": {
+      "footerMessage": "Hoặc gửi liên kết mời của bạn",
+      "share": "Chia sẻ liên kết"
+    },
+    "addMessage": "Thêm tin nhắn (tùy chọn)",
     "sectionTitle": "Danh sách bạn bè",
+    "searchByUsernameEmail": "Tìm theo tên hoặc email",
+    "addFriend": "Thêm bạn",
     "list": {
       "label": "Danh sách bạn bè",
       "description": "Bắt đầu trò chuyện với người bạn biết.",

@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 type Props = {
   open: boolean;
   onOpenChange: (nextOpen: boolean) => void;
-  onConfirm: () => void;
+  onConfirm?: () => void;
   title: string;
   description: string;
   isPending?: boolean;

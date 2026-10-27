@@ -78,6 +78,13 @@
     "label": "Friends",
     "sidebarTitle": "Friends",
     "sectionTitle": "Friend list",
+    "addFriend": "Add Friend",
+    "searchByUsernameEmail": "Search by name or email",
+    "addMessage": "Add a message (optional)",
+    "addFriendDialog": {
+      "footerMessage": "Or share your invite link",
+      "share": "Copy link"
+    },
     "list": {
       "label": "All friends",
       "description": "Start a conversation with someone you know.",
@@ -97,6 +104,10 @@
       "noRequests": {
         "title": "No friend requests",
         "description": "You have no pending friend requests."
+      },
+      "noSentRequests": {
+        "title": "No sent requests",
+        "description": "You have not sent any friend requests."
       },
       "alertDialog": {
         "title": "Are you sure?",

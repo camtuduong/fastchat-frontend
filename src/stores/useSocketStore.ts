@@ -34,6 +34,7 @@ export const useSocketStore = create<SocketState>((set, get) => ({
 
   connectSocket: () => {
     const accessToken = useAuthStore.getState().accessToken;
+
     const existingSocket = get().socket;
 
     if (existingSocket) {

@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { InputField } from "@/components/form/InputField";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { toast } from "sonner";
 import { useLogin } from "@/features/auth/hooks/useLogin";
 import { useTranslation } from "react-i18next";
 import { useGoogleLogin } from "@react-oauth/google";
@@ -45,7 +44,7 @@ export const SignInPage = () => {
       });
       navigate({ to: "/chat" });
     } catch (error) {
-      toast.error(t("login.errorMessage"));
+      console.error(t("login.errorMessage"), error);
     }
   };
 
@@ -55,8 +54,8 @@ export const SignInPage = () => {
       await loginWithGoogleMutation({ credential: res });
       navigate({ to: "/chat" });
     },
-    onError: () => {
-      toast.error(t("login.errorMessage"));
+    onError: (error) => {
+      console.error(t("login.errorMessage"), error);
     },
   });
 

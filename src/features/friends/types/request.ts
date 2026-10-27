@@ -1,13 +1,36 @@
-interface FriendRequest {
+interface FriendRequestReceived {
   _id: string;
+  message: string;
   fromUserId: {
     _id: string;
     displayName: string;
     avatarUrl: string;
   };
+  createdAt: string;
+  updatedAt: string;
 }
-interface FriendRequestResponse {
-  requests: FriendRequest[];
+interface FriendRequestSent {
+  _id: string;
+  toUserId: {
+    _id: string;
+    displayName: string;
+    avatarUrl: string;
+  };
+  message: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
-export type { FriendRequest, FriendRequestResponse };
+type FriendRequestType = "received" | "sent";
+
+interface FriendRequestResponse {
+  received: FriendRequestReceived[];
+  sent: FriendRequestSent[];
+}
+
+export type {
+  FriendRequestReceived,
+  FriendRequestSent,
+  FriendRequestResponse,
+  FriendRequestType,
+};
