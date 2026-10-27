@@ -19,11 +19,7 @@ import type { FriendRequestType } from "@/features/friends/types/request";
 import { cn } from "@/lib/utils";
 import { Style } from "@/style";
 import type { AxiosConversationError } from "@/types/api";
-import {
-  DATE_FORMAT,
-  getRequestUser,
-  groupedForRequests,
-} from "@/utils/constant";
+import { getRequestUser, groupedForRequests } from "@/utils/constant";
 import { useNavigate } from "@tanstack/react-router";
 import type { AxiosError } from "axios";
 import { useState } from "react";
@@ -38,7 +34,9 @@ export const ListFriendsRequestPage = () => {
     TypeListFriendRequestLabel.received,
   );
 
-  const [selectedRequestId, setSelectedRequestId] = useState<string | null>(null);
+  const [selectedRequestId, setSelectedRequestId] = useState<string | null>(
+    null,
+  );
   const { labelKey, icon } = getLabelAndIconByPath(path);
 
   // const debouncedSearch = useDebounce(searchValue, 500);

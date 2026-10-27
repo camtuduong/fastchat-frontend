@@ -15,7 +15,6 @@ import { TitleAndSearch } from "@/features/friends/components/TitleAndSearch";
 import { getLabelAndIconByPath } from "@/features/friends/constant";
 import { useGetAllFriend } from "@/features/friends/hooks/queries/useGetAllFriends";
 import { useGetListSuggestUser } from "@/features/friends/hooks/queries/useGetListSuggestUsers";
-import { useAcceptFriendRequest } from "@/features/friends/hooks/useAcceptFriendRequest";
 import { useGetPath } from "@/features/friends/hooks/useGetPath";
 import { useSendFriendRequest } from "@/features/friends/hooks/useSendFriendRequest";
 import { useDebounce } from "@/hooks/useDebounce";
