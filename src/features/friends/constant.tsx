@@ -1,24 +1,25 @@
+import type { FriendRequestType } from "@/features/friends/types/request";
 import { BookUser, UserPlus, UsersRound, UserX } from "lucide-react";
 
 export const SidebarFriendMenu = [
   {
     url: "",
-    labelKey: "friends.list",
+    labelKey: "friends.list.label",
     icon: <UsersRound />,
   },
   {
     url: "/requests",
-    labelKey: "friends.requests",
+    labelKey: "friends.requests.label",
     icon: <UserPlus />,
   },
   {
     url: "/blocked-users",
-    labelKey: "friends.blocked",
+    labelKey: "friends.blocked.label",
     icon: <UserX />,
   },
   {
     url: "/list-groups",
-    labelKey: "friends.groups",
+    labelKey: "friends.groups.label",
     icon: <BookUser />,
   },
 ];
@@ -38,4 +39,12 @@ export const getLabelAndIconByPath = (path: string) => {
   return menuItem
     ? { labelKey: menuItem.labelKey, icon: menuItem.icon }
     : { labelKey: "friends.label", icon: null };
+};
+
+export const TypeListFriendRequestLabel: Record<
+  FriendRequestType,
+  FriendRequestType
+> = {
+  received: "received",
+  sent: "sent",
 };

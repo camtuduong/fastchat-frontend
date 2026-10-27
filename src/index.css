@@ -145,6 +145,8 @@
   --button-ghost-hover: #f3f4f6;
   --button-destructive-bg: #d92d20;
   --button-destructive-hover: #b42318;
+  --button-success-bg: #15803d;
+  --button-success-hover: #166534;
   --button-destructive-focus-border: color-mix(
     in oklch,
     var(--destructive) 40%,
@@ -431,6 +433,8 @@
   --color-button-ghost-hover: var(--button-ghost-hover);
   --color-button-destructive: var(--button-destructive-bg);
   --color-button-destructive-hover: var(--button-destructive-hover);
+  --color-button-success: var(--button-success-bg);
+  --color-button-success-hover: var(--button-success-hover);
   --color-button-destructive-focus-border: var(
     --button-destructive-focus-border
   );
@@ -595,6 +599,8 @@
   --button-ghost-hover: #272a30;
   --button-destructive-bg: #f04438;
   --button-destructive-hover: #d92d20;
+  --button-success-bg: #15803d;
+  --button-success-hover: #166534;
   --button-destructive-focus-border: color-mix(
     in oklch,
     var(--destructive) 55%,

@@ -12,7 +12,7 @@ const buttonVariants = cva(
         default:
           "bg-button-primary text-button-primary-foreground hover:bg-button-primary-hover",
         outline:
-          "border-button-outline-border bg-button-secondary text-button-secondary-foreground hover:bg-button-secondary-hover aria-expanded:bg-dialog-row-selected aria-expanded:text-dialog-primary",
+          "border-button-outline-border bg-button-transparent text-button-secondary-foreground hover:bg-button-secondary-hover aria-expanded:bg-dialog-row-selected aria-expanded:text-dialog-primary",
         secondary:
           "bg-button-secondary text-button-secondary-foreground hover:bg-button-secondary-hover aria-expanded:bg-dialog-row-selected aria-expanded:text-dialog-primary",
         ghost:

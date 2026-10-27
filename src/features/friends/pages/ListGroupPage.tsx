@@ -12,9 +12,11 @@ export const ListGroupsPage = () => {
     <>
       <SidebarTriggerHeader label={t(labelKey)} icon={icon} />
       <div className={Style.dashboardEmptyContainer}>
-        <div className="text-2xl font-bold">{t("friends.noGroups.title")}</div>
+        <div className="text-2xl font-bold">
+          {t("friends.groups.noGroups.title")}
+        </div>
         <div className="text-muted-foreground">
-          {t("friends.noGroups.description")}
+          {t("friends.groups.noGroups.description")}
         </div>
       </div>
     </>

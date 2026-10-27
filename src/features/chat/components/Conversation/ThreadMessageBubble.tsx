@@ -25,6 +25,11 @@ export const ThreadMessageBubble = ({ isMyMessage, threadId }: Props) => {
   const setOpen = useCustomSidebarStore((state) => state.setOpen);
 
   const { data: threadSurfaceData } = useGetThreadSurface(threadId);
+
+  if (threadSurfaceData?.countMessageInThread <= 1) {
+    return null;
+  }
+
   return (
     <div
       className={`${STYLES.container} ${isMyMessage ? "" : "flex-row-reverse"}`}
@@ -52,7 +57,7 @@ export const ThreadMessageBubble = ({ isMyMessage, threadId }: Props) => {
           {threadSurfaceData?.countMessageInThread && (
             <span className="text-xs">
               {t("chat.threadMessageCount", {
-                count: threadSurfaceData?.countMessageInThread,
+                count: threadSurfaceData?.countMessageInThread - 1,
               })}
             </span>
           )}

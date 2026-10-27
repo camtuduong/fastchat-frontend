@@ -34,6 +34,7 @@ export const useSocketStore = create<SocketState>((set, get) => ({
 
   connectSocket: () => {
     const accessToken = useAuthStore.getState().accessToken;
+
     const existingSocket = get().socket;
 
     if (existingSocket) {
@@ -91,7 +92,6 @@ export const useSocketStore = create<SocketState>((set, get) => ({
     socket.on("thread-surface-update", (thread: ThreadSurfaceUpdate) => {
       const threadId = thread.threadId.toString();
       const userId = useAuthStore.getState().userId;
-      console.log("Thread surface update received:", thread);
 
       queryClient.setQueryData<ThreadSurface>(
         ["thread-surface", threadId],

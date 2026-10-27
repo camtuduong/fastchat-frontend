@@ -78,35 +78,65 @@
     "label": "Friends",
     "sidebarTitle": "Friends",
     "sectionTitle": "Friend list",
-    "list": "All friends",
-    "requests": "Friend requests",
-    "blocked": "Blocked users",
-    "groups": "Groups",
-    "listDescription": "Start a conversation with someone you know.",
+    "addFriend": "Add Friend",
+    "searchByUsernameEmail": "Search by name or email",
+    "addMessage": "Add a message (optional)",
+    "addFriendDialog": {
+      "footerMessage": "Or share your invite link",
+      "share": "Copy link"
+    },
+    "list": {
+      "label": "All friends",
+      "description": "Start a conversation with someone you know.",
+      "count_one": "{{count}} friend",
+      "count_other": "{{count}} friends",
+      "noFriends": {
+        "title": "No friends found",
+        "description": "Let's add some friends to start chatting."
+      }
+    },
+    "requests": {
+      "label": "Friend requests",
+      "description": "People who want to connect with you.",
+      "pending": "{{count}} pending",
+      "received": "Received",
+      "sent": "Sent",
+      "noRequests": {
+        "title": "No friend requests",
+        "description": "You have no pending friend requests."
+      },
+      "noSentRequests": {
+        "title": "No sent requests",
+        "description": "You have not sent any friend requests."
+      },
+      "alertDialog": {
+        "title": "Are you sure?",
+        "description": "This action cannot be undone.",
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+      }
+    },
+    "blocked": {
+      "label": "Blocked users",
+      "noBlocked": {
+        "title": "No blocked users",
+        "description": "You have not blocked any users."
+      }
+    },
+    "groups": {
+      "label": "Groups",
+      "noGroups": {
+        "title": "No groups",
+        "description": "You have not created any groups yet."
+      }
+    },
+
     "openConversation": "Open conversation",
-    "count_one": "{{count}} friend",
-    "count_other": "{{count}} friends",
     "actions": {
       "more": "More actions",
       "profile": "Profile",
       "block": "Block",
       "remove": "Remove"
-    },
-    "noFriends": {
-      "title": "No friends found",
-      "description": "Search for a friend to start a conversation."
-    },
-    "noBlocked": {
-      "title": "No blocked users",
-      "description": "Blocked users will appear here."
-    },
-    "noRequests": {
-      "title": "No friend requests",
-      "description": "Pending friend requests will appear here."
-    },
-    "noGroups": {
-      "title": "No groups",
-      "description": "Your groups will appear here."
     }
   },
   "profile": {

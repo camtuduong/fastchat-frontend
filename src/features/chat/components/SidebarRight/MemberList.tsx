@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/avatar";
 import type { Conversation } from "@/features/chat/types/conversation";
 import { useAuthStore } from "@/stores/useAuthStore";
-import { grouped } from "@/utils/constant";
+import { groupedForFriends } from "@/utils/constant";
 import { useTranslation } from "react-i18next";
 
 type Prop = {
@@ -19,7 +19,7 @@ type Prop = {
 export const MemberList = ({ members, onRemoveMember, ownerId }: Prop) => {
   const { t } = useTranslation();
   const userId = useAuthStore((state) => state.userId);
-  const groupedMembers = grouped(members ?? []);
+  const groupedMembers = groupedForFriends(members ?? []);
 
   return (
     <div className="flex flex-1 flex-col gap-2 overflow-y-auto p-2">

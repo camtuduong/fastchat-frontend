@@ -12,7 +12,7 @@ interface FriendResponse {
 
 export const getAllFriends = async (params: string) => {
   const response = await api.get<FriendResponse>(
-    `/friends/search?username=${params}`,
+    `/friends/my-friends?search=${params}`,
   );
 
   return {

@@ -13,12 +13,12 @@ import { redirectIfUnauthenticated } from "@/utils/guards";
 import { ChatPage } from "@/features/chat/pages/ChatPage";
 import { SignInPage } from "@/features/auth/pages/SignInPage";
 import { EmptyChatPage } from "@/features/chat/pages/EmptyChatPage";
-import { FriendsRequestPage } from "@/features/friends/pages/FriendsRequestPage";
 import { ConversationPage } from "@/features/chat/pages/ConversationPage";
 import { ListFriendsPage } from "@/features/friends/pages/ListFriendsPage";
 import { BlockUsersPage } from "@/features/friends/pages/BlockUsersPage";
 import { ListGroupsPage } from "@/features/friends/pages/ListGroupPage";
 import { ShareRedirect } from "@/features/chat/pages/ShareRedirect";
+import { ListFriendsRequestPage } from "@/features/friends/pages/ListFriendsRequestPage";
 
 export const rootRoute = createRootRoute({
   component: App,
@@ -138,7 +138,7 @@ export const friendListRoute = createRoute({
 export const friendRequestRoute = createRoute({
   getParentRoute: () => friendsRoute,
   path: "requests",
-  component: FriendsRequestPage,
+  component: ListFriendsRequestPage,
 });
 
 export const blockUsersRoute = createRoute({

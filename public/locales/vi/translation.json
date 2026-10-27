@@ -74,36 +74,62 @@
   "friends": {
     "label": "Bạn bè",
     "sidebarTitle": "Bạn bè",
+    "addFriendDialog": {
+      "footerMessage": "Hoặc gửi liên kết mời của bạn",
+      "share": "Chia sẻ liên kết"
+    },
+    "addMessage": "Thêm tin nhắn (tùy chọn)",
     "sectionTitle": "Danh sách bạn bè",
-    "list": "Tất cả bạn bè",
-    "requests": "Lời mời kết bạn",
-    "blocked": "Người dùng đã chặn",
-    "groups": "Nhóm",
-    "listDescription": "Chọn một người bạn để bắt đầu trò chuyện.",
+    "searchByUsernameEmail": "Tìm theo tên hoặc email",
+    "addFriend": "Thêm bạn",
+    "list": {
+      "label": "Danh sách bạn bè",
+      "description": "Bắt đầu trò chuyện với người bạn biết.",
+      "count_one": "{{count}} người bạn",
+      "count_other": "{{count}} người bạn",
+      "noFriends": {
+        "title": "Không tìm thấy bạn bè",
+        "description": "Hãy thêm một số bạn bè để bắt đầu trò chuyện."
+      }
+    },
+    "requests": {
+      "label": "Lời mời kết bạn",
+      "description": "Những người muốn kết nối với bạn.",
+      "pending": "{{count}} đang chờ",
+      "received": "Đã nhận",
+      "sent": "Đã gửi",
+      "alertDialog": {
+        "title": "Bạn có chắc chắn không?",
+        "description": "Hành động này không thể hoàn tác.",
+        "confirm": "Xác nhận",
+        "cancel": "Hủy"
+      },
+      "noRequests": {
+        "title": "Không có lời mời kết bạn",
+        "description": "Bạn không có lời mời kết bạn nào."
+      }
+    },
+    "blocked": {
+      "label": "Người dùng đã chặn",
+      "noBlocked": {
+        "title": "Không có người dùng bị chặn",
+        "description": "Bạn chưa chặn người dùng nào."
+      }
+    },
+    "groups": {
+      "label": "Nhóm",
+      "noGroups": {
+        "title": "Không có nhóm",
+        "description": "Bạn chưa có nhóm nào."
+      }
+    },
+
     "openConversation": "Mở cuộc trò chuyện",
-    "count_one": "{{count}} người bạn",
-    "count_other": "{{count}} người bạn",
     "actions": {
       "more": "Thao tác khác",
       "profile": "Trang cá nhân",
       "block": "Chặn",
       "remove": "Xóa bạn"
-    },
-    "noFriends": {
-      "title": "Không tìm thấy bạn bè",
-      "description": "Hãy tìm một người bạn để bắt đầu trò chuyện."
-    },
-    "noBlocked": {
-      "title": "Không có người dùng bị chặn",
-      "description": "Những người dùng bạn chặn sẽ xuất hiện ở đây."
-    },
-    "noRequests": {
-      "title": "Không có lời mời kết bạn",
-      "description": "Các lời mời kết bạn đang chờ sẽ xuất hiện ở đây."
-    },
-    "noGroups": {
-      "title": "Không có nhóm",
-      "description": "Các nhóm của bạn sẽ xuất hiện ở đây."
     }
   },
   "profile": {
