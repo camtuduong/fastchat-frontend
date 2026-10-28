@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useLogout } from "@/features/auth/hooks/useLogout";
 import { Style } from "@/features/main/layouts/NavbarMain";
+import { cn } from "@/lib/utils";
 import { useTheme } from "@/providers/theme-provider";
 import { useUserStore } from "@/stores/useUser";
 import { useNavigate } from "@tanstack/react-router";
@@ -30,9 +31,10 @@ import { type Dispatch } from "react";
 import { useTranslation } from "react-i18next";
 type Props = {
   setProfileOpen: Dispatch<React.SetStateAction<boolean>>;
+  setActivityLogOpen: Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const FooterNavbar = ({ setProfileOpen }: Props) => {
+export const FooterNavbar = ({ setProfileOpen, setActivityLogOpen }: Props) => {
   const { t, i18n } = useTranslation();
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
@@ -57,6 +59,16 @@ export const FooterNavbar = ({ setProfileOpen }: Props) => {
   const isLanguageActive = (lng: string) => i18n.language === lng;
   return (
     <div className="mt-auto flex flex-col gap-2">
+      <div className="flex flex-col gap-2">
+        <button
+          onClick={() => {
+            setActivityLogOpen((prev) => !prev);
+          }}
+          className={cn(Style.button)}
+        >
+          <BellIcon />
+        </button>
+      </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <button className={Style.button}>
@@ -120,10 +132,6 @@ export const FooterNavbar = ({ setProfileOpen }: Props) => {
                 </DropdownMenuSubContent>
               </DropdownMenuPortal>
             </DropdownMenuSub>
-            <DropdownMenuItem>
-              <BellIcon />
-              {t("footer.notifications")}
-            </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleLogout}>

@@ -1,12 +1,12 @@
 import { FooterNavbar } from "@/features/main/layouts/FooterNavbar";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
-
 import { MessageCircleMore, BookUser, User } from "lucide-react";
 import { useGetMe } from "@/features/auth/hooks/queries/useGetMe";
 import { useState } from "react";
 import { ProfileDialog } from "@/features/main/components/ProfileDialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ActivityDialog } from "@/features/main/components/ActivityDialog";
 
 export const Style = {
   button: cn(
@@ -17,6 +17,7 @@ export const Style = {
 export const NavbarHeader = () => {
   const { data: me } = useGetMe();
   const [profileOpen, setProfileOpen] = useState(false);
+  const [activityLogOpen, setActivityLogOpen] = useState(false);
 
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const navigate = useNavigate();
@@ -54,8 +55,15 @@ export const NavbarHeader = () => {
         </div>
       </div>
 
-      <FooterNavbar setProfileOpen={setProfileOpen} />
+      <FooterNavbar
+        setProfileOpen={setProfileOpen}
+        setActivityLogOpen={setActivityLogOpen}
+      />
       <ProfileDialog open={profileOpen} onOpenChange={setProfileOpen} />
+      <ActivityDialog
+        open={activityLogOpen}
+        onOpenChange={setActivityLogOpen}
+      />
     </div>
   );
 };

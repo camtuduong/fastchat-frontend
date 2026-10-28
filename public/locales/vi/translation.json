@@ -159,7 +159,11 @@
     "delete": "Xóa",
     "rename": "Đổi tên",
     "renaming": "Đang đổi tên...",
-    "linkCopied": "Đã sao chép liên kết!"
+    "linkCopied": "Đã sao chép liên kết!",
+    "all": "Tất cả",
+    "unread": "Chưa đọc",
+    "joined": "Tham gia: {{time}}",
+    "createdAt": "Tạo lúc:"
   },
   "sidebar": {
     "favorite": "Yêu thích",
@@ -216,5 +220,11 @@
     "minutesAgo": "{{minutes}} phút trước",
     "hoursAgo": "{{hours}} giờ trước",
     "daysAgo": "{{days}} ngày trước"
+  },
+  "activity": {
+    "title": "Thông báo",
+    "noNotifications": "Bạn không có thông báo mới.",
+    "markAsRead": "Đánh dấu là đã đọc",
+    "remove": "Xóa"
   }
 }

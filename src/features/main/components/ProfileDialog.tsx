@@ -15,6 +15,8 @@ import { Separator } from "@/components/ui/separator";
 import { UploadAvatar } from "@/features/main/components/UploadAvatar";
 import { useUploadAvatar } from "@/features/main/hooks/useUploadAvatar";
 import { useTranslation } from "react-i18next";
+import { format } from "date-fns";
+import { DATE_FORMAT } from "@/utils/constant";
 type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -39,6 +41,8 @@ export const ProfileDialog = ({ open, onOpenChange }: Props) => {
     }
   };
 
+  if (!me) return null;
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <form>
@@ -46,15 +50,22 @@ export const ProfileDialog = ({ open, onOpenChange }: Props) => {
           <DialogHeader className="flex flex-row items-center gap-4">
             <div className="relative h-18 w-18">
               <Avatar className="h-18 w-18">
-                <AvatarImage src={me?.avatarUrl} alt="@shadcn" />
-                <AvatarFallback colorSeed={me?.displayName}>CN</AvatarFallback>
+                <AvatarImage src={me.avatarUrl} alt="@shadcn" />
+                <AvatarFallback colorSeed={me.displayName}>CN</AvatarFallback>
               </Avatar>
               <UploadAvatar handleFileChange={handleFileChange} />
             </div>
+            <div className="flex flex-col space-y-1">
+              <div className="flex flex-col">
+                <span className="font-bold">{me.displayName}</span>
+                <span className="text-muted-foreground">@{me.username}</span>
+              </div>
 
-            <div className="flex flex-col">
-              <span>{me?.displayName}</span>
-              <span>@{me?.username}</span>
+              <p className="text-muted-foreground text-[13px] italic">
+                {t("common.joined", {
+                  time: format(new Date(me.createdAt), DATE_FORMAT),
+                })}
+              </p>
             </div>
           </DialogHeader>
           <Separator />
@@ -74,12 +85,12 @@ export const ProfileDialog = ({ open, onOpenChange }: Props) => {
               <Input
                 id="username-1"
                 name="username"
-                defaultValue={me?.username}
+                defaultValue={me.username}
               />
             </Field>
             <Field>
               <Label htmlFor="email-1">{t("profile.email")}</Label>
-              <Input id="email-1" name="email" defaultValue={me?.email} />
+              <Input id="email-1" name="email" defaultValue={me.email} />
             </Field>
           </FieldGroup>
           <DialogFooter>

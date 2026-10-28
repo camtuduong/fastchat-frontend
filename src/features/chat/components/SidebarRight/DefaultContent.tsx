@@ -204,7 +204,7 @@ export const DefaultContent = ({
               {renderAvatar()}
 
               <div className="flex items-center gap-1 text-[13px] text-gray-500">
-                Created at :
+                {t("common.createdAt")}
                 <div className="text-[13px] text-gray-500 italic">
                   {format(new Date(groupAt), DATE_FORMAT)}
                 </div>
