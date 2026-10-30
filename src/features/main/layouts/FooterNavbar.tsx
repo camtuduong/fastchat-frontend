@@ -33,6 +33,10 @@ type Props = {
   setProfileOpen: Dispatch<React.SetStateAction<boolean>>;
   setActivityLogOpen: Dispatch<React.SetStateAction<boolean>>;
 };
+const notifications = {
+  ownerId: "123",
+  unreadCount: 5,
+};
 
 export const FooterNavbar = ({ setProfileOpen, setActivityLogOpen }: Props) => {
   const { t, i18n } = useTranslation();
@@ -59,7 +63,7 @@ export const FooterNavbar = ({ setProfileOpen, setActivityLogOpen }: Props) => {
   const isLanguageActive = (lng: string) => i18n.language === lng;
   return (
     <div className="mt-auto flex flex-col gap-2">
-      <div className="flex flex-col gap-2">
+      <div className="relative">
         <button
           onClick={() => {
             setActivityLogOpen((prev) => !prev);
@@ -68,6 +72,9 @@ export const FooterNavbar = ({ setProfileOpen, setActivityLogOpen }: Props) => {
         >
           <BellIcon />
         </button>
+        {notifications.unreadCount > 0 && (
+          <div className="absolute top-2 right-2.25 h-2 w-2 rounded-full bg-red-500"></div>
+        )}
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

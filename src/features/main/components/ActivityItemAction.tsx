@@ -16,24 +16,21 @@ export const ActivityItemAction = ({ className }: { className?: string }) => {
     setOpen(open);
   };
   return (
-    <DropdownMenu open={open} onOpenChange={onOpenChange}>
+    <DropdownMenu open={open} onOpenChange={onOpenChange} modal={false}>
       <DropdownMenuTrigger asChild>
-        <button className={className}>
+        <button type="button" className={className}>
           <EllipsisVertical className="size-4" />
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent
-        className="min-w-fit"
-        align="end"
-        onCloseAutoFocus={(e) => {
-          e.preventDefault();
-        }}
-      >
+      <DropdownMenuContent className="min-w-fit" align="end">
         <DropdownMenuItem onClick={() => {}}>
           <Check />
           <span>{t("activity.markAsRead")}</span>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => {}}>
+        <DropdownMenuItem
+          onClick={() => {}}
+          className="text-button-destructive"
+        >
           <SquareX />
           <span>{t("activity.remove")}</span>
         </DropdownMenuItem>

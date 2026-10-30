@@ -114,7 +114,9 @@
         "description": "This action cannot be undone.",
         "confirm": "Confirm",
         "cancel": "Cancel"
-      }
+      },
+      "accept": "Accept",
+      "decline": "Decline"
     },
     "blocked": {
       "label": "Blocked users",
@@ -230,7 +232,9 @@
   },
   "activity": {
     "title": "Notifications",
-    "noNotifications": "You have no new notifications.",
+    "caughtUp": "You are all caught up",
+    "noNotifications": "New messages, mentions and friend requests will show up here.",
+    "markAllAsRead": "Mark all as read",
     "markAsRead": "Mark as read",
     "remove": "Remove"
   }

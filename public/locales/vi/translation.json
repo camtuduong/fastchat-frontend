@@ -107,7 +107,9 @@
       "noRequests": {
         "title": "Không có lời mời kết bạn",
         "description": "Bạn không có lời mời kết bạn nào."
-      }
+      },
+      "accept": "Chấp nhận",
+      "decline": "Từ chối"
     },
     "blocked": {
       "label": "Người dùng đã chặn",
@@ -223,7 +225,8 @@
   },
   "activity": {
     "title": "Thông báo",
-    "noNotifications": "Bạn không có thông báo mới.",
+    "caughtUp": "Bạn đã xem hết",
+    "noNotifications": "Tin nhắn mới, đề cập và lời mời kết bạn sẽ hiển thị ở đây.",
     "markAsRead": "Đánh dấu là đã đọc",
     "remove": "Xóa"
   }
