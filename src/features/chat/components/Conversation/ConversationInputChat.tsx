@@ -1,13 +1,12 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, lazy, Suspense } from "react";
+
 import { useTranslation } from "react-i18next";
 import { FormatterActions } from "@/features/chat/components/Conversation/FormatterActions";
 import { InputActions } from "@/features/chat/components/Conversation/InputActions";
-import { StickerPicker } from "@/features/chat/components/StickerPicker";
 import { useSendMessage } from "@/features/chat/hooks/useSendMessage";
-import type { Attachment, Emoji } from "@/features/chat/types/Message";
+import type { Attachment } from "@/features/chat/types/Message";
 import { cn } from "@/lib/utils";
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
+
 import { Eye, X } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -30,6 +29,7 @@ import { ChatInput } from "@/features/chat/components/Conversation/ChatInput";
 import type { Editor, JSONContent } from "@tiptap/react";
 import { getTextFromContent } from "@/features/chat/utils/getTextFromContent";
 import { useConversationStore } from "@/stores/useConversationStore";
+import { StickerPicker } from "@/features/chat/components/StickerPicker";
 
 const Style = {
   container: "relative flex items-end gap-2 p-4 pt-2 pb-8",
@@ -47,6 +47,14 @@ const Style = {
     "text-muted-foreground hover:text-accent-foreground hover:bg-accent/5 absolute top-1 right-2.5 cursor-pointer rounded-lg p-2 transition-colors duration-100",
   formatterContainer: "relative flex min-w-0 flex-1",
 };
+
+const EmojiPicker = lazy(() =>
+  import("@/features/chat/components/Conversation/EmojiPicker").then(
+    (module) => ({
+      default: module.EmojiPicker,
+    }),
+  ),
+);
 
 export type PendingPreview =
   | {
@@ -545,18 +553,9 @@ export const ConversationInputChat = ({
           </div>
         </div>
         {showPicker && (
-          <div ref={pickerRef} className="absolute right-20 bottom-15 z-10">
-            <Picker
-              data={data}
-              onEmojiSelect={(emoji: Emoji) =>
-                editorRef.current
-                  ?.chain()
-                  .focus()
-                  .insertContent(emoji.native)
-                  .run()
-              }
-            />
-          </div>
+          <Suspense fallback={<div>Loading...</div>}>
+            <EmojiPicker pickerRef={pickerRef} editorRef={editorRef} />
+          </Suspense>
         )}
 
         {showStickerPicker && (
