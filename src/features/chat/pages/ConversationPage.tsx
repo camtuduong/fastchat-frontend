@@ -149,7 +149,6 @@ export const ConversationPage = () => {
 
   const scrollToLatest = () => {
     virtualizer.scrollToEnd();
-    console.log("Scrolling to latest message");
     setHasNewMessage(0);
   };
   useEffect(() => {

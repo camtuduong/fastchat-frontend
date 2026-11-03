@@ -1,7 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-
-import { Textarea } from "@/components/ui/textarea";
 import { FormatterActions } from "@/features/chat/components/Conversation/FormatterActions";
 import { InputActions } from "@/features/chat/components/Conversation/InputActions";
 import { StickerPicker } from "@/features/chat/components/StickerPicker";
@@ -25,12 +23,18 @@ import { ReplyMessage } from "@/features/chat/components/Conversation/ReplyMessa
 import { useUploadAttachments } from "@/features/chat/hooks/useUploadAttachments";
 import type { ReactVirtualizer } from "@tanstack/react-virtual";
 import { useSocketStore } from "@/stores/useSocketStore";
+import { useAuthStore } from "@/stores/useAuthStore";
+import type { MentionItem } from "@/features/chat/utils/Suggestion";
 import { useTextingStore } from "@/stores/useTextingStore";
+import { ChatInput } from "@/features/chat/components/Conversation/ChatInput";
+import type { Editor, JSONContent } from "@tiptap/react";
+import { getTextFromContent } from "@/features/chat/utils/getTextFromContent";
+import { useConversationStore } from "@/stores/useConversationStore";
 
 const Style = {
-  container: "relative flex items-end gap-2 p-4 pb-8",
+  container: "relative flex items-end gap-2 p-4 pt-2 pb-8",
   textPending:
-    "animate-pulse text-muted-foreground text-sm italic flex justify-end pr-6",
+    "animate-pulse text-muted-foreground text-sm italic flex justify-end mr-12",
   typing:
     "animate-pulse absolute bottom-2 left-4.5 text-muted-foreground text-sm italic",
   actionButtonContainer: "flex min-w-0 flex-1 rounded-2xl border-2",
@@ -69,7 +73,8 @@ export const ConversationInputChat = ({
     return null;
   }
   const { t } = useTranslation();
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState<JSONContent | null>(null);
+  const editorRef = useRef<Editor | null>(null);
 
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -89,6 +94,12 @@ export const ConversationInputChat = ({
   const isTypingRef = useRef(false);
   const stopTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const isSendingRef = useRef(false);
+  const pickerRef = useRef<HTMLDivElement | null>(null);
+  const triggerPickerRef = useRef<HTMLButtonElement | null>(null);
+
+  const myUserId = useAuthStore((state) => state.userId);
+
   //socket
   const socket = useSocketStore((state) => state.socket);
 
@@ -99,42 +110,50 @@ export const ConversationInputChat = ({
     [userTexting, conversationId],
   );
 
+  const conversationDataDetail = useConversationStore(
+    (state) => state.conversationDataDetail,
+  );
   //state reply message store
   const replyMessage = useMessageStore((state) => state.replyMessage);
   const clearReplyMessage = useMessageStore((state) => state.clearReplyMessage);
 
-  const isSendingRef = useRef(false);
-  const pickerRef = useRef<HTMLDivElement | null>(null);
-  const triggerPickerRef = useRef<HTMLButtonElement | null>(null);
-  const inputRef = useRef<HTMLTextAreaElement | null>(null);
+  // Danh sách người có thể @mention: thành viên cuộc trò chuyện (trừ bản thân)
+  const mentionItems = useMemo<MentionItem[]>(
+    () =>
+      (conversationDataDetail?.participants ?? [])
+        .filter((member) => member.userId !== myUserId)
+        .map((member) => ({
+          id: member.userId,
+          label: member.displayName,
+          avatarUrl: member.avatarUrl,
+        })),
+    [conversationDataDetail?.participants, myUserId],
+  );
 
   const { mutateAsync: sendMessage, isPending } = useSendMessage();
   const { mutateAsync: uploadAttachments, isPending: isUploading } =
     useUploadAttachments();
 
   const wrapSelection = (prefix: string, suffix = prefix) => {
-    const textarea = inputRef.current;
-    if (!textarea) return;
+    const editor = editorRef.current;
+    if (!editor) return;
 
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
+    const { from, to } = editor.state.selection;
+    const selected = editor.state.doc.textBetween(from, to, "\n");
 
-    const selected = message.slice(start, end);
-
-    const next =
-      message.slice(0, start) + prefix + selected + suffix + message.slice(end);
-
-    setMessage(next);
-
-    // Đợi React render xong rồi mới đặt lại con trỏ
-    requestAnimationFrame(() => {
-      textarea.focus();
-      textarea.setSelectionRange(start + prefix.length, end + prefix.length);
-    });
+    editor
+      .chain()
+      .focus()
+      .insertContentAt({ from, to }, prefix + selected + suffix)
+      .setTextSelection({
+        from: from + prefix.length,
+        to: to + prefix.length,
+      })
+      .run();
   };
 
   const handleSendMessage = async () => {
-    const content = message.trim();
+    const content = getTextFromContent(message).trim();
     let attachments: Attachment[] = [];
     const replyTo = replyMessage?._id;
 
@@ -203,34 +222,24 @@ export const ConversationInputChat = ({
       );
     }
     setPreview(null); // Clear the preview after sending
-    setMessage("");
+    editorRef.current?.commands.clearContent();
+    setMessage(null);
+    setIsExpanded(false);
     clearReplyMessage(); // Clear the reply message after sending
     virtualizer.scrollToEnd(); // Scroll to the end after sending a message
     setHasNewMessage(0); // Reset the new message count after sending a message
   };
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.nativeEvent.isComposing) {
-      return;
-    }
-
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      // Ignore the browser's repeated keydown events while Enter is held.
-      if (e.repeat) {
-        return;
-      }
-
-      e.currentTarget.form?.requestSubmit();
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const submitMessage = () => {
     stopTyping(conversationId);
-    e.preventDefault();
     handleSendMessage();
   };
 
-  const handleOnChangeInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    submitMessage();
+  };
+
+  const handleTyping = () => {
     // Chỉ emit "typing" lần đầu, không emit mỗi ký tự
     if (!isTypingRef.current && socket) {
       isTypingRef.current = true;
@@ -241,8 +250,6 @@ export const ConversationInputChat = ({
       clearTimeout(stopTimerRef.current);
     }
     stopTimerRef.current = setTimeout(() => stopTyping(conversationId), 2000);
-
-    setMessage(e.currentTarget.value);
   };
 
   const stopTyping = (conversationId: string) => {
@@ -398,9 +405,7 @@ export const ConversationInputChat = ({
   }, [showPicker, showStickerPicker]);
 
   useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
+    editorRef.current?.commands.focus();
   }, [
     conversationId,
     replyMessage,
@@ -467,26 +472,29 @@ export const ConversationInputChat = ({
           {/* input content message  */}
           <div className={Style.inputContainer}>
             {!showMarkDown ? (
-              <Textarea
-                value={message}
-                ref={inputRef}
-                onChange={handleOnChangeInput}
-                onKeyDown={handleKeyDown}
-                placeholder={t("chat.inputPlaceholder")}
-                onInput={(e) => {
-                  const scrollHeight = e.currentTarget.scrollHeight;
-                  setIsExpanded((prev) => {
-                    if (!prev && scrollHeight > 90) return true; // expand khi vượt 90px
-                    if (prev && scrollHeight <= 63) return false; // collapse khi về 1 dòng
-                    return prev;
-                  });
-                }}
-                className={cn(Style.input, textFormatter ? "pr-10" : "")}
-              />
+              <>
+                <ChatInput
+                  message={message}
+                  setMessage={setMessage}
+                  onChange={handleTyping}
+                  onSubmit={submitMessage}
+                  placeholder={t("chat.inputPlaceholder")}
+                  mentionItems={mentionItems}
+                  editorRef={editorRef}
+                  onHeightChange={(scrollHeight) =>
+                    setIsExpanded((prev) => {
+                      if (!prev && scrollHeight > 90) return true; // expand khi vượt 90px
+                      if (prev && scrollHeight <= 63) return false; // collapse khi về 1 dòng
+                      return prev;
+                    })
+                  }
+                  className={cn(Style.input, textFormatter ? "pr-10" : "")}
+                />
+              </>
             ) : (
               <div className={cn(Style.input, "markdown-other p-4 text-sm")}>
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {message}
+                  {getTextFromContent(message)}
                 </ReactMarkdown>
               </div>
             )}
@@ -541,7 +549,11 @@ export const ConversationInputChat = ({
             <Picker
               data={data}
               onEmojiSelect={(emoji: Emoji) =>
-                setMessage((prev) => prev + emoji.native)
+                editorRef.current
+                  ?.chain()
+                  .focus()
+                  .insertContent(emoji.native)
+                  .run()
               }
             />
           </div>

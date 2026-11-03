@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ActivityDialog } from "@/features/main/components/ActivityDialog";
 
 export const Style = {
+  container: "bg-navbar z-50 flex w-12 flex-col items-center px-2 py-4",
   button: cn(
     "text-navbar-icon hover:bg-navbar-active flex cursor-pointer items-center justify-center rounded-md bg-navbar p-2",
   ),
@@ -26,7 +27,7 @@ export const NavbarHeader = () => {
   const isFriends = pathname.startsWith("/friends");
 
   return (
-    <div className="bg-navbar z-50 flex w-12 flex-col items-center px-2 py-4">
+    <div className={Style.container}>
       <div className="flex flex-col items-center gap-4">
         <Avatar
           className="h-8 w-8 cursor-pointer"
