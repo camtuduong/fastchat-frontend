@@ -5,6 +5,7 @@ import { AlertDialog } from "@/features/chat/components/AlertDialog";
 import { timeAgo } from "@/features/chat/constant";
 import { useCreateNewConversation } from "@/features/chat/hooks/useCreateNewConversation";
 import { Badge } from "@/features/friends/components/Badge";
+import { ReceivedActionButton } from "@/features/friends/components/ReceivedActionButton";
 import { SidebarTriggerHeader } from "@/features/friends/components/SidebarTriggerHeader";
 import { TitleAndSearch } from "@/features/friends/components/TitleAndSearch";
 import {
@@ -42,9 +43,10 @@ export const ListFriendsRequestPage = () => {
   // const debouncedSearch = useDebounce(searchValue, 500);
   const { data: request, isLoading } = useGetAllFriendRequests();
 
-  const { mutateAsync: createGroupMutation, isPending } =
+  const { mutateAsync: createGroupMutation, isPending: isCreatingGroup } =
     useCreateNewConversation();
-  const { mutate: acceptFriendRequest } = useAcceptFriendRequest();
+  const { mutate: acceptFriendRequest, isPending: isAccepting } =
+    useAcceptFriendRequest();
   const { mutate: declineFriendRequest, isPending: isDeclining } =
     useDeclineFriendRequest();
 
@@ -60,7 +62,7 @@ export const ListFriendsRequestPage = () => {
   };
 
   const handleCreateGroup = async (userId: string[]) => {
-    if (userId.length === 0 || isPending) {
+    if (userId.length === 0 || isCreatingGroup) {
       return;
     }
 
@@ -91,7 +93,7 @@ export const ListFriendsRequestPage = () => {
     acceptFriendRequest(requestId);
   };
 
-  if (isPending) {
+  if (isCreatingGroup) {
     return (
       <div className="flex h-full w-full items-center justify-center">
         <Spinner className="size-6" />
@@ -212,24 +214,17 @@ export const ListFriendsRequestPage = () => {
                               </button>
 
                               {type === TypeListFriendRequestLabel.received ? (
-                                <div className="mr-2 flex gap-2">
-                                  <Button
-                                    className="bg-button-success hover:bg-button-success-hover text-white"
-                                    onClick={() =>
-                                      handleAcceptFriendRequest(request._id)
-                                    }
-                                  >
-                                    Accept
-                                  </Button>
-                                  <Button
-                                    onClick={() => {
-                                      setSelectedRequestId(request._id);
-                                    }}
-                                    variant="outline"
-                                  >
-                                    Decline
-                                  </Button>
-                                </div>
+                                <ReceivedActionButton
+                                  requestId={request._id}
+                                  handleAcceptFriendRequest={
+                                    handleAcceptFriendRequest
+                                  }
+                                  handleRejectFriendRequest={() =>
+                                    setSelectedRequestId(request._id)
+                                  }
+                                  isAccepting={isAccepting}
+                                  isDeclining={isDeclining}
+                                />
                               ) : (
                                 <div className="mr-2 flex gap-2">
                                   <Badge status="pending" />
@@ -239,7 +234,7 @@ export const ListFriendsRequestPage = () => {
                                     }
                                     variant="outline"
                                   >
-                                    Cancel
+                                    {t("friends.requests.cancel")}
                                   </Button>
                                 </div>
                               )}

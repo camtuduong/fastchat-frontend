@@ -114,7 +114,9 @@
         "description": "This action cannot be undone.",
         "confirm": "Confirm",
         "cancel": "Cancel"
-      }
+      },
+      "accept": "Accept",
+      "decline": "Decline"
     },
     "blocked": {
       "label": "Blocked users",
@@ -152,7 +154,6 @@
     "searchByName": "Search by name or email...",
     "searchSticker": "Search sticker",
     "loading": "Loading...",
-    "cancel": "Cancel",
     "confirm": "Confirm",
     "confirming": "Confirming...",
     "noItems": "No items found.",
@@ -166,7 +167,12 @@
     "delete": "Delete",
     "rename": "Rename",
     "renaming": "Renaming...",
-    "linkCopied": "Link copied to clipboard!"
+    "linkCopied": "Link copied to clipboard!",
+    "all": "All",
+    "unread": "Unread",
+    "cancel": "Cancel",
+    "joined": "Joined at: {{time}}",
+    "createdAt": "Created at:"
   },
   "sidebar": {
     "favorite": "Favorite",
@@ -223,5 +229,13 @@
     "minutesAgo": "{{minutes}} minutes ago",
     "hoursAgo": "{{hours}} hours ago",
     "daysAgo": "{{days}} days ago"
+  },
+  "activity": {
+    "title": "Notifications",
+    "caughtUp": "You are all caught up",
+    "noNotifications": "New messages, mentions and friend requests will show up here.",
+    "markAllAsRead": "Mark all as read",
+    "markAsRead": "Mark as read",
+    "remove": "Remove"
   }
 }

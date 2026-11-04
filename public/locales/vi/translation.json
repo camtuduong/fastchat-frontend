@@ -107,7 +107,9 @@
       "noRequests": {
         "title": "Không có lời mời kết bạn",
         "description": "Bạn không có lời mời kết bạn nào."
-      }
+      },
+      "accept": "Chấp nhận",
+      "decline": "Từ chối"
     },
     "blocked": {
       "label": "Người dùng đã chặn",
@@ -159,7 +161,11 @@
     "delete": "Xóa",
     "rename": "Đổi tên",
     "renaming": "Đang đổi tên...",
-    "linkCopied": "Đã sao chép liên kết!"
+    "linkCopied": "Đã sao chép liên kết!",
+    "all": "Tất cả",
+    "unread": "Chưa đọc",
+    "joined": "Tham gia: {{time}}",
+    "createdAt": "Tạo lúc:"
   },
   "sidebar": {
     "favorite": "Yêu thích",
@@ -216,5 +222,12 @@
     "minutesAgo": "{{minutes}} phút trước",
     "hoursAgo": "{{hours}} giờ trước",
     "daysAgo": "{{days}} ngày trước"
+  },
+  "activity": {
+    "title": "Thông báo",
+    "caughtUp": "Bạn đã xem hết",
+    "noNotifications": "Tin nhắn mới, đề cập và lời mời kết bạn sẽ hiển thị ở đây.",
+    "markAsRead": "Đánh dấu là đã đọc",
+    "remove": "Xóa"
   }
 }

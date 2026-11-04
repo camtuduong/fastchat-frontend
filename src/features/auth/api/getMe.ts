@@ -2,5 +2,5 @@ import { api } from "@/services/api";
 
 export const getMe = async () => {
   const res = await api.get("/users/me");
-  return res.data;
+  return res.data.user;
 };

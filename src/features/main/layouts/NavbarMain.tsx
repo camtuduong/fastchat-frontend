@@ -1,14 +1,15 @@
 import { FooterNavbar } from "@/features/main/layouts/FooterNavbar";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
-
 import { MessageCircleMore, BookUser, User } from "lucide-react";
 import { useGetMe } from "@/features/auth/hooks/queries/useGetMe";
 import { useState } from "react";
 import { ProfileDialog } from "@/features/main/components/ProfileDialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ActivityDialog } from "@/features/main/components/ActivityDialog";
 
 export const Style = {
+  container: "bg-navbar z-50 flex w-12 flex-col items-center px-2 py-4",
   button: cn(
     "text-navbar-icon hover:bg-navbar-active flex cursor-pointer items-center justify-center rounded-md bg-navbar p-2",
   ),
@@ -17,6 +18,7 @@ export const Style = {
 export const NavbarHeader = () => {
   const { data: me } = useGetMe();
   const [profileOpen, setProfileOpen] = useState(false);
+  const [activityLogOpen, setActivityLogOpen] = useState(false);
 
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const navigate = useNavigate();
@@ -25,7 +27,7 @@ export const NavbarHeader = () => {
   const isFriends = pathname.startsWith("/friends");
 
   return (
-    <div className="bg-navbar z-50 flex w-12 flex-col items-center px-2 py-4">
+    <div className={Style.container}>
       <div className="flex flex-col items-center gap-4">
         <Avatar
           className="h-8 w-8 cursor-pointer"
@@ -54,8 +56,15 @@ export const NavbarHeader = () => {
         </div>
       </div>
 
-      <FooterNavbar setProfileOpen={setProfileOpen} />
+      <FooterNavbar
+        setProfileOpen={setProfileOpen}
+        setActivityLogOpen={setActivityLogOpen}
+      />
       <ProfileDialog open={profileOpen} onOpenChange={setProfileOpen} />
+      <ActivityDialog
+        open={activityLogOpen}
+        onOpenChange={setActivityLogOpen}
+      />
     </div>
   );
 };

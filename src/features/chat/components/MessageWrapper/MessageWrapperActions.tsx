@@ -64,10 +64,7 @@ export const MessageWrapperActions = ({
         {isMyMessage && (
           <>
             <DropdownMenuSeparator />
-            {/* <DropdownMenuItem onClick={() => {}}>
-              <Pencil />
-              Edit
-            </DropdownMenuItem> */}
+
             <DropdownMenuItem onClick={() => setOpenAlertDialog(true)}>
               <Trash2 />
               {t("common.delete")}
