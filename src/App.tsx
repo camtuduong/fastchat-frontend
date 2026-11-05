@@ -4,14 +4,19 @@ import { NavbarHeader } from "@/features/main/layouts/NavbarMain";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useSocketStore } from "@/stores/useSocketStore";
-import { Outlet } from "@tanstack/react-router";
+import { Outlet, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Toaster } from "sonner";
+import { Spinner } from "@/components/ui/spinner";
+import { useUserStore } from "@/stores/useUser";
 
 export function App() {
-  useGetMe();
+  const navigate = useNavigate();
+  const clear = useUserStore((state) => state.clear);
   const accessToken = useAuthStore((state) => state.accessToken);
   const { connectSocket, disconnectSocket } = useSocketStore();
+
+  const { data: me, isLoading, error } = useGetMe();
 
   useEffect(() => {
     if (accessToken) {
@@ -21,7 +26,21 @@ export function App() {
     return () => {
       disconnectSocket();
     };
-  }, [accessToken]);
+  }, [me, accessToken]);
+
+  if (me && error) {
+    useAuthStore.getState().clearAuth();
+    clear();
+    navigate({ to: "/login" });
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-full items-center justify-center">
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <ThemeProvider defaultTheme="system" storageKey="theme">
