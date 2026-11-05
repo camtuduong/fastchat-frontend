@@ -213,7 +213,27 @@ export const activeStatus = (status: string, lastActive: string) => {
 
   if (status === "offline" && (lastActive === null || lastActive === undefined))
     return "";
-  return i18n.t("timeAgo.lastActive", { time: timeAgo(lastActive) });
+
+  const activeDate = new Date(lastActive);
+  if (Number.isNaN(activeDate.getTime())) return "";
+
+  const now = new Date();
+  const locale = i18n.resolvedLanguage ?? i18n.language;
+  const isToday =
+    activeDate.getFullYear() === now.getFullYear() &&
+    activeDate.getMonth() === now.getMonth() &&
+    activeDate.getDate() === now.getDate();
+
+  if (isToday) {
+    const time = activeDate.toLocaleTimeString(locale, {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    return i18n.t("timeAgo.lastActiveAt", { time });
+  }
+
+  const date = activeDate.toLocaleDateString(locale, { dateStyle: "medium" });
+  return i18n.t("timeAgo.lastActiveOn", { date });
 };
 
 export const lastActive = (members: UserActivity[]) => {

@@ -217,7 +217,8 @@
   },
   "timeAgo": {
     "activeNow": "Đang hoạt động",
-    "lastActive": "Hoạt động lần cuối {{time}}",
+    "lastActiveAt": "Hoạt động lần cuối lúc {{time}}",
+    "lastActiveOn": "Hoạt động lần cuối vào {{date}}",
     "justNow": "Vừa xong",
     "minutesAgo": "{{minutes}} phút trước",
     "hoursAgo": "{{hours}} giờ trước",

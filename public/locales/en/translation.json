@@ -224,7 +224,8 @@
   },
   "timeAgo": {
     "activeNow": "Active now",
-    "lastActive": "Last active {{time}}",
+    "lastActiveAt": "Last active at {{time}}",
+    "lastActiveOn": "Last active on {{date}}",
     "justNow": "Just now",
     "minutesAgo": "{{minutes}} minutes ago",
     "hoursAgo": "{{hours}} hours ago",
