@@ -1,13 +1,5 @@
-import type { Attachment } from "@/features/chat/types/Message";
+import type { MessageProps } from "@/features/chat/types/Message";
 import { api } from "@/services/api";
-
-export type Props = {
-  conversationId: string;
-  receiverId?: string;
-  content?: string;
-  attachments?: Attachment[];
-  replyTo?: string;
-};
 
 export const sendMessage = async ({
   conversationId,
@@ -15,13 +7,15 @@ export const sendMessage = async ({
   content,
   attachments,
   replyTo,
-}: Props) => {
+  contentJson,
+}: MessageProps) => {
   const res = await api.post("/messages", {
     conversationId,
     receiverId,
     content,
     attachments,
     replyTo,
+    contentJson,
   });
   return res.data;
 };

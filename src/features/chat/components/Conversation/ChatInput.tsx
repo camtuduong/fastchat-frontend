@@ -1,12 +1,13 @@
 import { EditorContent, useEditor } from "@tiptap/react";
-import Document from "@tiptap/extension-document";
-import Paragraph from "@tiptap/extension-paragraph";
-import Text from "@tiptap/extension-text";
+import StarterKit from "@tiptap/starter-kit";
 import Mention from "@tiptap/extension-mention";
 import { splitBlock } from "@tiptap/pm/commands";
-import { Placeholder, UndoRedo } from "@tiptap/extensions";
+import { Placeholder } from "@tiptap/extensions";
+import Highlight from "@tiptap/extension-highlight";
+import Typography from "@tiptap/extension-typography";
 import { useEffect, useMemo, useRef } from "react";
 import type { Editor, JSONContent } from "@tiptap/react";
+
 import {
   createSuggestion,
   type MentionItem,
@@ -32,7 +33,7 @@ const STYLES = {
 
 export const ChatInput = ({
   className,
-  message: initialMessage,
+  message,
   setMessage,
   onChange,
   onHeightChange,
@@ -63,10 +64,9 @@ export const ChatInput = ({
 
   const editor = useEditor({
     extensions: [
-      Document,
-      Paragraph,
-      Text,
-      UndoRedo,
+      StarterKit,
+      Highlight,
+      Typography,
       Mention.configure({
         HTMLAttributes: {
           class: "mention",
@@ -78,7 +78,7 @@ export const ChatInput = ({
       }),
     ],
 
-    content: initialMessage ?? "",
+    content: message ?? "",
 
     editorProps: {
       attributes: {
