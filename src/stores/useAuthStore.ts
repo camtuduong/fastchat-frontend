@@ -8,11 +8,17 @@ export const useAuthStore = create<AuthState>()(
       accessToken: null,
       userId: null,
       displayName: null,
-      isLoading: false,
+      avatarUrl: null,
 
       clearAuth: () =>
-        set({ accessToken: null, userId: null, displayName: null }),
-      setUser: (userId, displayName) => set({ userId, displayName }),
+        set({
+          accessToken: null,
+          userId: null,
+          displayName: null,
+          avatarUrl: null,
+        }),
+      setUser: (userId, displayName, avatarUrl) =>
+        set({ userId, displayName, avatarUrl }),
     }),
     {
       name: "auth-storage",
