@@ -1,3 +1,5 @@
+import type { JSONContent } from "@tiptap/react";
+
 interface Message {
   messages: MessageItem[];
   nextCursor: string | null;
@@ -7,6 +9,8 @@ interface MessageItem {
   _id: string;
   sender: Sender;
   content: string;
+  contentJson?: JSONContent;
+  mentionedUserIds?: string[];
   conversationId: string;
   system:
     | {
@@ -56,6 +60,16 @@ interface Emoji {
   unified: string;
   native: string;
 }
+
+type MessageProps = {
+  conversationId: string;
+  receiverId?: string;
+  content?: string;
+  attachments?: Attachment[];
+  replyTo?: string;
+  contentJson?: JSONContent;
+};
+
 export type {
   Message,
   MessageItem,
@@ -64,4 +78,5 @@ export type {
   ActionType,
   Emoji,
   AttachmentType,
+  MessageProps,
 };

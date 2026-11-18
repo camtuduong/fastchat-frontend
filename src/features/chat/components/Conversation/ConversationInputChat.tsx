@@ -7,9 +7,7 @@ import { useSendMessage } from "@/features/chat/hooks/useSendMessage";
 import type { Attachment } from "@/features/chat/types/Message";
 import { cn } from "@/lib/utils";
 
-import { Eye, X } from "lucide-react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import { X } from "lucide-react";
 import type {
   PreviewImage,
   StickerData,
@@ -27,7 +25,10 @@ import type { MentionItem } from "@/features/chat/utils/Suggestion";
 import { useTextingStore } from "@/stores/useTextingStore";
 import { ChatInput } from "@/features/chat/components/Conversation/ChatInput";
 import type { Editor, JSONContent } from "@tiptap/react";
-import { getTextFromContent } from "@/features/chat/utils/getTextFromContent";
+import {
+  getTextFromContent,
+  trimEmptyParagraphs,
+} from "@/features/chat/utils/getTextFromContent";
 import { useConversationStore } from "@/stores/useConversationStore";
 import { StickerPicker } from "@/features/chat/components/StickerPicker";
 
@@ -88,7 +89,6 @@ export const ConversationInputChat = ({
 
   const [showPicker, setShowPicker] = useState(false);
   const [textFormatter, setTextFormatter] = useState(false);
-  const [showMarkDown, setShowMarkDown] = useState(false);
   const [showStickerPicker, setShowStickerPicker] = useState(false);
 
   const [preview, setPreview] = useState<PendingPreview | null>(null);
@@ -142,25 +142,9 @@ export const ConversationInputChat = ({
   const { mutateAsync: uploadAttachments, isPending: isUploading } =
     useUploadAttachments();
 
-  const wrapSelection = (prefix: string, suffix = prefix) => {
-    const editor = editorRef.current;
-    if (!editor) return;
-
-    const { from, to } = editor.state.selection;
-    const selected = editor.state.doc.textBetween(from, to, "\n");
-
-    editor
-      .chain()
-      .focus()
-      .insertContentAt({ from, to }, prefix + selected + suffix)
-      .setTextSelection({
-        from: from + prefix.length,
-        to: to + prefix.length,
-      })
-      .run();
-  };
-
   const handleSendMessage = async () => {
+    if (message === null) return;
+
     const content = getTextFromContent(message).trim();
     let attachments: Attachment[] = [];
     const replyTo = replyMessage?._id;
@@ -220,6 +204,7 @@ export const ConversationInputChat = ({
         {
           conversationId: conversationId,
           content,
+          contentJson: trimEmptyParagraphs(message),
           replyTo,
         },
         {
@@ -479,49 +464,23 @@ export const ConversationInputChat = ({
 
           {/* input content message  */}
           <div className={Style.inputContainer}>
-            {!showMarkDown ? (
-              <>
-                <ChatInput
-                  message={message}
-                  setMessage={setMessage}
-                  onChange={handleTyping}
-                  onSubmit={submitMessage}
-                  placeholder={t("chat.inputPlaceholder")}
-                  mentionItems={mentionItems}
-                  editorRef={editorRef}
-                  onHeightChange={(scrollHeight) =>
-                    setIsExpanded((prev) => {
-                      if (!prev && scrollHeight > 90) return true; // expand khi vượt 90px
-                      if (prev && scrollHeight <= 63) return false; // collapse khi về 1 dòng
-                      return prev;
-                    })
-                  }
-                  className={cn(Style.input, textFormatter ? "pr-10" : "")}
-                />
-              </>
-            ) : (
-              <div className={cn(Style.input, "markdown-other p-4 text-sm")}>
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {getTextFromContent(message)}
-                </ReactMarkdown>
-              </div>
-            )}
-            {/* nút xem formatted message */}
-            {textFormatter && (
-              <button
-                type="button"
-                className={cn(
-                  Style.eyeIcon,
-                  showMarkDown ? "bg-accent/5 text-accent-foreground" : "",
-                )}
-                onClick={() => setShowMarkDown((prev) => !prev)}
-              >
-                <Eye
-                  className={cn(showMarkDown ? "text-destructive" : "")}
-                  size={20}
-                />
-              </button>
-            )}
+            <ChatInput
+              message={message}
+              setMessage={setMessage}
+              onChange={handleTyping}
+              onSubmit={submitMessage}
+              placeholder={t("chat.inputPlaceholder")}
+              mentionItems={mentionItems}
+              editorRef={editorRef}
+              onHeightChange={(scrollHeight) =>
+                setIsExpanded((prev) => {
+                  if (!prev && scrollHeight > 90) return true; // expand khi vượt 90px
+                  if (prev && scrollHeight <= 63) return false; // collapse khi về 1 dòng
+                  return prev;
+                })
+              }
+              className={cn(Style.input, textFormatter ? "pr-10" : "")}
+            />
           </div>
 
           {/* button actions */}
@@ -531,16 +490,10 @@ export const ConversationInputChat = ({
               textFormatter ? "justify-between" : "justify-end self-end",
             )}
           >
-            {textFormatter && (
-              <FormatterActions
-                showMarkDown={showMarkDown}
-                wrapSelection={wrapSelection}
-              />
-            )}
+            {textFormatter && <FormatterActions editorRef={editorRef} />}
             <InputActions
               setTextFormatter={setTextFormatter}
               triggerPickerRef={triggerPickerRef}
-              showMarkDown={showMarkDown}
               setShowPicker={setShowPicker}
               setShowStickerPicker={setShowStickerPicker}
               isPending={isPending}
@@ -549,6 +502,7 @@ export const ConversationInputChat = ({
               showPicker={showPicker}
               onChange={handleImgChange}
               isUploading={isUploading}
+              content={getTextFromContent(message).trim()}
             />
           </div>
         </div>

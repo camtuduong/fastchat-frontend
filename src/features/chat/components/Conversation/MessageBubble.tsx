@@ -1,10 +1,8 @@
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-
 import {
   bubbleClass,
   typeMessageAttachmentTypeToLabel,
 } from "@/features/chat/constant";
+import Highlight from "@tiptap/extension-highlight";
 import type { MessageUI } from "@/features/chat/types/bubbleChat";
 import { cn } from "@/lib/utils";
 import { MessageContentWrapper } from "@/features/chat/layouts/MessageContentWrapper";
@@ -16,6 +14,10 @@ import { DATE_FORMAT } from "@/utils/constant";
 import { format } from "date-fns/format";
 import { ThreadMessageBubble } from "@/features/chat/components/Conversation/ThreadMessageBubble";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Typography from "@tiptap/extension-typography";
+import Mention from "@tiptap/extension-mention";
 
 type Props = {
   message: MessageUI;
@@ -68,6 +70,22 @@ export const MessageBubble = ({
         return null;
     }
   };
+
+  const editor = useEditor({
+    editable: false,
+    extensions: [
+      StarterKit.configure({ trailingNode: false }),
+      Highlight,
+      Typography,
+      Mention.configure({
+        HTMLAttributes: {
+          class: "mention",
+        },
+      }),
+    ],
+
+    content: message.contentJson ?? "",
+  });
 
   return (
     <div className={cn(Style.container)}>
@@ -122,9 +140,7 @@ export const MessageBubble = ({
               </div>
             ) : (
               <div className="px-2 py-1 wrap-break-word whitespace-pre-wrap">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {message.content.trim()}
-                </ReactMarkdown>
+                <EditorContent editor={editor} className="min-w-0 flex-1" />
               </div>
             )}
           </div>

@@ -2,11 +2,11 @@ import { FooterNavbar } from "@/features/main/layouts/FooterNavbar";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 import { MessageCircleMore, BookUser, User } from "lucide-react";
-import { useGetMe } from "@/features/auth/hooks/queries/useGetMe";
 import { useState } from "react";
 import { ProfileDialog } from "@/features/main/components/ProfileDialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ActivityDialog } from "@/features/main/components/ActivityDialog";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 export const Style = {
   container: "bg-navbar z-50 flex w-12 flex-col items-center px-2 py-4",
@@ -16,7 +16,9 @@ export const Style = {
 };
 
 export const NavbarHeader = () => {
-  const { data: me } = useGetMe();
+  const userId = useAuthStore((state) => state.userId);
+  const displayName = useAuthStore((state) => state.displayName);
+
   const [profileOpen, setProfileOpen] = useState(false);
   const [activityLogOpen, setActivityLogOpen] = useState(false);
 
@@ -33,9 +35,12 @@ export const NavbarHeader = () => {
           className="h-8 w-8 cursor-pointer"
           onClick={() => setProfileOpen(true)}
         >
-          <AvatarImage src={me?.avatarUrl} alt="@shadcn" />
-          <AvatarFallback colorSeed={me?.username}>
-            {me?.username[0].toUpperCase() || <User />}
+          <AvatarImage
+            src={userId ? `/api/users/${userId}/avatar` : ""}
+            alt="@shadcn"
+          />
+          <AvatarFallback colorSeed={displayName ?? ""}>
+            {displayName ? displayName[0].toUpperCase() : <User />}
           </AvatarFallback>
         </Avatar>
 

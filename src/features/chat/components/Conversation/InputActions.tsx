@@ -28,11 +28,11 @@ type Props = {
   isPending: boolean;
   isTextFormatter?: boolean;
   setShowStickerPicker: React.Dispatch<React.SetStateAction<boolean>>;
-  showMarkDown: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   showStickerPicker?: boolean;
   showPicker?: boolean;
   isUploading?: boolean;
+  content: string;
 };
 
 export const InputActions = ({
@@ -41,12 +41,12 @@ export const InputActions = ({
   setShowPicker,
   isPending,
   isTextFormatter,
-  showMarkDown,
   onChange,
   setShowStickerPicker,
   showStickerPicker,
   showPicker,
   isUploading,
+  content,
 }: Props) => {
   return (
     <div className={Style.container}>
@@ -65,15 +65,10 @@ export const InputActions = ({
         className="data-vertical:self-center data-[orientation=vertical]:h-6"
       />
       <div className="flex gap-1">
-        <UploadImg
-          onChange={onChange}
-          className={cn(Style.actionButton(showMarkDown))}
-          disabled={showMarkDown}
-        />
+        <UploadImg onChange={onChange} className={cn(Style.actionButton())} />
 
         <Button
           ref={triggerPickerRef}
-          disabled={showMarkDown}
           type="button"
           onClick={() => {
             setShowStickerPicker(false);
@@ -86,7 +81,6 @@ export const InputActions = ({
 
         <Button
           type="button"
-          disabled={showMarkDown}
           onClick={() => {
             setShowPicker(false);
             setShowStickerPicker?.((prev) => !prev);
@@ -97,7 +91,7 @@ export const InputActions = ({
         </Button>
 
         <Button
-          disabled={showMarkDown || isPending || isUploading}
+          disabled={isPending || isUploading || content === ""}
           type="submit"
           className="bg-composer-send text-composer-send-foreground hover:bg-composer-send-hover"
         >
