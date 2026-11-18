@@ -22,7 +22,9 @@ export const useGetMe = () => {
 
   useEffect(() => {
     if (data?.username) {
-      useAuthStore.getState().setUser(data._id, data.displayName || null);
+      useAuthStore
+        .getState()
+        .setUser(data._id, data.displayName, data.avatarUrl || null);
     }
   }, [data]);
 

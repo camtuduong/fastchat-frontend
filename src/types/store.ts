@@ -9,10 +9,14 @@ export interface AuthState {
   accessToken: string | null;
   userId: string | null;
   displayName: string | null;
-  isLoading: boolean;
+  avatarUrl: string | null;
 
   clearAuth: () => void;
-  setUser: (userId: string, displayName: string | null) => void;
+  setUser: (
+    userId: string,
+    displayName: string | null,
+    avatarUrl: string | null,
+  ) => void;
 }
 
 export interface SocketState {

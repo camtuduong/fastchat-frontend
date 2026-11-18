@@ -16,8 +16,8 @@ export const Style = {
 };
 
 export const NavbarHeader = () => {
-  const userId = useAuthStore((state) => state.userId);
   const displayName = useAuthStore((state) => state.displayName);
+  const avatarUrl = useAuthStore((state) => state.avatarUrl);
 
   const [profileOpen, setProfileOpen] = useState(false);
   const [activityLogOpen, setActivityLogOpen] = useState(false);
@@ -35,10 +35,7 @@ export const NavbarHeader = () => {
           className="h-8 w-8 cursor-pointer"
           onClick={() => setProfileOpen(true)}
         >
-          <AvatarImage
-            src={userId ? `/api/users/${userId}/avatar` : ""}
-            alt="@shadcn"
-          />
+          <AvatarImage src={avatarUrl ?? ""} alt="@shadcn" />
           <AvatarFallback colorSeed={displayName ?? ""}>
             {displayName ? displayName[0].toUpperCase() : <User />}
           </AvatarFallback>
