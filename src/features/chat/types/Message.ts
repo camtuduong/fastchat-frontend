@@ -68,6 +68,7 @@ type MessageProps = {
   attachments?: Attachment[];
   replyTo?: string;
   contentJson?: JSONContent;
+  mentionedUserIds?: string[];
 };
 
 export type {

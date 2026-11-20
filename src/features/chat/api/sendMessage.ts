@@ -8,6 +8,7 @@ export const sendMessage = async ({
   attachments,
   replyTo,
   contentJson,
+  mentionedUserIds,
 }: MessageProps) => {
   const res = await api.post("/messages", {
     conversationId,
@@ -16,6 +17,7 @@ export const sendMessage = async ({
     attachments,
     replyTo,
     contentJson,
+    mentionedUserIds,
   });
   return res.data;
 };

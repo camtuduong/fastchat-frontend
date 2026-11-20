@@ -22,6 +22,21 @@ export const trimEmptyParagraphs = (content: JSONContent): JSONContent => {
   return { ...content, content: nodes.slice(start, end) };
 };
 
+export const getMentionInNode = (
+  node: JSONContent,
+  result: Set<string> = new Set(),
+): Set<string> => {
+  if (!node) return result;
+
+  if (node.type === "mention" && node.attrs?.id != null) {
+    result.add(node.attrs.id);
+  }
+
+  node.content?.forEach((child) => getMentionInNode(child, result));
+
+  return result;
+};
+
 // Mỗi paragraph tương ứng một dòng
 export const getTextFromContent = (content: JSONContent | null): string => {
   if (!content) return "";

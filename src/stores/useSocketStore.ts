@@ -10,6 +10,7 @@ import { messageNotificationSound } from "@/lib/notificationSound";
 import { useConversationStore } from "@/stores/useConversationStore";
 import { useTextingStore } from "@/stores/useTextingStore";
 import type { ThreadSurface } from "@/features/chat/types/thread";
+import type { Notification } from "@/features/main/types/activity";
 
 const baseUrl = import.meta.env.VITE_SOCKET_URL;
 
@@ -364,6 +365,25 @@ export const useSocketStore = create<SocketState>((set, get) => ({
       }
 
       useTextingStore.getState().clearUserTexting(conversationId, userId);
+    });
+
+    // noti
+    socket.on("activity-logs", ({ activity, unReadCount }) => {
+      console.log("Received activity logs:", activity, unReadCount);
+      queryClient.setQueriesData<{ notification: Notification }>(
+        { queryKey: ["notification"] },
+        (oldData) => {
+          if (!oldData) return oldData;
+          return {
+            ...oldData,
+            notification: {
+              ...oldData.notification,
+              unReadCount,
+            },
+          };
+        },
+      );
+      queryClient.invalidateQueries({ queryKey: ["notification"] });
     });
   },
 

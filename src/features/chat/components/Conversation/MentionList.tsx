@@ -3,7 +3,10 @@ import type {
   SuggestionKeyDownProps,
   SuggestionProps,
 } from "@tiptap/suggestion";
-import type { MentionAttrs, MentionItem } from "@/features/chat/utils/Suggestion";
+import type {
+  MentionAttrs,
+  MentionItem,
+} from "@/features/chat/utils/Suggestion";
 
 export type MentionListHandle = {
   onKeyDown: (props: SuggestionKeyDownProps) => boolean;

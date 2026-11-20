@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useLogout } from "@/features/auth/hooks/useLogout";
 import { Style } from "@/features/main/layouts/NavbarMain";
+import type { Notification } from "@/features/main/types/activity";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/providers/theme-provider";
 import { useUserStore } from "@/stores/useUser";
@@ -32,13 +33,14 @@ import { useTranslation } from "react-i18next";
 type Props = {
   setProfileOpen: Dispatch<React.SetStateAction<boolean>>;
   setActivityLogOpen: Dispatch<React.SetStateAction<boolean>>;
-};
-const notifications = {
-  ownerId: "123",
-  unreadCount: 5,
+  notification: Notification;
 };
 
-export const FooterNavbar = ({ setProfileOpen, setActivityLogOpen }: Props) => {
+export const FooterNavbar = ({
+  setProfileOpen,
+  setActivityLogOpen,
+  notification,
+}: Props) => {
   const { t, i18n } = useTranslation();
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
@@ -72,7 +74,7 @@ export const FooterNavbar = ({ setProfileOpen, setActivityLogOpen }: Props) => {
         >
           <BellIcon />
         </button>
-        {notifications.unreadCount > 0 && (
+        {notification.unReadCount > 0 && (
           <div className="absolute top-2 right-2.25 h-2 w-2 rounded-full bg-red-500"></div>
         )}
       </div>

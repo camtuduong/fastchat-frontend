@@ -1081,7 +1081,7 @@
   padding: 0.1rem 0.3rem;
 }
 
-.tiptap .dropdown-menu {
+.dropdown-menu {
   background: var(--popover);
   color: var(--popover-foreground);
   border: 1px solid var(--border);
@@ -1095,7 +1095,7 @@
   position: relative;
 }
 
-.tiptap .dropdown-menu button {
+.dropdown-menu button {
   align-items: center;
   background-color: transparent;
   display: flex;
@@ -1105,9 +1105,8 @@
   border-radius: 0.4rem;
   color: inherit;
   cursor: pointer;
-  padding: 0.35rem 0.5rem;>
-
-  &:hover,
+  padding: 0.35rem 0.5rem;
+  > &:hover,
   &:hover.is-selected,
   &.is-selected {
     background-color: var(--popover-accent);
