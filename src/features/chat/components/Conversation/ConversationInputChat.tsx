@@ -26,6 +26,7 @@ import { useTextingStore } from "@/stores/useTextingStore";
 import { ChatInput } from "@/features/chat/components/Conversation/ChatInput";
 import type { Editor, JSONContent } from "@tiptap/react";
 import {
+  getMentionInNode,
   getTextFromContent,
   trimEmptyParagraphs,
 } from "@/features/chat/utils/getTextFromContent";
@@ -199,6 +200,7 @@ export const ConversationInputChat = ({
         },
       );
     }
+
     if (content) {
       await sendMessage(
         {
@@ -206,6 +208,7 @@ export const ConversationInputChat = ({
           content,
           contentJson: trimEmptyParagraphs(message),
           replyTo,
+          mentionedUserIds: [...getMentionInNode(trimEmptyParagraphs(message))],
         },
         {
           onSettled: () => {
@@ -214,6 +217,7 @@ export const ConversationInputChat = ({
         },
       );
     }
+
     setPreview(null); // Clear the preview after sending
     editorRef.current?.commands.clearContent();
     setMessage(null);

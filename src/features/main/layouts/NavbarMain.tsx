@@ -7,6 +7,7 @@ import { ProfileDialog } from "@/features/main/components/ProfileDialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ActivityDialog } from "@/features/main/components/ActivityDialog";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { useGetNotification } from "@/features/main/hooks/queries/useGetNotification";
 
 export const Style = {
   container: "bg-navbar z-50 flex w-12 flex-col items-center px-2 py-4",
@@ -27,6 +28,10 @@ export const NavbarHeader = () => {
 
   const isChat = pathname.startsWith("/chat");
   const isFriends = pathname.startsWith("/friends");
+
+  const { data: notificationData } = useGetNotification();
+
+  if (!notificationData) return null;
 
   return (
     <div className={Style.container}>
@@ -61,11 +66,14 @@ export const NavbarHeader = () => {
       <FooterNavbar
         setProfileOpen={setProfileOpen}
         setActivityLogOpen={setActivityLogOpen}
+        notification={notificationData}
       />
+
       <ProfileDialog open={profileOpen} onOpenChange={setProfileOpen} />
       <ActivityDialog
         open={activityLogOpen}
         onOpenChange={setActivityLogOpen}
+        notification={notificationData}
       />
     </div>
   );

@@ -1,5 +1,5 @@
 interface ActivityLog {
-  id: string;
+  _id: string;
   type: ActivityLogType;
   sender: {
     userId: number;
@@ -22,4 +22,10 @@ type ActivityLogType =
   | "received_friend_request"
   | "friend_request_accepted";
 
-export type { ActivityLog, ActivityLogType };
+type Notification = {
+  _id: string;
+  ownerId: string;
+  unReadCount: number;
+};
+
+export type { ActivityLog, ActivityLogType, Notification };
