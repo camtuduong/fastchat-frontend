@@ -10,7 +10,7 @@ import type { SidebarStatusType } from "@/types/store";
 
 const GIF_DEFAULT_QUERY = ""; // Giá trị mặc định cho truy vấn tìm kiếm GIF
 const GIF_PICKER_LIMIT = 24; // Số lượng GIF hiển thị trong picker
-const GIF_FORMAT_FILTER = "gif"; // Định dạng GIF trong picker
+const GIF_FORMAT_FILTER = "webm"; // Định dạng GIF trong picker
 const GIF_CONTENT_FILTER = "high"; // Mức độ lọc nội dung GIF trong picker (high, medium, low)
 
 export {

@@ -67,3 +67,7 @@ export type PreviewImage = {
   file: File;
   url: string;
 };
+
+export type ComposerAttachment =
+  | { type: "sticker"; data: StickerSelected }
+  | { type: "image"; data: PreviewImage[] };

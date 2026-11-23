@@ -38,7 +38,7 @@ const Style = {
       type === typeMessageAttachmentTypeToLabel.sticker &&
         "hover:bg-attachment-bg/5",
     ),
-  attachmentSticker: "h-auto w-32 rounded-md object-cover",
+  attachmentSticker: "h-auto w-32 rounded-md object-cover hover:bg-accent",
   replyMessageContainer:
     "m-0 flex flex-col rounded-tr-sm rounded-br-sm rounded-bl-xl rounded-tl-xl bg-gray-100 p-2 mb-2",
 };
@@ -48,13 +48,9 @@ export const MessageBubble = ({
   isMyMessage,
   participantIds,
 }: Props) => {
+  const transferDate = format(new Date(message?.createdAt || ""), DATE_FORMAT);
   const renderAttachmentByType = (attachments: Attachment[]) => {
     const attachmentType = attachments[0].type;
-    const transferDate = format(
-      new Date(message?.createdAt || ""),
-      DATE_FORMAT,
-    );
-
     switch (attachmentType) {
       case typeMessageAttachmentTypeToLabel.image:
         return <RenderImgs attachments={attachments} date={transferDate} />;
@@ -139,7 +135,10 @@ export const MessageBubble = ({
                 {/* 1 message chỉ có 1 cái type attachment nên dù có list attachment thì chỉ cần check cái attachment đầu tiên */}
               </div>
             ) : (
-              <div className="px-2 py-1 wrap-break-word whitespace-pre-wrap">
+              <div
+                title={transferDate}
+                className="px-2 py-1 wrap-break-word whitespace-pre-wrap"
+              >
                 <EditorContent editor={editor} className="min-w-0 flex-1" />
               </div>
             )}

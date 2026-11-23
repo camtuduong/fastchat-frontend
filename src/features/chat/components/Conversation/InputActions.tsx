@@ -11,6 +11,8 @@ import {
   Sticker,
 } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
+import type { JSONContent } from "@tiptap/react";
+import type { ComposerAttachment } from "@/features/chat/types/sticker";
 
 const Style = {
   container: "flex items-center gap-1",
@@ -32,7 +34,8 @@ type Props = {
   showStickerPicker?: boolean;
   showPicker?: boolean;
   isUploading?: boolean;
-  content: string;
+  content: JSONContent | null;
+  attachment?: ComposerAttachment | null;
 };
 
 export const InputActions = ({
@@ -47,6 +50,7 @@ export const InputActions = ({
   showPicker,
   isUploading,
   content,
+  attachment,
 }: Props) => {
   return (
     <div className={Style.container}>
@@ -91,7 +95,7 @@ export const InputActions = ({
         </Button>
 
         <Button
-          disabled={isPending || isUploading || content === ""}
+          disabled={isPending || isUploading || (!content && !attachment)}
           type="submit"
           className="bg-composer-send text-composer-send-foreground hover:bg-composer-send-hover"
         >
