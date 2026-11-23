@@ -4,6 +4,7 @@ import { ConversationBody } from "@/features/chat/components/Conversation/Conver
 
 import type { ReactVirtualizer } from "@tanstack/react-virtual";
 import type { MessageUI } from "@/features/chat/types/bubbleChat";
+import { DropZone } from "@/components/form/DropZone";
 
 type Props = {
   isLoading?: boolean;
@@ -36,7 +37,7 @@ export const ConversationChatLayout = ({
   bodyClassName,
 }: Props) => {
   return (
-    <>
+    <DropZone>
       <ConversationBody
         key={conversationId}
         isLoading={isLoading}
@@ -68,6 +69,6 @@ export const ConversationChatLayout = ({
         virtualizer={virtualizer}
         setHasNewMessage={setHasNewMessage}
       />
-    </>
+    </DropZone>
   );
 };

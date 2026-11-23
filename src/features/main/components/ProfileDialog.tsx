@@ -17,6 +17,7 @@ import { useUploadAvatar } from "@/features/main/hooks/useUploadAvatar";
 import { useTranslation } from "react-i18next";
 import { format } from "date-fns";
 import { DATE_FORMAT } from "@/utils/constant";
+import { Spinner } from "@/components/ui/spinner";
 type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -28,7 +29,8 @@ export const ProfileDialog = ({ open, onOpenChange }: Props) => {
   const firstName = me?.displayName?.split(" ")[0] || "";
   const lastName = me?.displayName?.split(" ").slice(1).join(" ") || "";
 
-  const { mutateAsync: uploadAvatar } = useUploadAvatar();
+  const { mutateAsync: uploadAvatar, isPending: isUploading } =
+    useUploadAvatar();
 
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -50,8 +52,18 @@ export const ProfileDialog = ({ open, onOpenChange }: Props) => {
           <DialogHeader className="flex flex-row items-center gap-4">
             <div className="relative h-18 w-18">
               <Avatar className="h-18 w-18">
-                <AvatarImage src={me.avatarUrl} alt="@shadcn" />
-                <AvatarFallback colorSeed={me.displayName}>CN</AvatarFallback>
+                {isUploading ? (
+                  <div className="bg-opacity-50 bg-accent absolute inset-0 flex items-center justify-center rounded-full">
+                    <Spinner className="h-6 w-6 text-white" />
+                  </div>
+                ) : (
+                  <>
+                    <AvatarImage src={me.avatarUrl} alt="@shadcn" />
+                    <AvatarFallback colorSeed={me.displayName}>
+                      CN
+                    </AvatarFallback>
+                  </>
+                )}
               </Avatar>
               <UploadAvatar handleFileChange={handleFileChange} />
             </div>

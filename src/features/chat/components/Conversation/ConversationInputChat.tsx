@@ -9,9 +9,8 @@ import { cn } from "@/lib/utils";
 
 import { X } from "lucide-react";
 import type {
-  PreviewImage,
   StickerData,
-  StickerSelected,
+  ComposerAttachment,
 } from "@/features/chat/types/sticker";
 import { AlertDialog } from "@/features/chat/components/AlertDialog";
 import { AttachmentsReview } from "@/features/chat/components/Conversation/AttachmentsReview";
@@ -32,6 +31,7 @@ import {
 } from "@/features/chat/utils/getTextFromContent";
 import { useConversationStore } from "@/stores/useConversationStore";
 import { StickerPicker } from "@/features/chat/components/StickerPicker";
+import { useAttachmentStore } from "@/stores/useAttachmentStore";
 
 const Style = {
   container: "relative flex items-end gap-2 p-4 pt-2 pb-8",
@@ -58,16 +58,6 @@ const EmojiPicker = lazy(() =>
   ),
 );
 
-export type PendingPreview =
-  | {
-      type: "sticker";
-      data: StickerSelected;
-    }
-  | {
-      type: "image";
-      data: PreviewImage[];
-    };
-
 type Props = {
   conversationId: string | undefined;
   virtualizer: ReactVirtualizer<HTMLDivElement, HTMLDivElement>;
@@ -84,6 +74,7 @@ export const ConversationInputChat = ({
   }
   const { t } = useTranslation();
   const [message, setMessage] = useState<JSONContent | null>(null);
+
   const editorRef = useRef<Editor | null>(null);
 
   const [isExpanded, setIsExpanded] = useState(false);
@@ -92,13 +83,7 @@ export const ConversationInputChat = ({
   const [textFormatter, setTextFormatter] = useState(false);
   const [showStickerPicker, setShowStickerPicker] = useState(false);
 
-  const [preview, setPreview] = useState<PendingPreview | null>(null);
-  const [pendingPreview, setPendingPreview] = useState<PendingPreview | null>(
-    null,
-  );
-
   //==> At any given time, only one image can be displayed: a sticker or images.
-  const [openAlertDialog, setOpenAlertDialog] = useState(false);
 
   const isTypingRef = useRef(false);
   const stopTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -126,6 +111,19 @@ export const ConversationInputChat = ({
   const replyMessage = useMessageStore((state) => state.replyMessage);
   const clearReplyMessage = useMessageStore((state) => state.clearReplyMessage);
 
+  const addImages = useAttachmentStore((state) => state.addImages);
+  const attachment = useAttachmentStore((state) => state.attachment);
+  const pendingAttachment = useAttachmentStore(
+    (state) => state.pendingAttachment,
+  );
+  const removeImage = useAttachmentStore((state) => state.removeImage);
+  const selectSticker = useAttachmentStore((state) => state.selectSticker);
+  const confirmReplace = useAttachmentStore((state) => state.confirmReplace);
+  const cancelReplace = useAttachmentStore((state) => state.cancelReplace);
+  const clearAttachments = useAttachmentStore(
+    (state) => state.clearAttachments,
+  );
+
   // Danh sách người có thể @mention: thành viên cuộc trò chuyện (trừ bản thân)
   const mentionItems = useMemo<MentionItem[]>(
     () =>
@@ -144,24 +142,19 @@ export const ConversationInputChat = ({
     useUploadAttachments();
 
   const handleSendMessage = async () => {
-    if (message === null) return;
+    if (!message && !attachment) return;
 
     const content = getTextFromContent(message).trim();
     let attachments: Attachment[] = [];
     const replyTo = replyMessage?._id;
 
-    if (
-      (content === "" && !preview) ||
-      isPending ||
-      isUploading ||
-      isSendingRef.current
-    ) {
+    if (isPending || isUploading || isSendingRef.current) {
       return;
     }
 
-    if (preview) {
-      if (preview?.type === "image" && preview.data.length > 0) {
-        const res = await handleUploadAttachment(preview);
+    if (attachment) {
+      if (attachment?.type === "image" && attachment.data.length > 0) {
+        const res = await handleUploadAttachment(attachment);
         if (res) {
           attachments = res.urls.map((url) => ({
             id: url,
@@ -172,13 +165,13 @@ export const ConversationInputChat = ({
         }
       }
 
-      if (preview?.type === "sticker") {
+      if (attachment?.type === "sticker") {
         attachments = [
           {
-            id: preview.data.id,
+            id: attachment.data.id,
             type: "sticker" as const,
-            url: preview.data.url,
-            name: preview.data.title,
+            url: attachment.data.url,
+            name: attachment.data.title,
           },
         ];
       }
@@ -201,7 +194,7 @@ export const ConversationInputChat = ({
       );
     }
 
-    if (content) {
+    if (content && message) {
       await sendMessage(
         {
           conversationId: conversationId,
@@ -218,7 +211,7 @@ export const ConversationInputChat = ({
       );
     }
 
-    setPreview(null); // Clear the preview after sending
+    clearAttachments();
     editorRef.current?.commands.clearContent();
     setMessage(null);
     setIsExpanded(false);
@@ -258,32 +251,6 @@ export const ConversationInputChat = ({
     socket?.emit("stopped-typing", { conversationId });
   };
 
-  const requestChangePreview = (nextPreview: PendingPreview) => {
-    if (!preview) {
-      setPreview(nextPreview);
-      return;
-    }
-
-    setPendingPreview(nextPreview);
-    if (nextPreview.type === "image" && preview.type === "image") {
-      if (!pendingPreview) return;
-
-      setPreview(pendingPreview);
-      setPendingPreview(null);
-
-      return;
-    }
-
-    if (nextPreview.type === "sticker" && preview.type === "sticker") {
-      if (nextPreview.data.id === preview.data.id) {
-        setPendingPreview(null);
-        setShowStickerPicker(false);
-        return;
-      }
-    }
-    setOpenAlertDialog(true);
-  };
-
   const handleImgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.currentTarget;
 
@@ -291,80 +258,38 @@ export const ConversationInputChat = ({
 
     const files = Array.from(input.files);
 
-    requestChangePreview({
-      type: "image",
-      data: [
-        ...(preview?.type === "image" ? preview.data : []),
-        ...files.map((file) => ({
-          id: crypto.randomUUID(),
-          file,
-          url: URL.createObjectURL(file),
-        })),
-      ],
-    });
+    addImages(files);
 
     input.value = "";
-  };
-
-  const removeImage = (id: string) => {
-    setPreview((prev) => {
-      if (prev?.type !== "image") return prev;
-
-      const imageToRemove = prev.data.find((img) => img.id === id);
-
-      if (imageToRemove) {
-        URL.revokeObjectURL(imageToRemove.url);
-      }
-
-      const nextImages = prev.data.filter((img) => img.id !== id);
-
-      if (nextImages.length === 0) {
-        return null;
-      }
-
-      return {
-        type: "image",
-        data: nextImages,
-      };
-    });
   };
 
   const handleStickerClick = (sticker: StickerData, imageUrl: string) => {
     if (!imageUrl) return;
 
-    requestChangePreview({
-      type: "sticker",
-      data: {
-        id: sticker.id.toString(),
-        url: imageUrl,
-        title: sticker.title,
-      },
+    if (
+      attachment?.type === "sticker" &&
+      attachment.data.id === sticker.id.toString()
+    ) {
+      setShowStickerPicker(false);
+    }
+    selectSticker({
+      id: sticker.id.toString(),
+      url: imageUrl,
+      title: sticker.title,
     });
   };
 
   const removeSticker = (id: string) => {
-    if (preview?.type === "sticker" && preview.data.id === id) {
-      setPreview(null);
+    if (attachment?.type === "sticker" && attachment.data.id === id) {
+      clearAttachments();
     }
   };
 
   const handleOpenChange = (nextOpen: boolean) => {
-    setOpenAlertDialog(nextOpen);
-
-    if (!nextOpen) {
-      setOpenAlertDialog(false);
-    }
+    if (!nextOpen) cancelReplace();
   };
 
-  const handleConfirmReplacePreview = () => {
-    if (!pendingPreview) return;
-
-    setPreview(pendingPreview);
-    setPendingPreview(null);
-    setOpenAlertDialog(false);
-  };
-
-  const handleUploadAttachment = async (attachment: PendingPreview) => {
+  const handleUploadAttachment = async (attachment: ComposerAttachment) => {
     if (attachment.type === "image") {
       const files = attachment.data
         .map((file) => file.file)
@@ -409,11 +334,11 @@ export const ConversationInputChat = ({
     showPicker,
     showStickerPicker,
     textFormatter,
-    preview,
+    attachment,
   ]);
 
   return (
-    <>
+    <div className="shrink-0">
       {(isPending || isUploading) && (
         <div className={Style.textPending}>{t("chat.sending")}</div>
       )}
@@ -428,7 +353,7 @@ export const ConversationInputChat = ({
         <div
           className={cn(
             Style.actionButtonContainer,
-            isExpanded || textFormatter || preview || replyMessage
+            isExpanded || textFormatter || attachment || replyMessage
               ? "flex-col"
               : "flex-row",
           )}
@@ -455,10 +380,10 @@ export const ConversationInputChat = ({
             </>
           )}
 
-          {/*  preview img or sticker   */}
-          {preview && (
+          {/*  attachment img or sticker   */}
+          {attachment && (
             <AttachmentsReview
-              preview={preview}
+              attachment={attachment}
               removeImage={removeImage}
               removeSticker={removeSticker}
               isUploading={isUploading}
@@ -506,12 +431,13 @@ export const ConversationInputChat = ({
               showPicker={showPicker}
               onChange={handleImgChange}
               isUploading={isUploading}
-              content={getTextFromContent(message).trim()}
+              content={message}
+              attachment={attachment}
             />
           </div>
         </div>
         {showPicker && (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense>
             <EmojiPicker pickerRef={pickerRef} editorRef={editorRef} />
           </Suspense>
         )}
@@ -524,13 +450,13 @@ export const ConversationInputChat = ({
         )}
 
         <AlertDialog
-          open={openAlertDialog}
+          open={pendingAttachment !== null}
           onOpenChange={handleOpenChange}
-          onConfirm={handleConfirmReplacePreview}
+          onConfirm={confirmReplace}
           title={t("chat.replaceAttachment.title")}
           description={t("chat.replaceAttachment.description")}
         />
       </form>
-    </>
+    </div>
   );
 };

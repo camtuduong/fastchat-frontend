@@ -1,10 +1,10 @@
 import { Spinner } from "@/components/ui/spinner";
-import type { PendingPreview } from "@/features/chat/components/Conversation/ConversationInputChat";
+import type { ComposerAttachment } from "@/features/chat/types/sticker";
 import { ReviewImgUpload } from "@/features/chat/components/Conversation/ReviewImgUpload";
 import { X } from "lucide-react";
 
 type Props = {
-  preview: PendingPreview;
+  attachment: ComposerAttachment;
   removeImage?: (id: string) => void;
   removeSticker?: (id: string) => void;
   isUploading?: boolean;
@@ -23,7 +23,7 @@ const STYLE = {
 };
 
 export const AttachmentsReview = ({
-  preview,
+  attachment,
   removeImage,
   removeSticker,
   isUploading,
@@ -31,8 +31,8 @@ export const AttachmentsReview = ({
 }: Props) => {
   return (
     <div className={STYLE.container}>
-      {preview?.type === "image" &&
-        preview.data.map((file) => (
+      {attachment?.type === "image" &&
+        attachment.data.map((file) => (
           <div key={file.id} className={STYLE.imgContainer}>
             {(isUploading || isPending) && (
               <div className={STYLE.spinnerOverlay}>
@@ -51,20 +51,20 @@ export const AttachmentsReview = ({
           </div>
         ))}
 
-      {preview?.type === "sticker" && (
+      {attachment?.type === "sticker" && (
         <div className={STYLE.imgContainer}>
           <video
             autoPlay
             loop
             muted
             playsInline
-            src={preview.data.url}
+            src={attachment.data.url}
             className={STYLE.sticker}
           />
           <button
             type="button"
             className={STYLE.removeButton}
-            onClick={() => removeSticker?.(preview.data.id)}
+            onClick={() => removeSticker?.(attachment.data.id)}
           >
             <X size={16} />
           </button>

@@ -42,17 +42,12 @@ export const useSearchSticker = ({
         format_filter,
         content_filter,
       }),
-    getNextPageParam: (lastPage) => {
-      if (!lastPage.data.has_next) {
+    getNextPageParam: (lastPage, allPages) => {
+      if (!lastPage.data.has_next || allPages.length >= 3) {
         return undefined;
       }
-      let count = 0;
-      const nextPage = lastPage.data.current_page + 1;
-      count = count + 1;
-      if (count > 3) {
-        return undefined;
-      }
-      return nextPage;
+
+      return lastPage.data.current_page + 1;
     },
   });
   return {

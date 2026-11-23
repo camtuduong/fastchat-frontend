@@ -37,7 +37,7 @@ export const ConversationHeader = ({
     switch (type) {
       case conversationTypeToLabel.direct:
         return (
-          <div className="flex items-center gap-2">
+          <div className="flex flex-1 shrink-0 items-center gap-2">
             <Avatar className="h-8 w-8">
               <AvatarImage
                 src={members?.[0]?.avatarUrl || undefined}

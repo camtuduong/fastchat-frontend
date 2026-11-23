@@ -84,7 +84,7 @@ export const ConversationBody = ({
   }
 
   return (
-    <>
+    <div className="flex min-h-0 flex-1 flex-col">
       {isFetchingNextPage && (
         <div className="flex w-full items-center justify-center py-2">
           <Spinner className="size-4" />
@@ -94,7 +94,7 @@ export const ConversationBody = ({
       <div
         ref={containerRef}
         className={cn(
-          "min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain rounded-b-xl px-14 py-4",
+          "min-h-0 flex-1 overflow-y-auto rounded-b-xl px-14 py-4",
           bodyClassName,
         )}
         onScroll={onScroll}
@@ -206,6 +206,6 @@ export const ConversationBody = ({
           })}
         </div>
       </div>
-    </>
+    </div>
   );
 };

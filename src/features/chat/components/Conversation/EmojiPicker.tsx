@@ -10,7 +10,7 @@ export const EmojiPicker = ({
   editorRef: React.RefObject<Editor | null>;
 }) => {
   return (
-    <div ref={pickerRef} className="absolute right-20 bottom-15 z-10">
+    <div ref={pickerRef} className="absolute right-28 bottom-21 z-10">
       <Picker
         data={data}
         onEmojiSelect={(emoji: Emoji) =>
