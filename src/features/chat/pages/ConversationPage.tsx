@@ -87,7 +87,10 @@ export const ConversationPage = () => {
 
   const members = usersActivity?.filter((p) => p._id !== myUserId);
 
-  const isOnline = members?.some((member) => onlineUsers.includes(member._id));
+  const isOnlineInGroup = members?.some((member) =>
+    onlineUsers.includes(member._id),
+  );
+  const isOnline = onlineUsers.includes(members?.[0]?._id ?? "");
 
   const messages = useMemo(() => {
     const chronologicalMessages = bubbleChat(
@@ -231,6 +234,7 @@ export const ConversationPage = () => {
           type={conversationDataDetail.type}
           members={members}
           isOnline={isOnline}
+          isOnlineInGroup={isOnlineInGroup}
           groupAvatarUrl={conversationDataDetail.group.groupAvatarUrl}
           groupName={conversationDataDetail.group.name}
         />

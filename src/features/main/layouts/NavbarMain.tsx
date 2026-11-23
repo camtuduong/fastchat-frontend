@@ -4,9 +4,15 @@ import { cn } from "@/lib/utils";
 import { MessageCircleMore, BookUser, User } from "lucide-react";
 import { useState } from "react";
 import { ProfileDialog } from "@/features/main/components/ProfileDialog";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Avatar,
+  AvatarBadge,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar";
 import { ActivityDialog } from "@/features/main/components/ActivityDialog";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { useSocketStore } from "@/stores/useSocketStore";
 import { useGetNotification } from "@/features/main/hooks/queries/useGetNotification";
 
 export const Style = {
@@ -19,6 +25,9 @@ export const Style = {
 export const NavbarHeader = () => {
   const displayName = useAuthStore((state) => state.displayName);
   const avatarUrl = useAuthStore((state) => state.avatarUrl);
+  const isOnline = useSocketStore((state) => state.onlineUsers).includes(
+    useAuthStore((state) => state.userId) ?? "",
+  );
 
   const [profileOpen, setProfileOpen] = useState(false);
   const [activityLogOpen, setActivityLogOpen] = useState(false);
@@ -37,13 +46,19 @@ export const NavbarHeader = () => {
     <div className={Style.container}>
       <div className="flex flex-col items-center gap-4">
         <Avatar
-          className="h-8 w-8 cursor-pointer"
+          className="after:border-avatar-main-border! h-8 w-8 cursor-pointer [--avatar-frame-blend:normal]"
           onClick={() => setProfileOpen(true)}
         >
           <AvatarImage src={avatarUrl ?? ""} alt="@shadcn" />
           <AvatarFallback colorSeed={displayName ?? ""}>
             {displayName ? displayName[0].toUpperCase() : <User />}
           </AvatarFallback>
+          <AvatarBadge
+            className={cn(
+              "size-2!",
+              `${isOnline ? "bg-status-online" : "bg-status-offline"}`,
+            )}
+          />
         </Avatar>
 
         <div className="flex flex-col gap-2">

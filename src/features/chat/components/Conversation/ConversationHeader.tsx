@@ -17,6 +17,7 @@ type Props = {
   type: Conversation["type"];
   members: UserActivity[];
   isOnline: boolean;
+  isOnlineInGroup: boolean;
   groupAvatarUrl?: string;
   groupName?: string;
 };
@@ -25,10 +26,12 @@ export const ConversationHeader = ({
   type,
   members,
   isOnline,
+  isOnlineInGroup,
   groupAvatarUrl,
   groupName,
 }: Props) => {
   const { t } = useTranslation();
+
   const open = useCustomSidebarStore((state) => state.open);
 
   const setOpen = useCustomSidebarStore((state) => state.setOpen);
@@ -69,7 +72,7 @@ export const ConversationHeader = ({
               <AvatarImage src={groupAvatarUrl || undefined} alt="@group" />
               <AvatarFallback>GR</AvatarFallback>
               <AvatarBadge
-                className={`${isOnline ? "bg-status-online" : "bg-status-offline"}`}
+                className={`${isOnlineInGroup ? "bg-status-online" : "bg-status-offline"}`}
               />
             </Avatar>
             <div className="flex flex-col leading-normal">
@@ -104,7 +107,7 @@ export const ConversationHeader = ({
           <SidebarTrigger className="-ml-1" />
           <Separator
             orientation="vertical"
-            className="mr-2 data-[orientation=vertical]:h-6"
+            className="mr-2 self-center! data-[orientation=vertical]:h-6"
           />
         </div>
         {renderHeaderConversation()}
